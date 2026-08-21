@@ -114,11 +114,11 @@ const content = {
     knowledge: {
       eyebrow: "Blog & kennis", title: "Praktische kennis vóór u beslist.",
       intro: "Heldere uitleg uit de praktijk over planning, techniek en keuzes die later het verschil maken.",
-      read: "Lees artikel", close: "Sluit artikel",
+      read: "Lees artikel", close: "Artikel sluiten", scrollClose: "Scroll verder om artikel te sluiten",
       items: [
-        { category: "Badkamer · 5 min", title: "Badkamer verbouwen: zo voorkomt u verrassingen", text: "Een goede volgorde van keuzes en werkzaamheden bespaart tijd, herstelwerk en onnodige kosten.", body: "Begin met maatvoering en leidingroutes, bepaal daarna sanitair en verlichting en maak pas vervolgens het tegelplan. Zo sluiten techniek en afwerking op elkaar aan. Reserveer ook tijd voor droging, controle van de ondergrond en een gezamenlijke vooroplevering.", image: images.tiling, source: imageSources.tiling, alt: "Sfeerbeeld van tegelwerk tijdens een renovatie" },
-        { category: "Elektra · 4 min", title: "Extra stopcontacten of een nieuwe groep: wat is verstandig?", text: "Waar u op let wanneer uw woning meer apparatuur en aansluitpunten krijgt.", body: "Kijk niet alleen naar het gewenste stopcontact, maar naar de volledige belasting van de groep, de kabelroute en toekomstig gebruik. Zware apparaten vragen vaak een eigen groep. Laat aanpassingen beoordelen en testen door iemand met de juiste vakkennis.", image: images.electric, source: imageSources.electric, alt: "Sfeerbeeld van veilig werk aan een elektrische installatie" },
-        { category: "Verbouwen · 6 min", title: "Verbouwen terwijl u thuis blijft wonen", text: "Zeven praktische afspraken die stof, hinder en misverstanden tijdens het werk beperken.", body: "Spreek looproutes, werktijden, afsluitmomenten van water en stroom en dagelijkse schoonmaak vooraf af. Deel de planning per week, houd één ruimte stofvrij en leg vast wie wijzigingen goedkeurt. Dat geeft rust voor bewoners én vakmensen.", image: images.plumbing, source: imageSources.plumbing, alt: "Sfeerbeeld van installatiewerk in een woning" },
+        { category: "Badkamer · 5 min", title: "Badkamer verbouwen: zo voorkomt u verrassingen", text: "Een goede volgorde van keuzes en werkzaamheden bespaart tijd, herstelwerk en onnodige kosten.", body: ["Een badkamerrenovatie begint niet bij de tegel of kraan, maar bij een nauwkeurige opname. Leg eerst de maatvoering, bestaande leidingroutes, ventilatie en elektrische aansluitingen vast. Daarmee wordt snel duidelijk welke wensen direct uitvoerbaar zijn en waar een technische aanpassing nodig is.", "Bepaal daarna de positie en afmetingen van douche, toilet, wastafel en eventuele meubels. Pas wanneer die indeling vaststaat, kunnen water, afvoer, elektra en verlichting als één plan worden uitgewerkt. Zo voorkomt u dat een aansluiting later achter een meubel uitkomt of dat tegelwerk opnieuw moet worden geopend.", "Ook de ondergrond verdient aandacht. Controleer vloeren en wanden op vocht, vlakheid en draagkracht en reserveer voldoende tijd voor herstel, afdichting en droging. Een strakke planning bevat daarom niet alleen werkdagen, maar ook bewuste momenten waarop materialen moeten uitharden.", "Maak tot slot vóór de start afspraken over materiaalkeuzes, details, bereikbaarheid en oplevering. Loop het werk samen na voordat de laatste kitnaden worden aangebracht. Met die volgorde sluiten techniek en afwerking beter op elkaar aan en blijft het resultaat ook op langere termijn betrouwbaar."], image: images.tiling, source: imageSources.tiling, alt: "Sfeerbeeld van tegelwerk tijdens een renovatie" },
+        { category: "Elektra · 4 min", title: "Extra stopcontacten of een nieuwe groep: wat is verstandig?", text: "Waar u op let wanneer uw woning meer apparatuur en aansluitpunten krijgt.", body: ["Een extra stopcontact lijkt een kleine ingreep, maar de juiste oplossing begint bij de volledige installatie. Kijk naar de belasting van de bestaande groep, de staat van de groepenkast en de apparaten die nu én later op dezelfde stroomkring worden gebruikt.", "Zware apparaten zoals een oven, kookplaat, wasdroger of laadvoorziening vragen vaak een eigen groep. Ook de kabelroute is belangrijk: een korte zichtbare oplossing is niet altijd de veiligste of meest toekomstbestendige route. Door dit vooraf uit te tekenen blijven hak- en herstelwerk beperkt.", "Denk daarnaast aan dagelijks gebruik. Plaats aansluitpunten niet alleen waar meubels nu staan, maar houd rekening met een andere indeling, thuiswerken en aanvullende verlichting. In keuken, badkamer en buiten gelden extra eisen voor positie, bescherming en materiaalkeuze.", "Laat uitbreidingen altijd beoordelen, aansluiten en testen door iemand met de juiste vakkennis. Na de werkzaamheden horen de beveiliging, aarding en werking gecontroleerd te worden. Zo krijgt u niet alleen meer aansluitpunten, maar vooral een installatie die logisch en veilig blijft functioneren."], image: images.electric, source: imageSources.electric, alt: "Sfeerbeeld van veilig werk aan een elektrische installatie" },
+        { category: "Verbouwen · 6 min", title: "Verbouwen terwijl u thuis blijft wonen", text: "Zeven praktische afspraken die stof, hinder en misverstanden tijdens het werk beperken.", body: ["Thuis blijven wonen tijdens een verbouwing kan goed, zolang de planning ook rekening houdt met het dagelijks leven. Bespreek vooraf welke ruimtes wanneer beschikbaar moeten zijn en maak één duidelijke looproute voor bewoners, materialen en afval.", "Leg werktijden, sleutelbeheer en momenten waarop water of stroom wordt afgesloten vast. Een korte melding vooraf voorkomt dat een online vergadering, maaltijd of schooldag onverwacht wordt onderbroken. Deel de planning per week en benoem direct wanneer werkzaamheden van elkaar afhankelijk zijn.", "Stofbeheersing vraagt meer dan een afdekfolie. Sluit werkzones af, bescherm vloeren, spreek dagelijkse schoonmaak af en houd minimaal één ruimte volledig stofvrij. Bepaal ook waar gereedschap en materialen veilig kunnen blijven staan zonder de woning onnodig vol te zetten.", "Wijzigingen ontstaan bijna altijd. Spreek daarom af wie beslissingen neemt, hoe meerwerk wordt bevestigd en wat een wijziging voor de planning betekent. Met één aanspreekpunt en een kort dagelijks overleg blijven bewoners en vakmensen op de hoogte en kan de woning tijdens het werk zo prettig mogelijk gebruikt worden."], image: images.plumbing, source: imageSources.plumbing, alt: "Sfeerbeeld van installatiewerk in een woning" },
       ],
     },
     contact: {
@@ -221,11 +221,11 @@ const content = {
     knowledge: {
       eyebrow: "Blog & insights", title: "Practical knowledge before you decide.",
       intro: "Clear advice from the field about planning, technical work and choices that make a difference later.",
-      read: "Read article", close: "Close article",
+      read: "Read article", close: "Close article", scrollClose: "Scroll further to close the article",
       items: [
-        { category: "Bathroom · 5 min", title: "Renovating a bathroom: how to avoid surprises", text: "Making decisions and scheduling work in the right order prevents delays, rework and unnecessary costs.", body: "Start with dimensions and pipe routes, then select sanitary fittings and lighting before making the tiling plan. This ensures the technical work and finish align. Allow time for drying, subfloor checks and a joint pre-handover inspection.", image: images.tiling, source: imageSources.tiling, alt: "Atmospheric image of tiling work during a renovation" },
-        { category: "Electrical · 4 min", title: "Extra outlets or a new circuit: what makes sense?", text: "What to consider when your home needs more electrical equipment and connection points.", body: "Look beyond the desired outlet and consider the total circuit load, cable route and future use. Heavy appliances often need a dedicated circuit. Have alterations assessed and tested by someone with the right expertise.", image: images.electric, source: imageSources.electric, alt: "Atmospheric image of safe work on an electrical installation" },
-        { category: "Renovation · 6 min", title: "Renovating while continuing to live at home", text: "Seven practical agreements that help reduce dust, disruption and misunderstandings during the work.", body: "Agree on access routes, working hours, water and power shutdowns and daily cleaning in advance. Share a weekly schedule, keep one room dust-free and decide who approves changes. This gives both residents and tradespeople peace of mind.", image: images.plumbing, source: imageSources.plumbing, alt: "Atmospheric image of installation work in a home" },
+        { category: "Bathroom · 5 min", title: "Renovating a bathroom: how to avoid surprises", text: "Making decisions and scheduling work in the right order prevents delays, rework and unnecessary costs.", body: ["A bathroom renovation does not start with a tile or tap, but with an accurate survey. First record dimensions, existing pipe routes, ventilation and electrical connections. This quickly shows which ideas are immediately practical and where technical alterations are needed.", "Next, determine the position and dimensions of the shower, toilet, basin and furniture. Only once the layout is fixed can plumbing, drainage, electrics and lighting be developed as one plan. This prevents an outlet ending up behind furniture or finished tiling having to be opened again.", "The substrate also deserves attention. Check floors and walls for moisture, level and load-bearing strength, and allow enough time for repair, waterproofing and drying. A realistic schedule includes not only working days but deliberate curing time for materials.", "Finally, agree on materials, details, access and handover before work starts. Review the installation together before the final sealant is applied. Following this sequence helps technical work and finishing align and keeps the result dependable over time."], image: images.tiling, source: imageSources.tiling, alt: "Atmospheric image of tiling work during a renovation" },
+        { category: "Electrical · 4 min", title: "Extra outlets or a new circuit: what makes sense?", text: "What to consider when your home needs more electrical equipment and connection points.", body: ["An extra outlet may seem like a small alteration, but the right solution starts with the entire installation. Consider the load on the existing circuit, the condition of the distribution board and the appliances that will use that circuit now and in the future.", "Heavy appliances such as an oven, hob, tumble dryer or charging point often require a dedicated circuit. The cable route matters too: the shortest visible route is not always the safest or most future-proof option. Planning it first can limit cutting and repair work.", "Also think about daily use. Position outlets not only around the current furniture but allow for another layout, home working and additional lighting. Kitchens, bathrooms and outdoor areas have extra requirements for location, protection and material selection.", "Have extensions assessed, connected and tested by someone with the right expertise. Protection, earthing and operation should be checked after the work. This gives you more connection points while keeping the installation logical and safe."], image: images.electric, source: imageSources.electric, alt: "Atmospheric image of safe work on an electrical installation" },
+        { category: "Renovation · 6 min", title: "Renovating while continuing to live at home", text: "Seven practical agreements that help reduce dust, disruption and misunderstandings during the work.", body: ["Living at home during a renovation can work well when the schedule also accounts for daily life. Agree in advance which rooms need to remain available and establish one clear route for residents, materials and waste.", "Record working hours, key management and moments when water or power will be shut off. A brief warning prevents an online meeting, meal or school day from being interrupted unexpectedly. Share the schedule by week and identify dependencies between trades.", "Dust control requires more than protective film. Seal work zones, protect floors, agree on daily cleaning and keep at least one room completely dust-free. Also decide where tools and materials can be stored safely without filling the home unnecessarily.", "Changes are almost inevitable. Agree who makes decisions, how additional work is approved and what a change means for the schedule. With one point of contact and a short daily update, residents and tradespeople stay informed and the home remains as usable as possible."], image: images.plumbing, source: imageSources.plumbing, alt: "Atmospheric image of installation work in a home" },
       ],
     },
     contact: {
@@ -255,10 +255,19 @@ export default function DomiSite() {
   const [reviewIndex, setReviewIndex] = useState(0);
   const [reviewsPaused, setReviewsPaused] = useState(false);
   const [reviewsHovered, setReviewsHovered] = useState(false);
+  const [activeArticleIndex, setActiveArticleIndex] = useState<number | null>(null);
+  const [articleExitVisible, setArticleExitVisible] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLElement>(null);
   const reviewViewportRef = useRef<HTMLDivElement>(null);
+  const articleReaderRef = useRef<HTMLDivElement>(null);
+  const articleExitRef = useRef<HTMLDivElement>(null);
+  const articleCloseRef = useRef<HTMLButtonElement>(null);
+  const articleTriggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const lastArticleScrollTop = useRef(0);
+  const articleClosing = useRef(false);
   const t = content[language];
+  const activeArticle = activeArticleIndex === null ? null : t.knowledge.items[activeArticleIndex];
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -358,6 +367,47 @@ export default function DomiSite() {
   }, [reviewIndex, language]);
 
   useEffect(() => {
+    if (activeArticleIndex === null) return;
+
+    const trigger = articleTriggerRefs.current[activeArticleIndex];
+    const reader = articleReaderRef.current;
+    document.body.classList.add("article-is-open");
+    articleClosing.current = false;
+    lastArticleScrollTop.current = 0;
+    reader?.scrollTo({ top: 0 });
+    const focusFrame = window.requestAnimationFrame(() => articleCloseRef.current?.focus());
+
+    function handleArticleKeydown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setActiveArticleIndex(null);
+        return;
+      }
+      if (event.key !== "Tab" || !reader) return;
+
+      const focusable = Array.from(reader.querySelectorAll<HTMLElement>("button, a[href]"));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleArticleKeydown);
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.body.classList.remove("article-is-open");
+      document.removeEventListener("keydown", handleArticleKeydown);
+      window.requestAnimationFrame(() => trigger?.focus());
+    };
+  }, [activeArticleIndex]);
+
+  useEffect(() => {
     const heroImage = document.querySelector<HTMLElement>(".hero-image");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let ticking = false;
@@ -398,6 +448,36 @@ export default function DomiSite() {
     event.preventDefault();
     event.currentTarget.reset();
     setFormStatus(t.contact.success);
+  }
+
+  function openArticle(index: number) {
+    lastArticleScrollTop.current = 0;
+    articleClosing.current = false;
+    setArticleExitVisible(false);
+    setActiveArticleIndex(index);
+  }
+
+  function closeArticle() {
+    if (articleClosing.current) return;
+    articleClosing.current = true;
+    setArticleExitVisible(false);
+    setActiveArticleIndex(null);
+  }
+
+  function handleArticleScroll() {
+    const reader = articleReaderRef.current;
+    const exitZone = articleExitRef.current;
+    if (!reader || !exitZone || articleClosing.current) return;
+
+    const currentTop = reader.scrollTop;
+    const movingDown = currentTop > lastArticleScrollTop.current;
+    const promptAt = Math.max(0, exitZone.offsetTop - reader.clientHeight * .55);
+    const closeAt = Math.max(promptAt + 120, exitZone.offsetTop - 24);
+    const promptVisible = currentTop >= promptAt;
+
+    setArticleExitVisible(promptVisible);
+    if (movingDown && promptVisible && currentTop >= closeAt) closeArticle();
+    lastArticleScrollTop.current = currentTop;
   }
 
   return (
@@ -563,12 +643,20 @@ export default function DomiSite() {
         <section className="knowledge section-pad" id="kennis">
           <SectionIntro eyebrow={t.knowledge.eyebrow} title={t.knowledge.title} text={t.knowledge.intro} />
           <div className="knowledge-grid">
-            {t.knowledge.items.map((article) => (
+            {t.knowledge.items.map((article, index) => (
               <article className="knowledge-card" key={article.title}>
                 <figure><img src={article.image} alt={article.alt} loading="lazy" decoding="async" /><a className="image-credit" href={article.source} target="_blank" rel="noreferrer">Pexels ↗</a></figure>
                 <div className="knowledge-copy">
                   <p className="article-meta">{article.category}</p><h3>{article.title}</h3><p>{article.text}</p>
-                  <details><summary><span>{t.knowledge.read}</span><i>+</i></summary><p>{article.body}</p></details>
+                  <button
+                    className="article-open-button"
+                    type="button"
+                    ref={(element) => { articleTriggerRefs.current[index] = element; }}
+                    onClick={() => openArticle(index)}
+                    aria-haspopup="dialog"
+                  >
+                    <span>{t.knowledge.read}</span><i>↗</i>
+                  </button>
                 </div>
               </article>
             ))}
@@ -599,6 +687,45 @@ export default function DomiSite() {
           </form>
         </section>
       </main>
+
+      {activeArticle && (
+        <div
+          className="article-reader"
+          ref={articleReaderRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="active-article-title"
+          onScroll={handleArticleScroll}
+        >
+          <button className="article-close" ref={articleCloseRef} type="button" onClick={closeArticle}>
+            <span>{t.knowledge.close}</span><i aria-hidden="true">×</i>
+          </button>
+          <article className="article-sheet">
+            <figure className="article-cover">
+              <img src={activeArticle.image} alt={activeArticle.alt} />
+              <div className="article-cover-shade" />
+              <a className="image-credit" href={activeArticle.source} target="_blank" rel="noreferrer">Pexels ↗</a>
+            </figure>
+            <div className="article-reader-content">
+              <p className="article-meta">{activeArticle.category}</p>
+              <h2 id="active-article-title">{activeArticle.title}</h2>
+              <p className="article-reader-lead">{activeArticle.text}</p>
+              <div className="article-body">
+                {activeArticle.body.map((paragraph, index) => (
+                  <p key={paragraph}><span>0{index + 1}</span>{paragraph}</p>
+                ))}
+              </div>
+              <button className="button button-primary article-inline-close" type="button" onClick={closeArticle}>{t.knowledge.close}<span>×</span></button>
+            </div>
+          </article>
+          <div className={`article-exit-zone${articleExitVisible ? " visible" : ""}`} ref={articleExitRef} aria-hidden={!articleExitVisible}>
+            <div>
+              <span className="scroll-wheel" aria-hidden="true"><i /></span>
+              <p>{t.knowledge.scrollClose}</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer className="site-footer">
         <div className="footer-top">
