@@ -63,14 +63,14 @@ const content = {
       eyebrow: "Onze vakgebieden", title: "Vakwerk voor iedere fase.",
       intro: "Van de eerste aansluiting tot de laatste afwerking: één aanspreekpunt en werkzaamheden die logisch op elkaar aansluiten.",
       items: [
-        ["Elektra & verlichting", "Aanpassingen aan installaties, extra aansluitpunten en functionele binnen- en buitenverlichting."],
-        ["Water & sanitair", "Leidingen, kranen, toiletten, aansluitingen en het zorgvuldig oplossen van lekkages."],
-        ["Verwarming", "Radiatoren, leidingwerk en praktische aanpassingen voor comfortabel en efficiënt verwarmen."],
-        ["Badkamers & toiletten", "Complete vernieuwing, inclusief leidingwerk, elektra, tegelwerk, montage en afwerking."],
-        ["Renovatie & verbouwing", "Slimme aanpassingen aan woningen en bedrijfsruimtes, van indeling tot gebruiksklare oplevering."],
-        ["Tegel-, stuc- & schilderwerk", "Strakke wanden, vloeren en oppervlakken die een ruimte zichtbaar afmaken."],
-        ["Timmerwerk & montage", "Maatwerk, aftimmering en zorgvuldige montage van praktische interieuroplossingen."],
-        ["Onderhoud & reparaties", "Kleine en grotere werkzaamheden om uw woning of pand veilig, netjes en goed bruikbaar te houden."],
+        ["Elektra & verlichting", "Veilige, praktische aansluitingen en verlichting.", "Van extra groepen en stopcontacten tot binnen- en buitenverlichting. We bekijken belasting, kabelroutes en toekomstig gebruik als één geheel."],
+        ["Water & sanitair", "Leidingwerk en sanitair, zorgvuldig aangesloten.", "We plaatsen en verleggen leidingen, kranen, toiletten en aansluitingen en zoeken lekkages gericht op voordat herstelwerk begint."],
+        ["Verwarming", "Comfortabele warmte met logisch leidingwerk.", "Radiatoren, leidingaanpassingen en het verbeteren van de warmteverdeling worden afgestemd op de ruimte en de bestaande installatie."],
+        ["Badkamers & toiletten", "Complete ruimtes, technisch én strak afgewerkt.", "Eén plan voor leidingwerk, elektra, tegelwerk, sanitair, montage en kitwerk voorkomt losse schakels tijdens de verbouwing."],
+        ["Renovatie & verbouwing", "Van nieuwe indeling tot gebruiksklare oplevering.", "We combineren bouwkundige aanpassingen met installatiewerk en afwerking, zodat de verschillende fases goed op elkaar aansluiten."],
+        ["Tegel-, stuc- & schilderwerk", "Strakke ondergronden en een verzorgde finish.", "We beoordelen de ondergrond, herstellen waar nodig en werken wanden, vloeren en plafonds netjes en passend bij het gebruik af."],
+        ["Timmerwerk & montage", "Maatwerk en montage tot in het detail.", "Van aftimmering en ombouwen tot deuren, plinten en praktische interieuroplossingen die precies op de beschikbare ruimte aansluiten."],
+        ["Onderhoud & reparaties", "Gericht herstel voor woning en bedrijfspand.", "We pakken kleine én grotere gebreken aan, combineren werkzaamheden waar dat slim is en laten de plek veilig en verzorgd achter."],
       ],
     },
     process: {
@@ -170,14 +170,14 @@ const content = {
       eyebrow: "Our expertise", title: "Skilled work at every stage.",
       intro: "From the first connection to the final finish: one point of contact and work that fits together seamlessly.",
       items: [
-        ["Electrical & lighting", "Electrical alterations, additional outlets and practical indoor and outdoor lighting."],
-        ["Plumbing & sanitary systems", "Pipework, taps, toilets, connections and careful leak repairs."],
-        ["Heating", "Radiators, pipework and practical improvements for comfortable, efficient heating."],
-        ["Bathrooms & toilets", "Complete renovations, including plumbing, electrical work, tiling, installation and finishing."],
-        ["Renovation & remodelling", "Practical improvements to homes and commercial spaces, from layout changes to ready-to-use completion."],
-        ["Tiling, plastering & painting", "Clean walls, floors and surfaces that give every room a polished finish."],
-        ["Carpentry & installation", "Bespoke details, finish carpentry and careful installation of practical interior solutions."],
-        ["Maintenance & repairs", "Small and larger jobs that keep your home or property safe, tidy and fully functional."],
+        ["Electrical & lighting", "Safe, practical connections and lighting.", "From additional circuits and outlets to indoor and outdoor lighting. We consider load, cable routes and future use as one complete system."],
+        ["Plumbing & sanitary systems", "Pipework and fittings, carefully connected.", "We install and relocate pipework, taps, toilets and connections, and trace leaks accurately before repair work begins."],
+        ["Heating", "Comfortable heat with logical pipework.", "Radiators, pipe alterations and improvements to heat distribution are coordinated with the room and the existing installation."],
+        ["Bathrooms & toilets", "Complete rooms, technically sound and neatly finished.", "One plan for plumbing, electrics, tiling, fittings, installation and sealing avoids disconnected stages during the renovation."],
+        ["Renovation & remodelling", "From a new layout to ready-to-use completion.", "We combine construction changes with installation work and finishing so every phase connects properly to the next."],
+        ["Tiling, plastering & painting", "Clean substrates and a polished finish.", "We assess and repair the substrate where necessary, then finish walls, floors and ceilings to suit how the space will be used."],
+        ["Carpentry & installation", "Bespoke work and installation down to the detail.", "From boxing and finish carpentry to doors, skirting and practical interior solutions made to fit the available space."],
+        ["Maintenance & repairs", "Focused repairs for homes and commercial property.", "We handle both small and larger defects, combine tasks where practical and leave the area safe, tidy and ready to use."],
       ],
     },
     process: {
@@ -255,6 +255,8 @@ export default function DomiSite() {
   const [reviewIndex, setReviewIndex] = useState(0);
   const [reviewsPaused, setReviewsPaused] = useState(false);
   const [reviewsHovered, setReviewsHovered] = useState(false);
+  const [activeServiceIndex, setActiveServiceIndex] = useState<number | null>(null);
+  const [activeSection, setActiveSection] = useState("");
   const [activeArticleIndex, setActiveArticleIndex] = useState<number | null>(null);
   const [articleExitVisible, setArticleExitVisible] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -438,6 +440,36 @@ export default function DomiSite() {
     };
   }, []);
 
+  useEffect(() => {
+    const sectionIds = ["over", "diensten", "projecten", "reviews", "kennis", "contact"];
+    let frame = 0;
+
+    function updateActiveSection() {
+      const marker = window.scrollY + window.innerHeight * .34;
+      let nextSection = "";
+      sectionIds.forEach((id) => {
+        const section = document.getElementById(id);
+        if (section && section.offsetTop <= marker) nextSection = `#${id}`;
+      });
+      setActiveSection((current) => current === nextSection ? current : nextSection);
+      frame = 0;
+    }
+
+    function handleSectionScroll() {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateActiveSection);
+    }
+
+    frame = window.requestAnimationFrame(updateActiveSection);
+    window.addEventListener("scroll", handleSectionScroll, { passive: true });
+    window.addEventListener("resize", handleSectionScroll);
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", handleSectionScroll);
+      window.removeEventListener("resize", handleSectionScroll);
+    };
+  }, []);
+
   function changeLanguage(next: Language) {
     setReviewIndex(0);
     setLanguage(next);
@@ -491,7 +523,7 @@ export default function DomiSite() {
         </a>
 
         <nav className="desktop-nav" aria-label={t.navLabel}>
-          {t.nav.map(([label, href]) => <a href={href} key={href}>{label}</a>)}
+          {t.nav.map(([label, href]) => <a className={activeSection === href ? "active" : ""} aria-current={activeSection === href ? "location" : undefined} href={href} key={href} onClick={() => setActiveSection(href)}>{label}</a>)}
         </nav>
 
         <div className="header-actions">
@@ -508,7 +540,7 @@ export default function DomiSite() {
 
         <nav ref={mobileMenuRef} className={`mobile-nav${menuOpen ? " open" : ""}`} id="mobile-menu" aria-label={t.navLabel} aria-hidden={!menuOpen}>
           {t.nav.map(([label, href], index) => (
-            <a href={href} key={href} onClick={() => setMenuOpen(false)}><span>0{index + 1}</span>{label}</a>
+            <a className={activeSection === href ? "active" : ""} aria-current={activeSection === href ? "location" : undefined} href={href} key={href} onClick={() => { setActiveSection(href); setMenuOpen(false); }}><span>0{index + 1}</span>{label}</a>
           ))}
           <a className="mobile-quote" href="#contact" onClick={() => setMenuOpen(false)}>{t.quote}<b>↗</b></a>
         </nav>
@@ -555,11 +587,19 @@ export default function DomiSite() {
         <section className="services section-pad" id="diensten">
           <SectionIntro eyebrow={t.services.eyebrow} title={t.services.title} text={t.services.intro} light />
           <div className="service-grid">
-            {t.services.items.map(([title, text], index) => (
-              <article className="service-card" key={title}>
+            {t.services.items.map(([title, text, detail], index) => (
+              <button
+                className={`service-card${activeServiceIndex === index ? " active" : ""}`}
+                type="button"
+                key={title}
+                aria-expanded={activeServiceIndex === index}
+                onClick={() => setActiveServiceIndex(index)}
+              >
                 <div className="service-top"><span>0{index + 1}</span><i aria-hidden="true" /></div>
-                <h3>{title}</h3><p>{text}</p>
-              </article>
+                <h3>{title}</h3>
+                <p className="service-summary">{text}</p>
+                <span className="service-detail"><span>{detail}</span></span>
+              </button>
             ))}
           </div>
         </section>
@@ -599,10 +639,11 @@ export default function DomiSite() {
             <h2 id="featured-title">{t.featured.title}</h2>
             <p>{t.featured.note}</p>
           </div>
-          <div className="featured-grid">
+          <div className="featured-grid" role="list" aria-label={t.featured.title}>
             {t.featured.items.map((item, index) => (
-              <div className="featured-card" key={item}>
-                <span>0{index + 1}</span><strong>{item}</strong><small>{t.featured.placeholder}</small>
+              <div className="featured-card" key={item} role="listitem">
+                <span className="featured-logo-mark" aria-hidden="true">{item.split(/\s|&/).filter(Boolean).map((word) => word[0]).slice(0, 2).join("")}</span>
+                <strong>{item}</strong><small>{t.featured.placeholder} · 0{index + 1}</small>
               </div>
             ))}
           </div>
