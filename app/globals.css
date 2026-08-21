@@ -335,7 +335,7 @@ section[id] { scroll-margin-top: 76px; }
 .footer-brand { align-items: flex-start; display: flex; gap: 22px; }
 .footer-brand .brand-mark { height: 76px; width: 76px; }
 .footer-brand p, .footer-label { color: var(--orange); font-size: .64rem; font-weight: 600; letter-spacing: .06em; margin: 0 0 17px; text-transform: uppercase; }
-.footer-brand h2 { font-size: clamp(2.3rem,4.5vw,4.7rem); letter-spacing: -.06em; line-height: .95; margin: 0; max-width: 650px; }
+.footer-brand h2 { color: #4d4d52; font-size: clamp(1.3rem,2.25vw,2.15rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.2; margin: 0; max-width: 500px; text-wrap: balance; }
 .footer-top nav { display: flex; flex-direction: column; gap: 12px; }
 .footer-top nav a, .footer-top > div:last-child p, .footer-contact-link { font-size: .84rem; line-height: 1.55; }
 .footer-top nav a:hover, .footer-contact-link:hover { color: var(--blue); }
