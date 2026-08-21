@@ -249,7 +249,7 @@ section[id] { scroll-margin-top: 76px; }
 .article-open-button i { color: var(--blue); font-size: 1.15rem; font-style: normal; transition: transform .25s; }
 .knowledge-card:hover .article-open-button i, .knowledge-card:has(.knowledge-card-trigger:focus-visible) .article-open-button i { transform: translate(3px,-3px); }
 
-.article-reader { background: #0c0c0d; height: 100dvh; inset: 0; overflow-y: auto; overscroll-behavior: contain; position: fixed; scroll-behavior: smooth; z-index: 200; }
+.article-reader { animation: article-overlay-in .42s cubic-bezier(.2,.75,.25,1) both; background: #0c0c0d; height: 100dvh; inset: 0; overflow-y: auto; overscroll-behavior: contain; position: fixed; scroll-behavior: smooth; z-index: 200; }
 .article-close { align-items: center; background: rgba(255,255,255,.88); backdrop-filter: saturate(160%) blur(18px); border: 0; border-radius: 999px; display: flex; font-size: .76rem; font-weight: 600; gap: 13px; min-height: 48px; padding: 7px 8px 7px 18px; position: fixed; right: clamp(18px,3vw,44px); top: clamp(18px,3vw,34px); z-index: 204; }
 .article-close i { background: var(--ink); border-radius: 50%; color: white; display: grid; font-size: 1.2rem; font-style: normal; font-weight: 300; height: 34px; place-items: center; transition: background .2s, transform .2s; width: 34px; }
 .article-close:hover i { background: var(--blue); transform: rotate(90deg); }
@@ -274,23 +274,7 @@ section[id] { scroll-margin-top: 76px; }
 .scroll-wheel i { animation: scroll-cue 1.4s ease-in-out infinite; background: white; border-radius: 50%; display: block; height: 5px; margin: 0 auto; width: 5px; }
 @keyframes scroll-cue { 0%,100% { opacity: .25; transform: translateY(0); } 50% { opacity: 1; transform: translateY(17px); } }
 
-::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
-::view-transition-group(article-shell) { animation-duration: .86s; animation-timing-function: cubic-bezier(.16,.8,.2,1); overflow: hidden; }
-::view-transition-group(article-cover), ::view-transition-group(article-meta-shared), ::view-transition-group(article-title) { animation-duration: .8s; animation-timing-function: cubic-bezier(.16,.8,.2,1); }
-::view-transition-old(article-shell), ::view-transition-new(article-shell), ::view-transition-old(article-cover), ::view-transition-new(article-cover) { height: 100%; mix-blend-mode: normal; object-fit: cover; width: 100%; }
-::view-transition-old(article-meta-shared), ::view-transition-new(article-meta-shared), ::view-transition-old(article-title), ::view-transition-new(article-title) { mix-blend-mode: normal; }
-::view-transition-old(article-shell) { animation: article-tile-release .5s cubic-bezier(.4,0,1,1) both; }
-::view-transition-new(article-shell) { animation: article-sheet-unfold .86s cubic-bezier(.16,.8,.2,1) both; }
-::view-transition-old(article-cover) { animation: article-piece-fold .46s cubic-bezier(.4,0,1,1) both; }
-::view-transition-new(article-cover) { animation: article-cover-unfold .76s cubic-bezier(.16,.8,.2,1) .08s both; }
-::view-transition-old(article-meta-shared), ::view-transition-old(article-title) { animation: article-piece-fold .42s cubic-bezier(.4,0,1,1) both; }
-::view-transition-new(article-meta-shared) { animation: article-copy-unfold .58s cubic-bezier(.16,.8,.2,1) .2s both; }
-::view-transition-new(article-title) { animation: article-copy-unfold .64s cubic-bezier(.16,.8,.2,1) .26s both; }
-@keyframes article-tile-release { to { filter: saturate(.7); opacity: 0; transform: scale(.94); } }
-@keyframes article-sheet-unfold { from { clip-path: inset(9% 5% round 28px); opacity: .35; } to { clip-path: inset(0 round 0); opacity: 1; } }
-@keyframes article-piece-fold { to { filter: blur(5px); opacity: 0; transform: translateY(-34px) scale(.97); } }
-@keyframes article-cover-unfold { from { filter: blur(7px); opacity: .25; transform: translateY(54px) scale(1.06); } to { filter: blur(0); opacity: 1; transform: translateY(0) scale(1); } }
-@keyframes article-copy-unfold { from { filter: blur(5px); opacity: 0; transform: translateY(48px); } to { filter: blur(0); opacity: 1; transform: translateY(0); } }
+@keyframes article-overlay-in { from { opacity: 0; } to { opacity: 1; } }
 
 .contact { background: #101010; border-radius: 36px; color: white; display: grid; grid-template-columns: .85fr 1.15fr; margin: 12px; overflow: hidden; }
 .contact-intro { align-self: start; padding: clamp(80px,9vw,140px) clamp(24px,6vw,100px); position: sticky; top: 72px; }

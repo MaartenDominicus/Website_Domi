@@ -5,10 +5,6 @@ import { flushSync } from "react-dom";
 
 type Language = "nl" | "en";
 
-type ViewTransitionDocument = Document & {
-  startViewTransition?: (update: () => void) => { finished: Promise<void> };
-};
-
 const socials = [
   ["Instagram", "https://www.instagram.com/"],
   ["Facebook", "https://www.facebook.com/"],
@@ -500,26 +496,7 @@ export default function DomiSite() {
     lastArticleScrollTop.current = 0;
     articleClosing.current = false;
     setArticleExitVisible(false);
-
-    const trigger = articleTriggerRefs.current[index];
-    const card = trigger?.closest<HTMLElement>(".knowledge-card");
-    const transitionDocument = document as ViewTransitionDocument;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (!card || !transitionDocument.startViewTransition || reduceMotion) {
-      setActiveArticleIndex(index);
-      return;
-    }
-
-    setCardTransitionNames(card, true);
-    const transition = transitionDocument.startViewTransition(() => {
-      flushSync(() => setActiveArticleIndex(index));
-      setCardTransitionNames(card, false);
-    });
-    transition.finished.then(
-      () => setCardTransitionNames(card, false),
-      () => setCardTransitionNames(card, false),
-    );
+    setActiveArticleIndex(index);
   }
 
   function closeArticle() {
@@ -545,21 +522,6 @@ export default function DomiSite() {
       { duration: 420, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" },
     );
     fade.finished.then(finishClose, finishClose);
-  }
-
-  function setCardTransitionNames(card: HTMLElement, enabled: boolean) {
-    const transitionParts = [
-      [card, "article-shell"],
-      [card.querySelector<HTMLElement>("figure"), "article-cover"],
-      [card.querySelector<HTMLElement>(".article-meta"), "article-meta-shared"],
-      [card.querySelector<HTMLElement>("h3"), "article-title"],
-    ] as const;
-
-    transitionParts.forEach(([element, name]) => {
-      if (!element) return;
-      if (enabled) element.style.viewTransitionName = name;
-      else element.style.removeProperty("view-transition-name");
-    });
   }
 
   function handleArticleScroll() {
@@ -814,15 +776,15 @@ export default function DomiSite() {
           <button className="article-close" ref={articleCloseRef} type="button" onClick={closeArticle}>
             <span>{t.knowledge.close}</span><i aria-hidden="true">×</i>
           </button>
-          <article className="article-sheet" style={{ viewTransitionName: "article-shell" }}>
-            <figure className="article-cover" style={{ viewTransitionName: "article-cover" }}>
+          <article className="article-sheet">
+            <figure className="article-cover">
               <img src={activeArticle.image} alt={activeArticle.alt} />
               <div className="article-cover-shade" />
               <a className="image-credit" href={activeArticle.source} target="_blank" rel="noreferrer">Pexels ↗</a>
             </figure>
             <div className="article-reader-content">
-              <p className="article-meta" style={{ viewTransitionName: "article-meta-shared" }}>{activeArticle.category}</p>
-              <h2 id="active-article-title" style={{ viewTransitionName: "article-title" }}>{activeArticle.title}</h2>
+              <p className="article-meta">{activeArticle.category}</p>
+              <h2 id="active-article-title">{activeArticle.title}</h2>
               <p className="article-reader-lead">{activeArticle.text}</p>
               <div className="article-body">
                 {activeArticle.body.map((paragraph, index) => (
