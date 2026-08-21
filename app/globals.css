@@ -149,6 +149,7 @@ section[id] { scroll-margin-top: 76px; }
 .service-grid { display: grid; gap: 14px; grid-auto-flow: dense; grid-template-columns: repeat(4, 1fr); }
 .service-card-shell { min-height: 224px; position: relative; z-index: 1; }
 .service-card-shell.active { z-index: 20; }
+.service-card-shell.closing { z-index: 30; }
 .service-card { appearance: none; background: white; border: 0; border-radius: 22px; box-shadow: 0 4px 18px rgba(0,0,0,.035); color: var(--ink); height: 100%; isolation: isolate; left: 0; min-height: 224px; overflow: hidden; padding: 22px; position: absolute; text-align: left; top: 0; transition: background .35s, color .35s, transform .35s, box-shadow .35s, width .48s cubic-bezier(.22,.8,.24,1) .22s, height .48s cubic-bezier(.22,.8,.24,1) .22s; width: 100%; }
 .service-card > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { position: relative; transition: margin-left .48s cubic-bezier(.22,.8,.24,1) .22s, transform .48s cubic-bezier(.22,.8,.24,1) .22s; z-index: 2; }
 .service-expand-trigger { background: transparent; border: 0; inset: 0; position: absolute; z-index: 3; }

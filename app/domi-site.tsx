@@ -304,6 +304,7 @@ export default function DomiSite() {
   const [reviewsPaused, setReviewsPaused] = useState(false);
   const [reviewsHovered, setReviewsHovered] = useState(false);
   const [activeServiceIndex, setActiveServiceIndex] = useState<number | null>(null);
+  const [closingServiceIndex, setClosingServiceIndex] = useState<number | null>(null);
   const [activeServiceDetailIndex, setActiveServiceDetailIndex] = useState<number | null>(null);
   const [activeSection, setActiveSection] = useState("");
   const [activeArticleIndex, setActiveArticleIndex] = useState<number | null>(null);
@@ -324,6 +325,7 @@ export default function DomiSite() {
   const serviceTriggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const serviceOriginScrollY = useRef(0);
   const serviceClosing = useRef(false);
+  const serviceTileCloseTimer = useRef<number | null>(null);
   const t = content[language];
   const reviewCount = t.reviews.items.length;
   const reviewIndex = ((reviewCursor % reviewCount) + reviewCount) % reviewCount;
@@ -341,6 +343,10 @@ export default function DomiSite() {
     document.title = title;
     document.querySelector('meta[name="description"]')?.setAttribute("content", description);
   }, [language]);
+
+  useEffect(() => () => {
+    if (serviceTileCloseTimer.current !== null) window.clearTimeout(serviceTileCloseTimer.current);
+  }, []);
 
   useEffect(() => {
     if (!menuOpen) {
@@ -603,6 +609,29 @@ export default function DomiSite() {
     setFormStatus(t.contact.success);
   }
 
+  function toggleServiceTile(index: number) {
+    if (activeServiceIndex === index) {
+      if (serviceTileCloseTimer.current !== null) window.clearTimeout(serviceTileCloseTimer.current);
+      setClosingServiceIndex(index);
+      setActiveServiceIndex(null);
+      serviceTileCloseTimer.current = window.setTimeout(() => {
+        setClosingServiceIndex(null);
+        serviceTileCloseTimer.current = null;
+      }, 820);
+      return;
+    }
+
+    if (activeServiceIndex !== null) {
+      if (serviceTileCloseTimer.current !== null) window.clearTimeout(serviceTileCloseTimer.current);
+      setClosingServiceIndex(activeServiceIndex);
+      serviceTileCloseTimer.current = window.setTimeout(() => {
+        setClosingServiceIndex(null);
+        serviceTileCloseTimer.current = null;
+      }, 820);
+    }
+    setActiveServiceIndex(index);
+  }
+
   function openArticle(index: number) {
     articleOriginScrollY.current = window.scrollY;
     lastArticleScrollTop.current = 0;
@@ -753,12 +782,13 @@ export default function DomiSite() {
           <div className="service-grid">
             {t.services.items.map(([title, text, detail], index) => {
               const isActive = activeServiceIndex === index;
+              const isClosing = closingServiceIndex === index;
               return (
-                <div className={`service-card-shell${isActive ? " active" : ""}`} key={title}>
+                <div className={`service-card-shell${isActive ? " active" : ""}${isClosing ? " closing" : ""}`} key={title}>
                   <div
                     className={`service-card${isActive ? " active" : ""}`}
                   >
-                    <button className="service-expand-trigger" type="button" aria-expanded={isActive} aria-label={`${title}: ${text}`} onClick={() => setActiveServiceIndex(isActive ? null : index)} />
+                    <button className="service-expand-trigger" type="button" aria-expanded={isActive} aria-label={`${title}: ${text}`} onClick={() => toggleServiceTile(index)} />
                     <span className="service-image" aria-hidden="true"><img src={serviceImages[index]} alt="" loading="lazy" decoding="async" /></span>
                     <div className="service-top"><span>0{index + 1}</span><i aria-hidden="true" /></div>
                     <h3>{title}</h3>
