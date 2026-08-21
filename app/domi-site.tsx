@@ -279,6 +279,7 @@ export default function DomiSite() {
   const articleCloseRef = useRef<HTMLButtonElement>(null);
   const articleTriggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const lastArticleScrollTop = useRef(0);
+  const articleOriginScrollY = useRef(0);
   const articleClosing = useRef(false);
   const t = content[language];
   const activeArticle = activeArticleIndex === null ? null : t.knowledge.items[activeArticleIndex];
@@ -417,7 +418,7 @@ export default function DomiSite() {
       window.cancelAnimationFrame(focusFrame);
       document.body.classList.remove("article-is-open");
       document.removeEventListener("keydown", handleArticleKeydown);
-      window.requestAnimationFrame(() => trigger?.focus());
+      window.requestAnimationFrame(() => trigger?.focus({ preventScroll: true }));
     };
   }, [activeArticleIndex]);
 
@@ -495,6 +496,7 @@ export default function DomiSite() {
   }
 
   function openArticle(index: number) {
+    articleOriginScrollY.current = window.scrollY;
     lastArticleScrollTop.current = 0;
     articleClosing.current = false;
     setArticleExitVisible(false);
@@ -502,9 +504,7 @@ export default function DomiSite() {
     const trigger = articleTriggerRefs.current[index];
     const card = trigger?.closest<HTMLElement>(".knowledge-card");
     const transitionDocument = document as ViewTransitionDocument;
-    const transitionRoot = document.documentElement;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    transitionRoot.classList.remove("article-transition-closing");
 
     if (!card || !transitionDocument.startViewTransition || reduceMotion) {
       setActiveArticleIndex(index);
@@ -517,11 +517,8 @@ export default function DomiSite() {
       setCardTransitionNames(card, false);
     });
     transition.finished.then(
-      () => transitionRoot.classList.remove("article-transition-closing"),
-      () => {
-        setCardTransitionNames(card, false);
-        transitionRoot.classList.remove("article-transition-closing");
-      },
+      () => setCardTransitionNames(card, false),
+      () => setCardTransitionNames(card, false),
     );
   }
 
@@ -530,34 +527,24 @@ export default function DomiSite() {
     articleClosing.current = true;
     setArticleExitVisible(false);
 
-    const index = activeArticleIndex;
-    const trigger = index === null ? null : articleTriggerRefs.current[index];
-    const card = trigger?.closest<HTMLElement>(".knowledge-card");
-    const transitionDocument = document as ViewTransitionDocument;
-    const transitionRoot = document.documentElement;
+    const reader = articleReaderRef.current;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (!card || !transitionDocument.startViewTransition || reduceMotion) {
-      transitionRoot.classList.remove("article-transition-closing");
-      setActiveArticleIndex(null);
+    function finishClose() {
+      flushSync(() => setActiveArticleIndex(null));
+      window.requestAnimationFrame(() => window.scrollTo({ top: articleOriginScrollY.current, behavior: "auto" }));
+    }
+
+    if (!reader || reduceMotion) {
+      finishClose();
       return;
     }
 
-    transitionRoot.classList.add("article-transition-closing");
-    const transition = transitionDocument.startViewTransition(() => {
-      flushSync(() => setActiveArticleIndex(null));
-      setCardTransitionNames(card, true);
-    });
-    transition.finished.then(
-      () => {
-        setCardTransitionNames(card, false);
-        transitionRoot.classList.remove("article-transition-closing");
-      },
-      () => {
-        setCardTransitionNames(card, false);
-        transitionRoot.classList.remove("article-transition-closing");
-      },
+    const fade = reader.animate(
+      [{ opacity: 1 }, { opacity: 0 }],
+      { duration: 420, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" },
     );
+    fade.finished.then(finishClose, finishClose);
   }
 
   function setCardTransitionNames(card: HTMLElement, enabled: boolean) {
