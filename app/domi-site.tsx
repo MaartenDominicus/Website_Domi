@@ -633,19 +633,23 @@ export default function DomiSite() {
           </div>
         </section>
 
-        <section className="featured section-pad" aria-labelledby="featured-title">
-          <div className="featured-heading">
-            <p className="eyebrow dark"><span />{t.featured.eyebrow}</p>
-            <h2 id="featured-title">{t.featured.title}</h2>
-            <p>{t.featured.note}</p>
-          </div>
-          <div className="featured-grid" role="list" aria-label={t.featured.title}>
-            {t.featured.items.map((item, index) => (
-              <div className="featured-card" key={item} role="listitem">
-                <span className="featured-logo-mark" aria-hidden="true">{item.split(/\s|&/).filter(Boolean).map((word) => word[0]).slice(0, 2).join("")}</span>
-                <strong>{item}</strong><small>{t.featured.placeholder} · 0{index + 1}</small>
-              </div>
-            ))}
+        <section className="featured" aria-labelledby="featured-title">
+          <h2 className="visually-hidden" id="featured-title">{t.featured.title}</h2>
+          <p className="visually-hidden">{t.featured.note}</p>
+          <div className="featured-marquee" role="list" aria-label={t.featured.title}>
+            <div className="featured-track">
+              {[0, 1].map((group) => (
+                <div className="featured-logo-group" aria-hidden={group === 1} key={group}>
+                  {t.featured.items.map((item, index) => (
+                    <div className="featured-logo" key={item} role={group === 0 ? "listitem" : undefined}>
+                      <span aria-hidden="true">{item.split(/\s|&/).filter(Boolean).map((word) => word[0]).slice(0, 2).join("")}</span>
+                      <strong>{item}</strong>
+                      <small className="visually-hidden">{t.featured.placeholder} · 0{index + 1}</small>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 

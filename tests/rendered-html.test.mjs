@@ -34,7 +34,7 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.match(html, /aria-label="Pauzeer"/);
   assert.equal((html.match(/aria-haspopup="dialog"/g) ?? []).length, 3);
   assert.equal((html.match(/class="service-card" type="button"/g) ?? []).length, 8);
-  assert.match(html, /class="featured-grid" role="list"/);
+  assert.match(html, /class="featured-marquee" role="list"/);
   assert.doesNotMatch(html, /<details>/);
   assert.match(html, /aria-pressed="true"[^>]*>NL</);
   assert.match(html, /aria-pressed="false"[^>]*>EN</);
