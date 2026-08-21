@@ -148,19 +148,20 @@ section[id] { scroll-margin-top: 76px; }
 .services .section-intro { margin-bottom: clamp(42px,5vw,68px); }
 .service-grid { display: grid; gap: 14px; grid-auto-flow: dense; grid-template-columns: repeat(4, 1fr); }
 .service-card-shell { min-height: 224px; position: relative; z-index: 1; }
-.service-card-shell:hover, .service-card-shell:focus-within, .service-card-shell.active { z-index: 20; }
+.service-card-shell.active { z-index: 20; }
 .service-card { appearance: none; background: white; border: 0; border-radius: 22px; box-shadow: 0 4px 18px rgba(0,0,0,.035); color: var(--ink); height: 100%; isolation: isolate; left: 0; min-height: 224px; overflow: hidden; padding: 22px; position: absolute; text-align: left; top: 0; transition: background .35s, color .35s, transform .35s, box-shadow .35s, width .48s cubic-bezier(.22,.8,.24,1) .22s, height .48s cubic-bezier(.22,.8,.24,1) .22s; width: 100%; }
 .service-card > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { position: relative; transition: margin-left .48s cubic-bezier(.22,.8,.24,1) .22s, transform .48s cubic-bezier(.22,.8,.24,1) .22s; z-index: 2; }
 .service-expand-trigger { background: transparent; border: 0; inset: 0; position: absolute; z-index: 3; }
 .service-expand-trigger:focus-visible { box-shadow: inset 0 0 0 3px var(--blue); outline: 0; }
 .service-image { border-radius: 14px; bottom: 16px; height: 62px; opacity: .9; overflow: hidden; position: absolute; right: 16px; transition: border-radius .55s cubic-bezier(.2,.75,.25,1) .22s, bottom .55s cubic-bezier(.2,.75,.25,1) .22s, height .55s cubic-bezier(.2,.75,.25,1) .22s, opacity .4s ease .22s, right .55s cubic-bezier(.2,.75,.25,1) .22s, width .55s cubic-bezier(.2,.75,.25,1) .22s; width: 82px; z-index: 0; }
 .service-image img { height: 100%; object-fit: cover; transform: scale(1.03); transition: transform .7s cubic-bezier(.2,.75,.25,1) .22s; width: 100%; }
-.service-card-shell:hover .service-card, .service-card-shell:focus-within .service-card, .service-card-shell.active .service-card { height: 310px; width: calc(200% + 14px); }
-.service-card-shell:nth-child(4n):hover .service-card, .service-card-shell:nth-child(4n):focus-within .service-card, .service-card-shell:nth-child(4n).active .service-card { left: auto; right: 0; }
-.service-card:hover .service-image, .service-card:focus-within .service-image, .service-card.active .service-image { border-radius: 22px 0 0 22px; bottom: 0; height: 100%; left: 0; opacity: 1; right: auto; width: 44%; }
-.service-card:hover .service-image img, .service-card:focus-within .service-image img, .service-card.active .service-image img { transform: scale(1.1); }
-.service-card:hover > :not(.service-image):not(.service-expand-trigger):not(.service-more-button), .service-card:focus-within > :not(.service-image):not(.service-expand-trigger):not(.service-more-button), .service-card.active > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { margin-left: 48%; }
-.service-card:hover, .service-card:focus-within { box-shadow: 0 20px 46px rgba(0,0,0,.09); transform: translateY(-5px); }
+.service-card-shell.active .service-card { height: 310px; width: calc(200% + 14px); }
+.service-card-shell:nth-child(4n).active .service-card { left: auto; right: 0; }
+.service-card.active .service-image { border-radius: 22px 0 0 22px; bottom: 0; height: 100%; left: 0; opacity: 1; right: auto; width: 44%; }
+.service-card:hover .service-image img { transform: scale(1.09); }
+.service-card.active .service-image img { transform: scale(1.1); }
+.service-card.active > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { margin-left: 48%; }
+.service-card:hover, .service-card:focus-within { box-shadow: 0 20px 46px rgba(0,0,0,.09); }
 .service-card.active { background: var(--ink); color: white; }
 .service-top { align-items: center; display: flex; justify-content: space-between; }
 .service-top span { color: var(--blue); font-size: .65rem; font-weight: 600; }
@@ -172,14 +173,14 @@ section[id] { scroll-margin-top: 76px; }
 .service-card.active .service-top i::after { transform: rotate(0); }
 .service-card h3 { font-size: clamp(1.35rem,1.75vw,1.9rem); letter-spacing: -.045em; line-height: 1.05; margin: 34px 0 12px; }
 .service-summary { color: var(--muted); font-size: .84rem; line-height: 1.55; margin: 0; padding-right: 82px; transition: padding .35s; }
-.service-card:hover .service-summary, .service-card:focus-within .service-summary, .service-card.active .service-summary { padding-right: 0; }
+.service-card.active .service-summary { padding-right: 0; }
 .service-card.active .service-summary { color: rgba(255,255,255,.68); }
 .service-detail { display: grid; grid-template-rows: 0fr; margin-top: 0; opacity: 0; transition: grid-template-rows .38s, margin .38s, opacity .3s; }
 .service-detail > span { color: var(--muted); font-size: .83rem; line-height: 1.62; overflow: hidden; }
-.service-card:hover .service-detail, .service-card:focus-within .service-detail, .service-card.active .service-detail { grid-template-rows: 1fr; margin-top: 16px; opacity: 1; }
+.service-card.active .service-detail { grid-template-rows: 1fr; margin-top: 16px; opacity: 1; }
 .service-card.active .service-detail > span { color: rgba(255,255,255,.78); max-width: 620px; }
 .service-more-button { align-items: center; background: var(--blue); border: 0; border-radius: 999px; bottom: 22px; color: white; display: flex; font-size: .68rem; font-weight: 600; gap: 18px; min-height: 38px; opacity: 0; padding: 9px 13px 9px 16px; pointer-events: none; position: absolute !important; right: 22px; transition: opacity .25s .42s, transform .3s .42s !important; transform: translateY(7px); z-index: 5 !important; }
-.service-card:hover .service-more-button, .service-card:focus-within .service-more-button, .service-card.active .service-more-button { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.service-card.active .service-more-button { opacity: 1; pointer-events: auto; transform: translateY(0); }
 .service-more-button span { font-size: .9rem; }
 .service-more-button:hover, .service-more-button:focus-visible { background: var(--orange); outline: 0; }
 
@@ -367,8 +368,8 @@ section[id] { scroll-margin-top: 76px; }
   .mobile-nav { display: block; opacity: 0; pointer-events: none; transform: translateY(-10px); transition: opacity .25s, transform .25s; visibility: hidden; }
   .mobile-nav.open { opacity: 1; pointer-events: auto; transform: translateY(0); visibility: visible; }
   .service-grid { grid-template-columns: repeat(2,1fr); }
-  .service-card-shell:nth-child(odd):hover .service-card, .service-card-shell:nth-child(odd):focus-within .service-card, .service-card-shell:nth-child(odd).active .service-card { left: 0; right: auto; }
-  .service-card-shell:nth-child(even):hover .service-card, .service-card-shell:nth-child(even):focus-within .service-card, .service-card-shell:nth-child(even).active .service-card { left: auto; right: 0; }
+  .service-card-shell:nth-child(odd).active .service-card { left: 0; right: auto; }
+  .service-card-shell:nth-child(even).active .service-card { left: auto; right: 0; }
   .review-card { flex-basis: min(430px, calc((100vw - 150px) / 2)); }
 }
 
@@ -412,9 +413,9 @@ section[id] { scroll-margin-top: 76px; }
   .service-grid { grid-template-columns: 1fr; }
   .service-card-shell { min-height: 210px; }
   .service-card { min-height: 210px; }
-  .service-card-shell:hover .service-card, .service-card-shell:focus-within .service-card, .service-card-shell.active .service-card { height: 420px; left: 0; right: auto; width: 100%; }
-  .service-card:hover .service-image, .service-card:focus-within .service-image, .service-card.active .service-image { border-radius: 22px 22px 0 0; bottom: auto; height: 160px; left: 0; top: 0; width: 100%; }
-  .service-card:hover > :not(.service-image):not(.service-expand-trigger):not(.service-more-button), .service-card:focus-within > :not(.service-image):not(.service-expand-trigger):not(.service-more-button), .service-card.active > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { margin-left: 0; transform: translateY(164px); }
+  .service-card-shell.active .service-card { height: 420px; left: 0; right: auto; width: 100%; }
+  .service-card.active .service-image { border-radius: 22px 22px 0 0; bottom: auto; height: 160px; left: 0; top: 0; width: 100%; }
+  .service-card.active > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { margin-left: 0; transform: translateY(164px); }
   .service-more-button { bottom: 18px; }
   .project-grid { grid-template-columns: 1fr; }
   .featured { padding-block: 48px; }
