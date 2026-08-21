@@ -35,11 +35,13 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.equal((html.match(/<small>Voorbeeldreview<\/small>/g) ?? []).length, 18);
   assert.equal((html.match(/class="review-card"/g) ?? []).length, 18);
   assert.match(html, /aria-label="Pauzeer"/);
-  assert.equal((html.match(/aria-haspopup="dialog"/g) ?? []).length, 11);
+  assert.equal((html.match(/aria-haspopup="dialog"/g) ?? []).length, 17);
   assert.equal((html.match(/class="service-card-shell/g) ?? []).length, 8);
   assert.equal((html.match(/class="service-more-button"/g) ?? []).length, 8);
   assert.equal((html.match(/class="service-image"/g) ?? []).length, 8);
   assert.equal((html.match(/<article class="project-card/g) ?? []).length, 6);
+  assert.equal((html.match(/class="project-card-trigger"/g) ?? []).length, 6);
+  assert.equal((html.match(/<span>Bekijk project<\/span>/g) ?? []).length, 6);
   assert.match(html, /Historisch pand renovatie/);
   assert.match(html, /project-card text-only/);
   assert.ok(html.indexOf('id="diensten"') < html.indexOf('id="projecten"'));

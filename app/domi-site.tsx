@@ -123,6 +123,11 @@ const content = {
       eyebrow: "Projecten", title: "Verschillende vragen. Eén hoge standaard.",
       intro: "Onderstaande projecten en beelden zijn voorbeelden en kunnen later eenvoudig worden vervangen door eigen Domi-werk.",
       placeholder: "Voorbeeldproject",
+      open: "Bekijk project", close: "Project sluiten", overlayLabel: "Project",
+      coordinationTitle: "Werkzaamheden in samenhang",
+      coordination: "Bouwkundige aanpassingen, installatiewerk en afwerking zijn als één planning uitgevoerd. Zo sloten de verschillende fases direct op elkaar aan en bleef er tijdens het werk één duidelijk aanspreekpunt.",
+      resultTitle: "Zorgvuldig opgeleverd",
+      result: "Details, aansluitingen en afwerking zijn gezamenlijk nagelopen. Het resultaat is gebruiksklaar, praktisch in dagelijks gebruik en voorbereid op de toekomst.",
       items: [
         { title: "Van gedateerd naar dagelijks comfort", type: "Complete badkamerrenovatie", text: "Leidingwerk verlegd, elektra aangepast en de ruimte opnieuw opgebouwd met tegelwerk, sanitair en maatwerkdetails.", tags: ["Sanitair", "Tegelwerk", "Elektra", "Afwerking"], image: images.bathroom, source: imageSources.bathroom, alt: "Sfeerbeeld van een moderne afgewerkte badkamer" },
         { title: "Wonen, koken en techniek als één geheel", type: "Renovatie begane grond", text: "Een nieuwe indeling met aansluitingen, wandafwerking, verlichting en zorgvuldig timmerwerk als samenhangend geheel.", tags: ["Verbouwing", "Elektra", "Water", "Timmerwerk"], image: images.kitchen, source: imageSources.kitchen, alt: "Sfeerbeeld van een lichte gerenoveerde keuken" },
@@ -238,6 +243,11 @@ const content = {
       eyebrow: "Projects", title: "Different needs. One high standard.",
       intro: "The projects and images below are examples and can easily be replaced with Domi's own work later.",
       placeholder: "Sample project",
+      open: "View project", close: "Close project", overlayLabel: "Project",
+      coordinationTitle: "Work carried out as one plan",
+      coordination: "Construction alterations, technical installations and finishing were delivered through one coordinated schedule. Each phase connected directly to the next, with one clear point of contact throughout the work.",
+      resultTitle: "Carefully completed",
+      result: "Details, connections and finishes were reviewed together. The result is ready to use, practical in everyday life and prepared for future needs.",
       items: [
         { title: "From dated to everyday comfort", type: "Complete bathroom renovation", text: "Pipework was relocated, electrics adapted and the room rebuilt with new tiling, sanitary fittings and bespoke details.", tags: ["Plumbing", "Tiling", "Electrical", "Finishing"], image: images.bathroom, source: imageSources.bathroom, alt: "Atmospheric image of a modern finished bathroom" },
         { title: "Living, cooking and technical work as one", type: "Ground-floor renovation", text: "A new layout with connections, wall finishes, lighting and careful carpentry brought together as one coherent space.", tags: ["Renovation", "Electrical", "Plumbing", "Carpentry"], image: images.kitchen, source: imageSources.kitchen, alt: "Atmospheric image of a bright renovated kitchen" },
@@ -306,6 +316,7 @@ export default function DomiSite() {
   const [activeServiceIndex, setActiveServiceIndex] = useState<number | null>(null);
   const [closingServiceIndex, setClosingServiceIndex] = useState<number | null>(null);
   const [activeServiceDetailIndex, setActiveServiceDetailIndex] = useState<number | null>(null);
+  const [activeProjectIndex, setActiveProjectIndex] = useState<number | null>(null);
   const [activeSection, setActiveSection] = useState("");
   const [activeArticleIndex, setActiveArticleIndex] = useState<number | null>(null);
   const [articleExitVisible, setArticleExitVisible] = useState(false);
@@ -326,11 +337,17 @@ export default function DomiSite() {
   const serviceOriginScrollY = useRef(0);
   const serviceClosing = useRef(false);
   const serviceTileCloseTimer = useRef<number | null>(null);
+  const projectReaderRef = useRef<HTMLDivElement>(null);
+  const projectCloseRef = useRef<HTMLButtonElement>(null);
+  const projectTriggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const projectOriginScrollY = useRef(0);
+  const projectClosing = useRef(false);
   const t = content[language];
   const reviewCount = t.reviews.items.length;
   const reviewIndex = ((reviewCursor % reviewCount) + reviewCount) % reviewCount;
   const activeArticle = activeArticleIndex === null ? null : t.knowledge.items[activeArticleIndex];
   const activeServiceDetail = activeServiceDetailIndex === null ? null : t.services.items[activeServiceDetailIndex];
+  const activeProject = activeProjectIndex === null ? null : t.projects.items[activeProjectIndex];
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -529,6 +546,46 @@ export default function DomiSite() {
   }, [activeServiceDetailIndex]);
 
   useEffect(() => {
+    if (activeProjectIndex === null) return;
+
+    const trigger = projectTriggerRefs.current[activeProjectIndex];
+    const reader = projectReaderRef.current;
+    document.body.classList.add("article-is-open");
+    projectClosing.current = false;
+    reader?.scrollTo({ top: 0 });
+    const focusFrame = window.requestAnimationFrame(() => projectCloseRef.current?.focus());
+
+    function handleProjectKeydown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        projectCloseRef.current?.click();
+        return;
+      }
+      if (event.key !== "Tab" || !reader) return;
+
+      const focusable = Array.from(reader.querySelectorAll<HTMLElement>("button, a[href]"));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleProjectKeydown);
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.body.classList.remove("article-is-open");
+      document.removeEventListener("keydown", handleProjectKeydown);
+      window.requestAnimationFrame(() => trigger?.focus({ preventScroll: true }));
+    };
+  }, [activeProjectIndex]);
+
+  useEffect(() => {
     const heroImage = document.querySelector<HTMLElement>(".hero-image");
     const processList = document.querySelector<HTMLElement>(".process-list");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -644,6 +701,39 @@ export default function DomiSite() {
     serviceOriginScrollY.current = window.scrollY;
     serviceClosing.current = false;
     setActiveServiceDetailIndex(index);
+  }
+
+  function openProject(index: number) {
+    projectOriginScrollY.current = window.scrollY;
+    projectClosing.current = false;
+    setActiveProjectIndex(index);
+  }
+
+  function closeProject() {
+    if (projectClosing.current) return;
+    projectClosing.current = true;
+
+    const reader = projectReaderRef.current;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function finishClose() {
+      flushSync(() => setActiveProjectIndex(null));
+      window.requestAnimationFrame(() => window.scrollTo({ top: projectOriginScrollY.current, behavior: "auto" }));
+    }
+
+    if (!reader || reduceMotion) {
+      finishClose();
+      return;
+    }
+
+    const fade = reader.animate(
+      [
+        { opacity: 1, backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" },
+        { opacity: 0, backdropFilter: "blur(0px)", WebkitBackdropFilter: "blur(0px)" },
+      ],
+      { duration: 520, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" },
+    );
+    fade.finished.then(finishClose, finishClose);
   }
 
   function closeServiceDetails() {
@@ -822,6 +912,14 @@ export default function DomiSite() {
           <div className="project-grid">
             {t.projects.items.map((project, index) => (
               <article className={`project-card${index === 0 ? " text-only" : ""}`} key={project.title}>
+                <button
+                  className="project-card-trigger"
+                  type="button"
+                  ref={(element) => { projectTriggerRefs.current[index] = element; }}
+                  aria-label={`${t.projects.open}: ${project.title}`}
+                  aria-haspopup="dialog"
+                  onClick={() => openProject(index)}
+                />
                 {index !== 0 && <figure>
                   <img src={project.image} alt={project.alt} loading="lazy" decoding="async" />
                   <span className="placeholder-badge">{t.projects.placeholder}</span>
@@ -831,6 +929,7 @@ export default function DomiSite() {
                 <div className="project-copy">
                   <p className="project-type">{project.type}</p><h3>{project.title}</h3><p>{project.text}</p>
                   <ul>{project.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
+                  <span className="project-open-button" aria-hidden="true"><span>{t.projects.open}</span><i>↗</i></span>
                 </div>
               </article>
             ))}
@@ -1016,6 +1115,34 @@ export default function DomiSite() {
                 <p><span>03</span><span><strong>{t.services.contactTitle}</strong>{t.services.contact}</span></p>
               </div>
               <button className="button button-primary article-inline-close" type="button" onClick={closeServiceDetails}>{t.services.close}<span>×</span></button>
+            </div>
+          </article>
+        </div>
+      )}
+
+      {activeProject && activeProjectIndex !== null && (
+        <div className="article-reader project-reader" ref={projectReaderRef} role="dialog" aria-modal="true" aria-labelledby="active-project-title">
+          <button className="article-close" ref={projectCloseRef} type="button" onClick={closeProject}>
+            <span>{t.projects.close}</span><i aria-hidden="true">×</i>
+          </button>
+          <article className="article-sheet">
+            <figure className="article-cover project-cover">
+              <img src={activeProject.image} alt={activeProject.alt} />
+              <div className="article-cover-shade" />
+              <span className="placeholder-badge">{t.projects.placeholder}</span>
+              <a className="image-credit" href={activeProject.source} target="_blank" rel="noreferrer">Pexels ↗</a>
+            </figure>
+            <div className="article-reader-content">
+              <p className="article-meta">{t.projects.overlayLabel} · 0{activeProjectIndex + 1} · {activeProject.type}</p>
+              <h2 id="active-project-title">{activeProject.title}</h2>
+              <p className="article-reader-lead">{activeProject.text}</p>
+              <ul className="project-overlay-tags">{activeProject.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
+              <div className="article-body service-body project-body">
+                <p><span>01</span><span><strong>{activeProject.type}</strong>{activeProject.text}</span></p>
+                <p><span>02</span><span><strong>{t.projects.coordinationTitle}</strong>{t.projects.coordination}</span></p>
+                <p><span>03</span><span><strong>{t.projects.resultTitle}</strong>{t.projects.result}</span></p>
+              </div>
+              <button className="button button-primary article-inline-close" type="button" onClick={closeProject}>{t.projects.close}<span>×</span></button>
             </div>
           </article>
         </div>
