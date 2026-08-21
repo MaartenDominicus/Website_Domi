@@ -1,14 +1,16 @@
-import { SiteShell } from "./site-components";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <SiteShell>
-      <section className="not-found">
-        <p className="eyebrow dark">404 · Niet gevonden</p>
-        <h1>Deze pagina bestaat niet.</h1>
-        <p>Misschien is de link verouderd. De projecten, diensten en contactpagina staan voor u klaar.</p>
-        <div><a className="button button-dark" href="/">Naar home</a><a className="text-link" href="/project.html">Bekijk projecten ↗</a></div>
-      </section>
-    </SiteShell>
+    <main className="not-found">
+      <Link className="brand not-found-brand" href="/" aria-label="Domi Installatie home">
+        <span className="brand-mark"><img src="/domi-logo.jpg" alt="" /></span>
+        <span className="brand-name"><strong>DOMI</strong><small>Installatie</small></span>
+      </Link>
+      <p className="eyebrow dark"><span />404</p>
+      <h1>Deze pagina bestaat niet.</h1>
+      <p>Ga terug naar de website of neem direct een kijkje bij de projecten.</p>
+      <div><Link className="button button-primary" href="/">Naar home</Link><Link className="button not-found-outline" href="/#projecten">Bekijk projecten</Link></div>
+    </main>
   );
 }

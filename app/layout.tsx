@@ -1,27 +1,34 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();
   const host = requestHeaders.get("x-forwarded-host") || requestHeaders.get("host") || "localhost:3000";
   const protocol = requestHeaders.get("x-forwarded-proto") || (host.includes("localhost") ? "http" : "https");
-  const image = new URL("/og.png", `${protocol}://${host}`).toString();
-  const title = "Troos Bouw | Bouwen met aandacht";
-  const description = "Nieuwbouw, renovatie en installatietechniek in Amsterdam, Utrecht en op de Veluwe.";
+  const origin = `${protocol}://${host}`;
+  const title = "Domi Installatie | Bouw, installatie & renovatie";
+  const description = "Domi Installatie helpt met renovatie, installatiewerk, onderhoud en complete afwerking — helder geregeld door één vakkundig team.";
+  const socialImage = new URL("/og.png", origin).toString();
+
   return {
     title,
     description,
-    icons: { icon: "/images/troos-logo.png", shortcut: "/images/troos-logo.png" },
-    openGraph: { title, description, locale: "nl_NL", type: "website", images: [{ url: image, width: 1731, height: 909, alt: "Troos Bouw — Ruimte om goed te leven." }] },
-    twitter: { card: "summary_large_image", title, description, images: [image] },
+    icons: { icon: "/domi-logo.jpg", shortcut: "/domi-logo.jpg" },
+    keywords: ["Domi Installatie", "bouwbedrijf", "installatie", "renovatie", "elektra", "sanitair", "verbouwing"],
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      locale: "nl_NL",
+      siteName: "Domi Installatie",
+      url: origin,
+      images: [{ url: socialImage, width: 1730, height: 909, alt: "Domi Installatie — één vakteam voor uw hele project" }],
+    },
+    twitter: { card: "summary_large_image", title, description, images: [socialImage] },
   };
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="nl"><body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body></html>;
+  return <html lang="nl"><body>{children}</body></html>;
 }
