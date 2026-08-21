@@ -249,7 +249,7 @@ section[id] { scroll-margin-top: 76px; }
 .article-open-button i { color: var(--blue); font-size: 1.15rem; font-style: normal; transition: transform .25s; }
 .knowledge-card:hover .article-open-button i, .knowledge-card:has(.knowledge-card-trigger:focus-visible) .article-open-button i { transform: translate(3px,-3px); }
 
-.article-reader { animation: article-overlay-in .42s cubic-bezier(.2,.75,.25,1) both; background: #0c0c0d; height: 100dvh; inset: 0; overflow-y: auto; overscroll-behavior: contain; position: fixed; scroll-behavior: smooth; z-index: 200; }
+.article-reader { -webkit-backdrop-filter: blur(20px); animation: article-overlay-in .9s cubic-bezier(.2,.75,.25,1) both; backdrop-filter: blur(20px); background: rgba(12,12,13,.84); height: 100dvh; inset: 0; overflow-y: auto; overscroll-behavior: contain; position: fixed; scroll-behavior: smooth; z-index: 200; }
 .article-close { align-items: center; background: rgba(255,255,255,.88); backdrop-filter: saturate(160%) blur(18px); border: 0; border-radius: 999px; display: flex; font-size: .76rem; font-weight: 600; gap: 13px; min-height: 48px; padding: 7px 8px 7px 18px; position: fixed; right: clamp(18px,3vw,44px); top: clamp(18px,3vw,34px); z-index: 204; }
 .article-close i { background: var(--ink); border-radius: 50%; color: white; display: grid; font-size: 1.2rem; font-style: normal; font-weight: 300; height: 34px; place-items: center; transition: background .2s, transform .2s; width: 34px; }
 .article-close:hover i { background: var(--blue); transform: rotate(90deg); }
@@ -274,7 +274,7 @@ section[id] { scroll-margin-top: 76px; }
 .scroll-wheel i { animation: scroll-cue 1.4s ease-in-out infinite; background: white; border-radius: 50%; display: block; height: 5px; margin: 0 auto; width: 5px; }
 @keyframes scroll-cue { 0%,100% { opacity: .25; transform: translateY(0); } 50% { opacity: 1; transform: translateY(17px); } }
 
-@keyframes article-overlay-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes article-overlay-in { from { -webkit-backdrop-filter: blur(0); backdrop-filter: blur(0); opacity: 0; } to { -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); opacity: 1; } }
 
 .contact { background: #101010; border-radius: 36px; color: white; display: grid; grid-template-columns: .85fr 1.15fr; margin: 12px; overflow: hidden; }
 .contact-intro { align-self: start; padding: clamp(80px,9vw,140px) clamp(24px,6vw,100px); position: sticky; top: 72px; }

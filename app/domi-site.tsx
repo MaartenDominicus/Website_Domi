@@ -518,8 +518,11 @@ export default function DomiSite() {
     }
 
     const fade = reader.animate(
-      [{ opacity: 1 }, { opacity: 0 }],
-      { duration: 420, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" },
+      [
+        { opacity: 1, backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" },
+        { opacity: 0, backdropFilter: "blur(0px)", WebkitBackdropFilter: "blur(0px)" },
+      ],
+      { duration: 820, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" },
     );
     fade.finished.then(finishClose, finishClose);
   }
