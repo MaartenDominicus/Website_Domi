@@ -125,7 +125,7 @@ section[id] { scroll-margin-top: 76px; }
 .hero-proof p { font-size: .9rem; line-height: 1.5; margin: 0; }
 .hero-credit { bottom: 12px; left: 12px; right: auto; }
 .promise-bar { align-items: center; display: flex; justify-content: center; min-height: 84px; overflow: hidden; }
-.promise-bar span { align-items: center; color: var(--muted); display: flex; flex: 1 0 auto; font-size: .73rem; font-weight: 600; gap: clamp(22px, 3vw, 46px); justify-content: center; letter-spacing: .04em; padding: 20px; white-space: nowrap; }
+.promise-bar span { align-items: center; color: var(--ink); display: flex; flex: 1 0 auto; font-size: clamp(.82rem,1vw,.94rem); font-weight: 700; gap: clamp(22px, 3vw, 46px); justify-content: center; letter-spacing: .015em; padding: 20px; white-space: nowrap; }
 .promise-bar i { background: var(--orange); border-radius: 50%; display: block; height: 5px; width: 5px; }
 .promise-bar span:last-child i { display: none; }
 
