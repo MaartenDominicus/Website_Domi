@@ -282,6 +282,67 @@ export default function DomiSite() {
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    const revealTargets = Array.from(document.querySelectorAll<HTMLElement>(
+      ".section-intro, .about-copy, .about-image, .service-card, .process-list li, .project-card, .placeholder-note, .review-card, .knowledge-card, .contact-intro, .contact-form, .footer-top",
+    ));
+
+    document.documentElement.classList.add("animations-ready");
+    revealTargets.forEach((element, index) => {
+      element.classList.add("reveal-item");
+      element.style.setProperty("--reveal-delay", `${(index % 4) * 70}ms`);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        (entry.target as HTMLElement).classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: "0px 0px -10%", threshold: 0.08 });
+
+    revealTargets.forEach((element) => observer.observe(element));
+    return () => {
+      observer.disconnect();
+      document.documentElement.classList.remove("animations-ready");
+      revealTargets.forEach((element) => {
+        element.classList.remove("reveal-item", "is-visible");
+        element.style.removeProperty("--reveal-delay");
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    const heroImage = document.querySelector<HTMLElement>(".hero-image");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let ticking = false;
+
+    function updateScrollEffects() {
+      const scrollRange = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollRange > 0 ? Math.min(1, window.scrollY / scrollRange) : 0;
+      document.documentElement.style.setProperty("--scroll-progress", `${progress * 100}%`);
+
+      if (heroImage && !reduceMotion.matches && window.scrollY < window.innerHeight * 1.35) {
+        heroImage.style.transform = `translate3d(0, ${window.scrollY * 0.075}px, 0) scale(1.055)`;
+      }
+      ticking = false;
+    }
+
+    function handleScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(updateScrollEffects);
+    }
+
+    updateScrollEffects();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.documentElement.style.removeProperty("--scroll-progress");
+      heroImage?.style.removeProperty("transform");
+    };
+  }, []);
+
   function changeLanguage(next: Language) {
     setLanguage(next);
     setMenuOpen(false);
@@ -297,6 +358,7 @@ export default function DomiSite() {
     <>
       <a className="skip-link" href="#main">{t.skip}</a>
       <header className="site-header">
+        <div className="scroll-progress" aria-hidden="true" />
         <a className="brand" href="#home" aria-label="Domi Installatie home" onClick={() => setMenuOpen(false)}>
           <span className="brand-mark"><img src="/domi-logo.jpg" alt="" /></span>
           <span className="brand-name"><strong>DOMI</strong><small>Installatie</small></span>
