@@ -1,8 +1,13 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 
 type Language = "nl" | "en";
+
+type ViewTransitionDocument = Document & {
+  startViewTransition?: (update: () => void) => { finished: Promise<void> };
+};
 
 const socials = [
   ["Instagram", "https://www.instagram.com/"],
@@ -493,14 +498,64 @@ export default function DomiSite() {
     lastArticleScrollTop.current = 0;
     articleClosing.current = false;
     setArticleExitVisible(false);
-    setActiveArticleIndex(index);
+
+    const trigger = articleTriggerRefs.current[index];
+    const card = trigger?.closest<HTMLElement>(".knowledge-card");
+    const transitionDocument = document as ViewTransitionDocument;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!card || !transitionDocument.startViewTransition || reduceMotion) {
+      setActiveArticleIndex(index);
+      return;
+    }
+
+    setCardTransitionNames(card, true);
+    const transition = transitionDocument.startViewTransition(() => {
+      flushSync(() => setActiveArticleIndex(index));
+      setCardTransitionNames(card, false);
+    });
+    transition.finished.catch(() => setCardTransitionNames(card, false));
   }
 
   function closeArticle() {
     if (articleClosing.current) return;
     articleClosing.current = true;
     setArticleExitVisible(false);
-    setActiveArticleIndex(null);
+
+    const index = activeArticleIndex;
+    const trigger = index === null ? null : articleTriggerRefs.current[index];
+    const card = trigger?.closest<HTMLElement>(".knowledge-card");
+    const transitionDocument = document as ViewTransitionDocument;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!card || !transitionDocument.startViewTransition || reduceMotion) {
+      setActiveArticleIndex(null);
+      return;
+    }
+
+    const transition = transitionDocument.startViewTransition(() => {
+      flushSync(() => setActiveArticleIndex(null));
+      setCardTransitionNames(card, true);
+    });
+    transition.finished.then(
+      () => setCardTransitionNames(card, false),
+      () => setCardTransitionNames(card, false),
+    );
+  }
+
+  function setCardTransitionNames(card: HTMLElement, enabled: boolean) {
+    const transitionParts = [
+      [card, "article-shell"],
+      [card.querySelector<HTMLElement>("figure"), "article-cover"],
+      [card.querySelector<HTMLElement>(".article-meta"), "article-meta-shared"],
+      [card.querySelector<HTMLElement>("h3"), "article-title"],
+    ] as const;
+
+    transitionParts.forEach(([element, name]) => {
+      if (!element) return;
+      if (enabled) element.style.viewTransitionName = name;
+      else element.style.removeProperty("view-transition-name");
+    });
   }
 
   function handleArticleScroll() {
@@ -698,18 +753,20 @@ export default function DomiSite() {
           <div className="knowledge-grid">
             {t.knowledge.items.map((article, index) => (
               <article className="knowledge-card" key={article.title}>
+                <button
+                  className="knowledge-card-trigger"
+                  type="button"
+                  ref={(element) => { articleTriggerRefs.current[index] = element; }}
+                  onClick={() => openArticle(index)}
+                  aria-label={`${t.knowledge.read}: ${article.title}`}
+                  aria-haspopup="dialog"
+                />
                 <figure><img src={article.image} alt={article.alt} loading="lazy" decoding="async" /><a className="image-credit" href={article.source} target="_blank" rel="noreferrer">Pexels ↗</a></figure>
                 <div className="knowledge-copy">
                   <p className="article-meta">{article.category}</p><h3>{article.title}</h3><p>{article.text}</p>
-                  <button
-                    className="article-open-button"
-                    type="button"
-                    ref={(element) => { articleTriggerRefs.current[index] = element; }}
-                    onClick={() => openArticle(index)}
-                    aria-haspopup="dialog"
-                  >
+                  <span className="article-open-button" aria-hidden="true">
                     <span>{t.knowledge.read}</span><i>↗</i>
-                  </button>
+                  </span>
                 </div>
               </article>
             ))}
@@ -753,15 +810,15 @@ export default function DomiSite() {
           <button className="article-close" ref={articleCloseRef} type="button" onClick={closeArticle}>
             <span>{t.knowledge.close}</span><i aria-hidden="true">×</i>
           </button>
-          <article className="article-sheet">
-            <figure className="article-cover">
+          <article className="article-sheet" style={{ viewTransitionName: "article-shell" }}>
+            <figure className="article-cover" style={{ viewTransitionName: "article-cover" }}>
               <img src={activeArticle.image} alt={activeArticle.alt} />
               <div className="article-cover-shade" />
               <a className="image-credit" href={activeArticle.source} target="_blank" rel="noreferrer">Pexels ↗</a>
             </figure>
             <div className="article-reader-content">
-              <p className="article-meta">{activeArticle.category}</p>
-              <h2 id="active-article-title">{activeArticle.title}</h2>
+              <p className="article-meta" style={{ viewTransitionName: "article-meta-shared" }}>{activeArticle.category}</p>
+              <h2 id="active-article-title" style={{ viewTransitionName: "article-title" }}>{activeArticle.title}</h2>
               <p className="article-reader-lead">{activeArticle.text}</p>
               <div className="article-body">
                 {activeArticle.body.map((paragraph, index) => (

@@ -231,9 +231,13 @@ section[id] { scroll-margin-top: 76px; }
 
 .knowledge { background: var(--white); max-width: none; padding-left: max(24px, calc((100vw - var(--max))/2 + 88px)); padding-right: max(24px, calc((100vw - var(--max))/2 + 88px)); }
 .knowledge-grid { display: grid; gap: 20px; grid-template-columns: repeat(3, 1fr); }
-.knowledge-card { background: var(--soft); border-radius: 28px; display: flex; flex-direction: column; min-height: 640px; overflow: hidden; transition: transform .35s, box-shadow .35s; }
+.knowledge-card { background: var(--soft); border-radius: 28px; display: flex; flex-direction: column; min-height: 640px; overflow: hidden; position: relative; transition: transform .35s, box-shadow .35s; }
 .knowledge-card:hover { box-shadow: 0 24px 52px rgba(0,0,0,.08); transform: translateY(-6px); }
+.knowledge-card:has(.knowledge-card-trigger:focus-visible) { box-shadow: 0 0 0 3px var(--blue), 0 24px 52px rgba(0,0,0,.08); transform: translateY(-6px); }
+.knowledge-card-trigger { background: transparent; border: 0; inset: 0; position: absolute; z-index: 2; }
+.knowledge-card-trigger:focus-visible { outline: 0; }
 .knowledge-card figure { aspect-ratio: 4 / 3; overflow: hidden; position: relative; }
+.knowledge-card .image-credit { z-index: 3; }
 .knowledge-card figure img { height: 100%; object-fit: cover; transition: transform .6s; width: 100%; }
 .knowledge-card:hover figure img { transform: scale(1.035); }
 .knowledge-copy { display: flex; flex: 1; flex-direction: column; padding: 28px; }
@@ -243,7 +247,7 @@ section[id] { scroll-margin-top: 76px; }
 .knowledge-copy > p:not(.article-meta) { margin: 0; }
 .article-open-button { align-items: center; background: transparent; border: 0; border-top: 1px solid var(--line); display: flex; font-size: .72rem; font-weight: 600; justify-content: space-between; margin-top: auto; padding: 22px 0 4px; text-align: left; width: 100%; }
 .article-open-button i { color: var(--blue); font-size: 1.15rem; font-style: normal; transition: transform .25s; }
-.article-open-button:hover i { transform: translate(3px,-3px); }
+.knowledge-card:hover .article-open-button i, .knowledge-card:has(.knowledge-card-trigger:focus-visible) .article-open-button i { transform: translate(3px,-3px); }
 
 .article-reader { background: #0c0c0d; height: 100dvh; inset: 0; overflow-y: auto; overscroll-behavior: contain; position: fixed; scroll-behavior: smooth; z-index: 200; }
 .article-close { align-items: center; background: rgba(255,255,255,.88); backdrop-filter: saturate(160%) blur(18px); border: 0; border-radius: 999px; display: flex; font-size: .76rem; font-weight: 600; gap: 13px; min-height: 48px; padding: 7px 8px 7px 18px; position: fixed; right: clamp(18px,3vw,44px); top: clamp(18px,3vw,34px); z-index: 204; }
@@ -269,6 +273,14 @@ section[id] { scroll-margin-top: 76px; }
 .scroll-wheel { border: 1px solid rgba(255,255,255,.45); border-radius: 99px; display: block; height: 44px; padding: 7px; width: 25px; }
 .scroll-wheel i { animation: scroll-cue 1.4s ease-in-out infinite; background: white; border-radius: 50%; display: block; height: 5px; margin: 0 auto; width: 5px; }
 @keyframes scroll-cue { 0%,100% { opacity: .25; transform: translateY(0); } 50% { opacity: 1; transform: translateY(17px); } }
+
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-group(article-shell) { animation-duration: .78s; animation-timing-function: cubic-bezier(.2,.78,.2,1); overflow: hidden; }
+::view-transition-group(article-cover), ::view-transition-group(article-meta-shared), ::view-transition-group(article-title) { animation-duration: .72s; animation-timing-function: cubic-bezier(.2,.78,.2,1); }
+::view-transition-old(article-shell), ::view-transition-new(article-shell), ::view-transition-old(article-cover), ::view-transition-new(article-cover) { height: 100%; mix-blend-mode: normal; object-fit: cover; width: 100%; }
+::view-transition-old(article-meta-shared), ::view-transition-new(article-meta-shared), ::view-transition-old(article-title), ::view-transition-new(article-title) { mix-blend-mode: normal; }
+::view-transition-new(article-shell) { animation: article-surface-in .78s cubic-bezier(.2,.78,.2,1) both; }
+@keyframes article-surface-in { from { border-radius: 28px; } to { border-radius: 0; } }
 
 .contact { background: #101010; border-radius: 36px; color: white; display: grid; grid-template-columns: .85fr 1.15fr; margin: 12px; overflow: hidden; }
 .contact-intro { align-self: start; padding: clamp(80px,9vw,140px) clamp(24px,6vw,100px); position: sticky; top: 72px; }
