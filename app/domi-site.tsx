@@ -31,6 +31,17 @@ const images = {
 
 const heroVideo = "https://videos.pexels.com/video-files/6474358/6474358-hd_1920_1080_25fps.mp4";
 
+const serviceImages = [
+  images.electric,
+  images.plumbing,
+  images.plumbing,
+  images.bathroom,
+  images.kitchen,
+  "https://images.pexels.com/photos/6474471/pexels-photo-6474471.jpeg?auto=compress&dpr=1&h=900&w=1400",
+  images.craft,
+  images.tiling,
+] as const;
+
 const imageSources = {
   hero: "https://www.pexels.com/video/construction-worker-inside-unfinished-room-6474358/",
   craft: "https://www.pexels.com/photo/carpenter-measuring-wood-with-precision-tools-37152389/",
@@ -365,18 +376,19 @@ export default function DomiSite() {
 
   useEffect(() => {
     if (reviewsPaused || reviewsHovered || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const timer = window.setInterval(() => {
-      setReviewIndex((current) => (current + 1) % t.reviews.items.length);
+    const timer = window.setTimeout(() => {
+      setReviewIndex((reviewIndex + 1) % t.reviews.items.length);
     }, 5200);
-    return () => window.clearInterval(timer);
-  }, [reviewsHovered, reviewsPaused, t.reviews.items.length]);
+    return () => window.clearTimeout(timer);
+  }, [reviewIndex, reviewsHovered, reviewsPaused, t.reviews.items.length]);
 
   useEffect(() => {
     const viewport = reviewViewportRef.current;
     const cards = viewport?.querySelectorAll<HTMLElement>(".review-card");
     const card = cards?.[reviewIndex];
     if (!viewport || !card) return;
-    viewport.scrollTo({ left: card.offsetLeft, behavior: "smooth" });
+    const targetLeft = card.getBoundingClientRect().left - viewport.getBoundingClientRect().left + viewport.scrollLeft;
+    viewport.scrollTo({ left: targetLeft, behavior: "smooth" });
   }, [reviewIndex, language]);
 
   useEffect(() => {
@@ -422,6 +434,7 @@ export default function DomiSite() {
 
   useEffect(() => {
     const heroImage = document.querySelector<HTMLElement>(".hero-image");
+    const processList = document.querySelector<HTMLElement>(".process-list");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let ticking = false;
 
@@ -432,6 +445,13 @@ export default function DomiSite() {
 
       if (heroImage && !reduceMotion.matches && window.scrollY < window.innerHeight * 1.35) {
         heroImage.style.transform = `translate3d(0, ${window.scrollY * 0.075}px, 0) scale(1.055)`;
+      }
+      if (processList) {
+        const rect = processList.getBoundingClientRect();
+        const travelled = window.innerHeight * .78 - rect.top;
+        const distance = rect.height + window.innerHeight * .18;
+        const processProgress = Math.max(0, Math.min(1, (travelled / distance) * 1.45));
+        processList.style.setProperty("--process-progress", `${processProgress * 100}%`);
       }
       ticking = false;
     }
@@ -448,19 +468,19 @@ export default function DomiSite() {
       window.removeEventListener("scroll", handleScroll);
       document.documentElement.style.removeProperty("--scroll-progress");
       heroImage?.style.removeProperty("transform");
+      processList?.style.removeProperty("--process-progress");
     };
   }, []);
 
   useEffect(() => {
-    const sectionIds = ["over", "diensten", "projecten", "reviews", "kennis", "contact"];
+    const sectionIds = new Set(["over", "diensten", "projecten", "reviews", "kennis", "contact"]);
     let frame = 0;
 
     function updateActiveSection() {
       const marker = window.scrollY + window.innerHeight * .34;
       let nextSection = "";
-      sectionIds.forEach((id) => {
-        const section = document.getElementById(id);
-        if (section && section.offsetTop <= marker) nextSection = `#${id}`;
+      document.querySelectorAll<HTMLElement>("main section[id]").forEach((section) => {
+        if (sectionIds.has(section.id) && section.offsetTop <= marker) nextSection = `#${section.id}`;
       });
       setActiveSection((current) => current === nextSection ? current : nextSection);
       frame = 0;
@@ -605,20 +625,6 @@ export default function DomiSite() {
           {t.ticker.map((item) => <span key={item}>{item}<i /></span>)}
         </div>
 
-        <section className="about section-pad" id="over">
-          <div className="about-copy">
-            <p className="eyebrow dark"><span />{t.about.eyebrow}</p>
-            <h2>{t.about.title}</h2>
-            <p className="lead-copy">{t.about.lead}</p>
-            <p className="body-copy">{t.about.body}</p>
-            <p className="about-detail"><span>01</span>{t.about.detail}</p>
-          </div>
-          <figure className="about-image">
-            <img src={images.craft} alt={t.about.imageAlt} loading="lazy" decoding="async" />
-            <figcaption><span>{language === "nl" ? "Sfeerbeeld" : "Atmospheric image"}</span><a href={imageSources.craft} target="_blank" rel="noreferrer">Pexels ↗</a></figcaption>
-          </figure>
-        </section>
-
         <section className="services section-pad" id="diensten">
           <SectionIntro eyebrow={t.services.eyebrow} title={t.services.title} text={t.services.intro} light />
           <div className="service-grid">
@@ -630,6 +636,7 @@ export default function DomiSite() {
                 aria-expanded={activeServiceIndex === index}
                 onClick={() => setActiveServiceIndex(index)}
               >
+                <span className="service-image" aria-hidden="true"><img src={serviceImages[index]} alt="" loading="lazy" decoding="async" /></span>
                 <div className="service-top"><span>0{index + 1}</span><i aria-hidden="true" /></div>
                 <h3>{title}</h3>
                 <p className="service-summary">{text}</p>
@@ -666,6 +673,20 @@ export default function DomiSite() {
               </article>
             ))}
           </div>
+        </section>
+
+        <section className="about section-pad" id="over">
+          <div className="about-copy">
+            <p className="eyebrow dark"><span />{t.about.eyebrow}</p>
+            <h2>{t.about.title}</h2>
+            <p className="lead-copy">{t.about.lead}</p>
+            <p className="body-copy">{t.about.body}</p>
+            <p className="about-detail"><span>01</span>{t.about.detail}</p>
+          </div>
+          <figure className="about-image">
+            <img src={images.craft} alt={t.about.imageAlt} loading="lazy" decoding="async" />
+            <figcaption><span>{language === "nl" ? "Sfeerbeeld" : "Atmospheric image"}</span><a href={imageSources.craft} target="_blank" rel="noreferrer">Pexels ↗</a></figcaption>
+          </figure>
         </section>
 
         <section className="featured" aria-labelledby="featured-title">

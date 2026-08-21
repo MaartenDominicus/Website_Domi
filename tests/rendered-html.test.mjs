@@ -36,6 +36,10 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.match(html, /aria-label="Pauzeer"/);
   assert.equal((html.match(/aria-haspopup="dialog"/g) ?? []).length, 3);
   assert.equal((html.match(/class="service-card" type="button"/g) ?? []).length, 8);
+  assert.equal((html.match(/class="service-image"/g) ?? []).length, 8);
+  assert.ok(html.indexOf('id="diensten"') < html.indexOf('id="projecten"'));
+  assert.ok(html.indexOf('id="projecten"') < html.indexOf('id="over"'));
+  assert.match(html, /class="review-navigation"/);
   assert.match(html, /<h2 id="featured-title">Our work featured in<\/h2>/);
   assert.match(html, /class="featured-marquee" role="list"/);
   assert.match(html, /\/logos\/linda\.png/);
