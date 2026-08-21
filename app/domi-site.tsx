@@ -300,7 +300,7 @@ export default function DomiSite() {
   const [language, setLanguage] = useState<Language>("nl");
   const [menuOpen, setMenuOpen] = useState(false);
   const [formStatus, setFormStatus] = useState("");
-  const [reviewIndex, setReviewIndex] = useState(0);
+  const [reviewCursor, setReviewCursor] = useState(content.nl.reviews.items.length);
   const [reviewsPaused, setReviewsPaused] = useState(false);
   const [reviewsHovered, setReviewsHovered] = useState(false);
   const [activeServiceIndex, setActiveServiceIndex] = useState<number | null>(null);
@@ -311,6 +311,7 @@ export default function DomiSite() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLElement>(null);
   const reviewViewportRef = useRef<HTMLDivElement>(null);
+  const reviewCarouselReady = useRef(false);
   const articleReaderRef = useRef<HTMLDivElement>(null);
   const articleExitRef = useRef<HTMLDivElement>(null);
   const articleCloseRef = useRef<HTMLButtonElement>(null);
@@ -324,6 +325,8 @@ export default function DomiSite() {
   const serviceOriginScrollY = useRef(0);
   const serviceClosing = useRef(false);
   const t = content[language];
+  const reviewCount = t.reviews.items.length;
+  const reviewIndex = ((reviewCursor % reviewCount) + reviewCount) % reviewCount;
   const activeArticle = activeArticleIndex === null ? null : t.knowledge.items[activeArticleIndex];
   const activeServiceDetail = activeServiceDetailIndex === null ? null : t.services.items[activeServiceDetailIndex];
 
@@ -411,19 +414,32 @@ export default function DomiSite() {
   useEffect(() => {
     if (reviewsPaused || reviewsHovered || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const timer = window.setTimeout(() => {
-      setReviewIndex((reviewIndex + 1) % t.reviews.items.length);
+      setReviewCursor((cursor) => cursor + 1);
     }, 5200);
     return () => window.clearTimeout(timer);
-  }, [reviewIndex, reviewsHovered, reviewsPaused, t.reviews.items.length]);
+  }, [reviewCursor, reviewsHovered, reviewsPaused]);
 
   useEffect(() => {
     const viewport = reviewViewportRef.current;
     const cards = viewport?.querySelectorAll<HTMLElement>(".review-card");
-    const card = cards?.[reviewIndex];
+    const card = cards?.[reviewCursor];
     if (!viewport || !card) return;
     const targetLeft = card.getBoundingClientRect().left - viewport.getBoundingClientRect().left + viewport.scrollLeft;
-    viewport.scrollTo({ left: targetLeft, behavior: "smooth" });
-  }, [reviewIndex, language]);
+    viewport.scrollTo({ left: targetLeft, behavior: reviewCarouselReady.current ? "smooth" : "auto" });
+    reviewCarouselReady.current = true;
+
+    if (reviewCursor >= reviewCount * 2 || reviewCursor < reviewCount) {
+      const resetCursor = reviewCount + reviewIndex;
+      const resetTimer = window.setTimeout(() => {
+        const resetCard = cards[resetCursor];
+        if (!resetCard) return;
+        const resetLeft = resetCard.getBoundingClientRect().left - viewport.getBoundingClientRect().left + viewport.scrollLeft;
+        viewport.scrollTo({ left: resetLeft, behavior: "auto" });
+        setReviewCursor(resetCursor);
+      }, 720);
+      return () => window.clearTimeout(resetTimer);
+    }
+  }, [language, reviewCount, reviewCursor, reviewIndex]);
 
   useEffect(() => {
     if (activeArticleIndex === null) return;
@@ -576,7 +592,7 @@ export default function DomiSite() {
   }, []);
 
   function changeLanguage(next: Language) {
-    setReviewIndex(0);
+    setReviewCursor(content[next].reviews.items.length);
     setLanguage(next);
     setMenuOpen(false);
   }
@@ -842,19 +858,19 @@ export default function DomiSite() {
             }}
           >
             <div className="review-grid">
-              {t.reviews.items.map(([quote, attribution], index) => (
-                <article className="review-card" key={attribution}>
+              {[0, 1, 2].map((group) => t.reviews.items.map(([quote, attribution], index) => (
+                <article className="review-card" aria-hidden={group !== 1} key={`${group}-${attribution}`}>
                   <div className="review-meta"><span>0{index + 1}</span><span className="stars" aria-label={language === "nl" ? "5 sterren" : "5 stars"}>★★★★★</span></div>
                   <blockquote>{quote}</blockquote><p>{attribution}</p><small>{t.reviews.label}</small>
                 </article>
-              ))}
+              )))}
             </div>
           </div>
           <div className="review-navigation">
             <div className="review-controls">
-              <button type="button" aria-label={t.reviews.previous} onClick={() => setReviewIndex((reviewIndex - 1 + t.reviews.items.length) % t.reviews.items.length)}>←</button>
+              <button type="button" aria-label={t.reviews.previous} onClick={() => setReviewCursor((cursor) => cursor - 1)}>←</button>
               <button type="button" className="review-pause" aria-label={reviewsPaused ? t.reviews.play : t.reviews.pause} aria-pressed={reviewsPaused} onClick={() => setReviewsPaused((paused) => !paused)}>{reviewsPaused ? "▶" : "Ⅱ"}</button>
-              <button type="button" aria-label={t.reviews.next} onClick={() => setReviewIndex((reviewIndex + 1) % t.reviews.items.length)}>→</button>
+              <button type="button" aria-label={t.reviews.next} onClick={() => setReviewCursor((cursor) => cursor + 1)}>→</button>
             </div>
             <div className="review-position" aria-hidden="true">{t.reviews.items.map((_, index) => <i className={index === reviewIndex ? "active" : ""} key={index} />)}</div>
           </div>
