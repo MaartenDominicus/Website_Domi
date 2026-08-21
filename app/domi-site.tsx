@@ -11,6 +11,13 @@ const socials = [
   ["YouTube", "https://www.youtube.com/"],
 ] as const;
 
+const featuredLogos = [
+  { name: "LINDA.", image: "/logos/linda.png", source: "https://commons.wikimedia.org/wiki/File:Linda-logoprint.png" },
+  { name: "vtwonen", image: "/logos/vtwonen.png", source: "https://commons.wikimedia.org/wiki/File:Logo_van_vtwonen.svg" },
+  { name: "Eigen Huis & Interieur", image: "/logos/eigen-huis-interieur.png", source: "https://www.vtwonen.nl/auteur/redactie-eigen-huis-interieur" },
+  { name: "Beurs Eigen Huis", image: "/logos/beurs-eigen-huis.png", source: "https://www.beurseigenhuis.nl/" },
+] as const;
+
 const images = {
   hero: "https://images.pexels.com/photos/32990521/pexels-photo-32990521/free-photo-of-construction-worker-at-indoor-renovation-site.jpeg?auto=compress&dpr=1&h=1200&w=2000",
   craft: "https://images.pexels.com/photos/37152389/pexels-photo-37152389/free-photo-of-carpenter-measuring-wood-with-precision-tools.jpeg?auto=compress&dpr=1&h=900&w=1400",
@@ -108,7 +115,7 @@ const content = {
     featured: {
       eyebrow: "In de schijnwerpers", title: "Our work featured in",
       note: "Voorbeeldweergave — voeg hier vóór publicatie echte publicaties, keurmerken of samenwerkingspartners toe.",
-      items: ["Bouw & Wonen", "Vakwerk Nederland", "De Installateur", "Project in Beeld"],
+      items: featuredLogos,
       placeholder: "Placeholder",
     },
     knowledge: {
@@ -215,7 +222,7 @@ const content = {
     featured: {
       eyebrow: "In the spotlight", title: "Our work featured in",
       note: "Sample presentation — add verified publications, certifications or project partners here before launch.",
-      items: ["Build & Living", "Dutch Craft", "The Installer", "Project Focus"],
+      items: featuredLogos,
       placeholder: "Placeholder",
     },
     knowledge: {
@@ -641,11 +648,10 @@ export default function DomiSite() {
               {[0, 1].map((group) => (
                 <div className="featured-logo-group" aria-hidden={group === 1} key={group}>
                   {t.featured.items.map((item, index) => (
-                    <div className="featured-logo" key={item} role={group === 0 ? "listitem" : undefined}>
-                      <span aria-hidden="true">{item.split(/\s|&/).filter(Boolean).map((word) => word[0]).slice(0, 2).join("")}</span>
-                      <strong>{item}</strong>
+                    <a className="featured-logo" href={item.source} target="_blank" rel="noreferrer" key={item.name} role={group === 0 ? "listitem" : undefined} tabIndex={group === 1 ? -1 : undefined}>
+                      <img src={item.image} alt={item.name} loading="lazy" decoding="async" />
                       <small className="visually-hidden">{t.featured.placeholder} · 0{index + 1}</small>
-                    </div>
+                    </a>
                   ))}
                 </div>
               ))}
