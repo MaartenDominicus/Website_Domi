@@ -29,8 +29,10 @@ const images = {
   tiling: "https://images.pexels.com/photos/29181494/pexels-photo-29181494/free-photo-of-construction-worker-laying-tile-in-renovation-project.jpeg?auto=compress&dpr=1&h=900&w=1400",
 } as const;
 
+const heroVideo = "https://videos.pexels.com/video-files/6474358/6474358-hd_1920_1080_25fps.mp4";
+
 const imageSources = {
-  hero: "https://www.pexels.com/photo/construction-worker-at-indoor-renovation-site-32990521/",
+  hero: "https://www.pexels.com/video/construction-worker-inside-unfinished-room-6474358/",
   craft: "https://www.pexels.com/photo/carpenter-measuring-wood-with-precision-tools-37152389/",
   bathroom: "https://www.pexels.com/photo/elegant-modern-bathroom-with-marble-and-chrome-faucet-36446636/",
   kitchen: "https://www.pexels.com/photo/modern-renovated-kitchen-with-hardwood-floors-37357024/",
@@ -522,7 +524,7 @@ export default function DomiSite() {
         { opacity: 1, backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" },
         { opacity: 0, backdropFilter: "blur(0px)", WebkitBackdropFilter: "blur(0px)" },
       ],
-      { duration: 820, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" },
+      { duration: 520, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" },
     );
     fade.finished.then(finishClose, finishClose);
   }
@@ -579,7 +581,9 @@ export default function DomiSite() {
 
       <main id="main">
         <section className="hero" id="home">
-          <img className="hero-image" src={images.hero} alt={t.hero.alt} fetchPriority="high" />
+          <video className="hero-image" autoPlay muted loop playsInline preload="metadata" poster={images.hero} aria-label={t.hero.alt}>
+            <source src={heroVideo} type="video/mp4" />
+          </video>
           <div className="hero-overlay" />
           <div className="hero-content">
             <p className="eyebrow"><span />{t.hero.eyebrow}</p>
@@ -689,11 +693,6 @@ export default function DomiSite() {
           <SectionIntro eyebrow={t.reviews.eyebrow} title={t.reviews.title} />
           <div className="review-heading-row">
             <p className="placeholder-note">{t.reviews.note}</p>
-            <div className="review-controls">
-              <button type="button" aria-label={t.reviews.previous} onClick={() => setReviewIndex((reviewIndex - 1 + t.reviews.items.length) % t.reviews.items.length)}>←</button>
-              <button type="button" className="review-pause" aria-label={reviewsPaused ? t.reviews.play : t.reviews.pause} aria-pressed={reviewsPaused} onClick={() => setReviewsPaused((paused) => !paused)}>{reviewsPaused ? "▶" : "Ⅱ"}</button>
-              <button type="button" aria-label={t.reviews.next} onClick={() => setReviewIndex((reviewIndex + 1) % t.reviews.items.length)}>→</button>
-            </div>
           </div>
           <div
             className="review-viewport"
@@ -714,7 +713,14 @@ export default function DomiSite() {
               ))}
             </div>
           </div>
-          <div className="review-position" aria-hidden="true">{t.reviews.items.map((_, index) => <i className={index === reviewIndex ? "active" : ""} key={index} />)}</div>
+          <div className="review-navigation">
+            <div className="review-controls">
+              <button type="button" aria-label={t.reviews.previous} onClick={() => setReviewIndex((reviewIndex - 1 + t.reviews.items.length) % t.reviews.items.length)}>←</button>
+              <button type="button" className="review-pause" aria-label={reviewsPaused ? t.reviews.play : t.reviews.pause} aria-pressed={reviewsPaused} onClick={() => setReviewsPaused((paused) => !paused)}>{reviewsPaused ? "▶" : "Ⅱ"}</button>
+              <button type="button" aria-label={t.reviews.next} onClick={() => setReviewIndex((reviewIndex + 1) % t.reviews.items.length)}>→</button>
+            </div>
+            <div className="review-position" aria-hidden="true">{t.reviews.items.map((_, index) => <i className={index === reviewIndex ? "active" : ""} key={index} />)}</div>
+          </div>
         </section>
 
         <section className="knowledge section-pad" id="kennis">

@@ -20,6 +20,8 @@ test("server-renders the complete Domi Installatie home page", async () => {
   const html = await response.text();
   assert.match(html, /<title>Domi Installatie \| Bouw, installatie &amp; renovatie<\/title>/i);
   assert.match(html, /Eén vakteam/);
+  assert.match(html, /<video class="hero-image"[^>]*autoPlay=""[^>]*muted=""[^>]*loop=""/);
+  assert.match(html, /6474358-hd_1920_1080_25fps\.mp4/);
   assert.match(html, /id="over"/);
   assert.match(html, /id="diensten"/);
   assert.match(html, /id="projecten"/);
