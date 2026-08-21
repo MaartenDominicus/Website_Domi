@@ -280,7 +280,15 @@ section[id] { scroll-margin-top: 76px; }
 ::view-transition-old(article-shell), ::view-transition-new(article-shell), ::view-transition-old(article-cover), ::view-transition-new(article-cover) { height: 100%; mix-blend-mode: normal; object-fit: cover; width: 100%; }
 ::view-transition-old(article-meta-shared), ::view-transition-new(article-meta-shared), ::view-transition-old(article-title), ::view-transition-new(article-title) { mix-blend-mode: normal; }
 ::view-transition-new(article-shell) { animation: article-surface-in .78s cubic-bezier(.2,.78,.2,1) both; }
+::view-transition-old(article-cover), ::view-transition-old(article-meta-shared), ::view-transition-old(article-title) { animation: article-tile-part .62s cubic-bezier(.2,.78,.2,1) both; }
+::view-transition-new(article-cover), ::view-transition-new(article-meta-shared), ::view-transition-new(article-title) { animation: article-reader-part .62s cubic-bezier(.2,.78,.2,1) both; }
+html.article-transition-closing::view-transition-old(article-shell) { animation: article-surface-in .78s cubic-bezier(.2,.78,.2,1) reverse both; }
+html.article-transition-closing::view-transition-new(article-shell) { animation: none; }
+html.article-transition-closing::view-transition-old(article-cover), html.article-transition-closing::view-transition-old(article-meta-shared), html.article-transition-closing::view-transition-old(article-title) { animation: article-reader-part .62s cubic-bezier(.2,.78,.2,1) reverse both; }
+html.article-transition-closing::view-transition-new(article-cover), html.article-transition-closing::view-transition-new(article-meta-shared), html.article-transition-closing::view-transition-new(article-title) { animation: article-tile-part .62s cubic-bezier(.2,.78,.2,1) reverse both; }
 @keyframes article-surface-in { from { border-radius: 28px; } to { border-radius: 0; } }
+@keyframes article-tile-part { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(-72px); } }
+@keyframes article-reader-part { from { opacity: 0; transform: translateX(72px); } to { opacity: 1; transform: translateX(0); } }
 
 .contact { background: #101010; border-radius: 36px; color: white; display: grid; grid-template-columns: .85fr 1.15fr; margin: 12px; overflow: hidden; }
 .contact-intro { align-self: start; padding: clamp(80px,9vw,140px) clamp(24px,6vw,100px); position: sticky; top: 72px; }

@@ -394,7 +394,7 @@ export default function DomiSite() {
     function handleArticleKeydown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         event.preventDefault();
-        setActiveArticleIndex(null);
+        articleCloseRef.current?.click();
         return;
       }
       if (event.key !== "Tab" || !reader) return;
@@ -502,7 +502,9 @@ export default function DomiSite() {
     const trigger = articleTriggerRefs.current[index];
     const card = trigger?.closest<HTMLElement>(".knowledge-card");
     const transitionDocument = document as ViewTransitionDocument;
+    const transitionRoot = document.documentElement;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    transitionRoot.classList.remove("article-transition-closing");
 
     if (!card || !transitionDocument.startViewTransition || reduceMotion) {
       setActiveArticleIndex(index);
@@ -514,7 +516,13 @@ export default function DomiSite() {
       flushSync(() => setActiveArticleIndex(index));
       setCardTransitionNames(card, false);
     });
-    transition.finished.catch(() => setCardTransitionNames(card, false));
+    transition.finished.then(
+      () => transitionRoot.classList.remove("article-transition-closing"),
+      () => {
+        setCardTransitionNames(card, false);
+        transitionRoot.classList.remove("article-transition-closing");
+      },
+    );
   }
 
   function closeArticle() {
@@ -526,20 +534,29 @@ export default function DomiSite() {
     const trigger = index === null ? null : articleTriggerRefs.current[index];
     const card = trigger?.closest<HTMLElement>(".knowledge-card");
     const transitionDocument = document as ViewTransitionDocument;
+    const transitionRoot = document.documentElement;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (!card || !transitionDocument.startViewTransition || reduceMotion) {
+      transitionRoot.classList.remove("article-transition-closing");
       setActiveArticleIndex(null);
       return;
     }
 
+    transitionRoot.classList.add("article-transition-closing");
     const transition = transitionDocument.startViewTransition(() => {
       flushSync(() => setActiveArticleIndex(null));
       setCardTransitionNames(card, true);
     });
     transition.finished.then(
-      () => setCardTransitionNames(card, false),
-      () => setCardTransitionNames(card, false),
+      () => {
+        setCardTransitionNames(card, false);
+        transitionRoot.classList.remove("article-transition-closing");
+      },
+      () => {
+        setCardTransitionNames(card, false);
+        transitionRoot.classList.remove("article-transition-closing");
+      },
     );
   }
 
