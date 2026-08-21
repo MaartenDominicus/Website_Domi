@@ -52,6 +52,17 @@ const imageSources = {
   tiling: "https://www.pexels.com/photo/construction-worker-laying-tile-in-renovation-project-29181494/",
 } as const;
 
+const serviceSources = [
+  imageSources.electric,
+  imageSources.plumbing,
+  imageSources.plumbing,
+  imageSources.bathroom,
+  imageSources.kitchen,
+  "https://www.pexels.com/photo/person-painting-a-wall-with-a-roller-6474471/",
+  imageSources.craft,
+  imageSources.tiling,
+] as const;
+
 const content = {
   nl: {
     skip: "Direct naar de inhoud",
@@ -83,6 +94,11 @@ const content = {
     services: {
       eyebrow: "Onze vakgebieden", title: "Vakwerk voor iedere fase.",
       intro: "Van de eerste aansluiting tot de laatste afwerking: één aanspreekpunt en werkzaamheden die logisch op elkaar aansluiten.",
+      more: "Meer info", close: "Vakgebied sluiten", overlayLabel: "Vakgebied",
+      approachTitle: "Zo pakken we het aan",
+      approach: "We beginnen met een heldere opname van de situatie, stemmen techniek en afwerking op elkaar af en spreken vooraf af wat er gebeurt. Zo blijft de uitvoering overzichtelijk en voorkomt u verrassingen tussen verschillende werkzaamheden.",
+      contactTitle: "Uw situatie bespreken",
+      contact: "Geen woning, ruimte of installatie is hetzelfde. Vertel ons wat u wilt verbeteren; dan bekijken we welke aanpak logisch is en welke werkzaamheden slim gecombineerd kunnen worden.",
       items: [
         ["Elektra & verlichting", "Veilige, praktische aansluitingen en verlichting.", "Van extra groepen en stopcontacten tot binnen- en buitenverlichting. We bekijken belasting, kabelroutes en toekomstig gebruik als één geheel."],
         ["Water & sanitair", "Leidingwerk en sanitair, zorgvuldig aangesloten.", "We plaatsen en verleggen leidingen, kranen, toiletten en aansluitingen en zoeken lekkages gericht op voordat herstelwerk begint."],
@@ -111,6 +127,9 @@ const content = {
         { title: "Van gedateerd naar dagelijks comfort", type: "Complete badkamerrenovatie", text: "Leidingwerk verlegd, elektra aangepast en de ruimte opnieuw opgebouwd met tegelwerk, sanitair en maatwerkdetails.", tags: ["Sanitair", "Tegelwerk", "Elektra", "Afwerking"], image: images.bathroom, source: imageSources.bathroom, alt: "Sfeerbeeld van een moderne afgewerkte badkamer" },
         { title: "Wonen, koken en techniek als één geheel", type: "Renovatie begane grond", text: "Een nieuwe indeling met aansluitingen, wandafwerking, verlichting en zorgvuldig timmerwerk als samenhangend geheel.", tags: ["Verbouwing", "Elektra", "Water", "Timmerwerk"], image: images.kitchen, source: imageSources.kitchen, alt: "Sfeerbeeld van een lichte gerenoveerde keuken" },
         { title: "Een lichtere, praktischere werkplek", type: "Modernisering bedrijfsruimte", text: "Verlichting en aansluitpunten vernieuwd en de pantry en sanitaire ruimte opgefrist in overzichtelijke fases.", tags: ["Bedrijfspand", "Verlichting", "Sanitair", "Onderhoud"], image: images.electric, source: imageSources.electric, alt: "Sfeerbeeld van een elektricien bij een installatiekast" },
+        { title: "Historisch pand, klaar voor een nieuw hoofdstuk", type: "Historisch pand renovatie", text: "Oorspronkelijke details behouden en gecombineerd met vernieuwde installaties, zorgvuldig herstel en een afwerking die past bij het karakter van het pand.", tags: ["Renovatie", "Herstel", "Elektra", "Maatwerk"], image: images.craft, source: imageSources.craft, alt: "Sfeerbeeld van zorgvuldig timmerwerk in een karakteristiek pand" },
+        { title: "Meer ruimte onder het schuine dak", type: "Zolderverbouwing", text: "De verdieping opnieuw ingedeeld met extra aansluitpunten, maatwerk aftimmering en een lichte, gebruiksklare afwerking.", tags: ["Timmerwerk", "Elektra", "Afwerking"], image: images.plumbing, source: imageSources.plumbing, alt: "Sfeerbeeld van installatiewerk tijdens een woningverbouwing" },
+        { title: "Technisch herstel zonder zichtbaar compromis", type: "Onderhoud & reparatie", text: "Een leidingprobleem gericht opgelost en wand en tegelwerk daarna netjes hersteld, zonder onnodig werk aan de rest van de ruimte.", tags: ["Leidingwerk", "Tegelwerk", "Herstel"], image: images.tiling, source: imageSources.tiling, alt: "Sfeerbeeld van nauwkeurig tegelwerk tijdens herstel" },
       ],
     },
     reviews: {
@@ -190,6 +209,11 @@ const content = {
     services: {
       eyebrow: "Our expertise", title: "Skilled work at every stage.",
       intro: "From the first connection to the final finish: one point of contact and work that fits together seamlessly.",
+      more: "More information", close: "Close expertise", overlayLabel: "Expertise",
+      approachTitle: "How we approach it",
+      approach: "We begin with a clear assessment of the situation, coordinate technical work and finishing, and agree on the scope before work starts. This keeps the project manageable and prevents surprises between different stages.",
+      contactTitle: "Discuss your situation",
+      contact: "No home, room or installation is identical. Tell us what you would like to improve and we will assess the most logical approach and which activities can be combined efficiently.",
       items: [
         ["Electrical & lighting", "Safe, practical connections and lighting.", "From additional circuits and outlets to indoor and outdoor lighting. We consider load, cable routes and future use as one complete system."],
         ["Plumbing & sanitary systems", "Pipework and fittings, carefully connected.", "We install and relocate pipework, taps, toilets and connections, and trace leaks accurately before repair work begins."],
@@ -218,6 +242,9 @@ const content = {
         { title: "From dated to everyday comfort", type: "Complete bathroom renovation", text: "Pipework was relocated, electrics adapted and the room rebuilt with new tiling, sanitary fittings and bespoke details.", tags: ["Plumbing", "Tiling", "Electrical", "Finishing"], image: images.bathroom, source: imageSources.bathroom, alt: "Atmospheric image of a modern finished bathroom" },
         { title: "Living, cooking and technical work as one", type: "Ground-floor renovation", text: "A new layout with connections, wall finishes, lighting and careful carpentry brought together as one coherent space.", tags: ["Renovation", "Electrical", "Plumbing", "Carpentry"], image: images.kitchen, source: imageSources.kitchen, alt: "Atmospheric image of a bright renovated kitchen" },
         { title: "A brighter, more practical workplace", type: "Commercial space upgrade", text: "Lighting and outlets were upgraded, while the kitchenette and washroom were refreshed in clearly planned phases.", tags: ["Commercial", "Lighting", "Sanitary", "Maintenance"], image: images.electric, source: imageSources.electric, alt: "Atmospheric image of an electrician at a distribution board" },
+        { title: "A historic property ready for a new chapter", type: "Historic property renovation", text: "Original details were preserved and combined with renewed installations, careful repairs and finishes that respect the building's character.", tags: ["Renovation", "Restoration", "Electrical", "Bespoke"], image: images.craft, source: imageSources.craft, alt: "Atmospheric image of careful carpentry in a character property" },
+        { title: "More space beneath the sloping roof", type: "Loft conversion", text: "The floor was reorganised with additional connections, bespoke finish carpentry and a bright, ready-to-use finish.", tags: ["Carpentry", "Electrical", "Finishing"], image: images.plumbing, source: imageSources.plumbing, alt: "Atmospheric image of installation work during a home renovation" },
+        { title: "Technical repair without a visible compromise", type: "Maintenance & repair", text: "A pipework issue was resolved precisely before the wall and tiling were restored neatly, without unnecessary work elsewhere in the room.", tags: ["Pipework", "Tiling", "Repair"], image: images.tiling, source: imageSources.tiling, alt: "Atmospheric image of precise tiling during repair work" },
       ],
     },
     reviews: {
@@ -277,6 +304,7 @@ export default function DomiSite() {
   const [reviewsPaused, setReviewsPaused] = useState(false);
   const [reviewsHovered, setReviewsHovered] = useState(false);
   const [activeServiceIndex, setActiveServiceIndex] = useState<number | null>(null);
+  const [activeServiceDetailIndex, setActiveServiceDetailIndex] = useState<number | null>(null);
   const [activeSection, setActiveSection] = useState("");
   const [activeArticleIndex, setActiveArticleIndex] = useState<number | null>(null);
   const [articleExitVisible, setArticleExitVisible] = useState(false);
@@ -290,8 +318,14 @@ export default function DomiSite() {
   const lastArticleScrollTop = useRef(0);
   const articleOriginScrollY = useRef(0);
   const articleClosing = useRef(false);
+  const serviceReaderRef = useRef<HTMLDivElement>(null);
+  const serviceCloseRef = useRef<HTMLButtonElement>(null);
+  const serviceTriggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const serviceOriginScrollY = useRef(0);
+  const serviceClosing = useRef(false);
   const t = content[language];
   const activeArticle = activeArticleIndex === null ? null : t.knowledge.items[activeArticleIndex];
+  const activeServiceDetail = activeServiceDetailIndex === null ? null : t.services.items[activeServiceDetailIndex];
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -433,6 +467,46 @@ export default function DomiSite() {
   }, [activeArticleIndex]);
 
   useEffect(() => {
+    if (activeServiceDetailIndex === null) return;
+
+    const trigger = serviceTriggerRefs.current[activeServiceDetailIndex];
+    const reader = serviceReaderRef.current;
+    document.body.classList.add("article-is-open");
+    serviceClosing.current = false;
+    reader?.scrollTo({ top: 0 });
+    const focusFrame = window.requestAnimationFrame(() => serviceCloseRef.current?.focus());
+
+    function handleServiceKeydown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        serviceCloseRef.current?.click();
+        return;
+      }
+      if (event.key !== "Tab" || !reader) return;
+
+      const focusable = Array.from(reader.querySelectorAll<HTMLElement>("button, a[href]"));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleServiceKeydown);
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.body.classList.remove("article-is-open");
+      document.removeEventListener("keydown", handleServiceKeydown);
+      window.requestAnimationFrame(() => trigger?.focus({ preventScroll: true }));
+    };
+  }, [activeServiceDetailIndex]);
+
+  useEffect(() => {
     const heroImage = document.querySelector<HTMLElement>(".hero-image");
     const processList = document.querySelector<HTMLElement>(".process-list");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -519,6 +593,39 @@ export default function DomiSite() {
     articleClosing.current = false;
     setArticleExitVisible(false);
     setActiveArticleIndex(index);
+  }
+
+  function openServiceDetails(index: number) {
+    serviceOriginScrollY.current = window.scrollY;
+    serviceClosing.current = false;
+    setActiveServiceDetailIndex(index);
+  }
+
+  function closeServiceDetails() {
+    if (serviceClosing.current) return;
+    serviceClosing.current = true;
+
+    const reader = serviceReaderRef.current;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function finishClose() {
+      flushSync(() => setActiveServiceDetailIndex(null));
+      window.requestAnimationFrame(() => window.scrollTo({ top: serviceOriginScrollY.current, behavior: "auto" }));
+    }
+
+    if (!reader || reduceMotion) {
+      finishClose();
+      return;
+    }
+
+    const fade = reader.animate(
+      [
+        { opacity: 1, backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" },
+        { opacity: 0, backdropFilter: "blur(0px)", WebkitBackdropFilter: "blur(0px)" },
+      ],
+      { duration: 520, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" },
+    );
+    fade.finished.then(finishClose, finishClose);
   }
 
   function closeArticle() {
@@ -632,18 +739,23 @@ export default function DomiSite() {
               const isActive = activeServiceIndex === index;
               return (
                 <div className={`service-card-shell${isActive ? " active" : ""}`} key={title}>
-                  <button
+                  <div
                     className={`service-card${isActive ? " active" : ""}`}
-                    type="button"
-                    aria-expanded={isActive}
-                    onClick={() => setActiveServiceIndex(index)}
                   >
+                    <button className="service-expand-trigger" type="button" aria-expanded={isActive} aria-label={`${title}: ${text}`} onClick={() => setActiveServiceIndex(isActive ? null : index)} />
                     <span className="service-image" aria-hidden="true"><img src={serviceImages[index]} alt="" loading="lazy" decoding="async" /></span>
                     <div className="service-top"><span>0{index + 1}</span><i aria-hidden="true" /></div>
                     <h3>{title}</h3>
                     <p className="service-summary">{text}</p>
                     <span className="service-detail"><span>{detail}</span></span>
-                  </button>
+                    <button
+                      className="service-more-button"
+                      type="button"
+                      ref={(element) => { serviceTriggerRefs.current[index] = element; }}
+                      aria-haspopup="dialog"
+                      onClick={() => openServiceDetails(index)}
+                    >{t.services.more}<span>↗</span></button>
+                  </div>
                 </div>
               );
             })}
@@ -660,15 +772,15 @@ export default function DomiSite() {
         </section>
 
         <section className="projects section-pad" id="projecten">
-          <SectionIntro eyebrow={t.projects.eyebrow} title={t.projects.title} text={t.projects.intro} />
+          <h2 className="visually-hidden">{t.projects.eyebrow}</h2>
           <div className="project-grid">
             {t.projects.items.map((project, index) => (
-              <article className="project-card" key={project.title}>
-                <figure>
+              <article className={`project-card${index === 0 ? " text-only" : ""}`} key={project.title}>
+                {index !== 0 && <figure>
                   <img src={project.image} alt={project.alt} loading="lazy" decoding="async" />
                   <span className="placeholder-badge">{t.projects.placeholder}</span>
                   <a className="image-credit" href={project.source} target="_blank" rel="noreferrer">Pexels ↗</a>
-                </figure>
+                </figure>}
                 <div className="project-number">0{index + 1}</div>
                 <div className="project-copy">
                   <p className="project-type">{project.type}</p><h3>{project.title}</h3><p>{project.text}</p>
@@ -834,6 +946,32 @@ export default function DomiSite() {
               <p>{t.knowledge.scrollClose}</p>
             </div>
           </div>
+        </div>
+      )}
+
+      {activeServiceDetail && activeServiceDetailIndex !== null && (
+        <div className="article-reader service-reader" ref={serviceReaderRef} role="dialog" aria-modal="true" aria-labelledby="active-service-title">
+          <button className="article-close" ref={serviceCloseRef} type="button" onClick={closeServiceDetails}>
+            <span>{t.services.close}</span><i aria-hidden="true">×</i>
+          </button>
+          <article className="article-sheet">
+            <figure className="article-cover service-cover">
+              <img src={serviceImages[activeServiceDetailIndex]} alt="" />
+              <div className="article-cover-shade" />
+              <a className="image-credit" href={serviceSources[activeServiceDetailIndex]} target="_blank" rel="noreferrer">Pexels ↗</a>
+            </figure>
+            <div className="article-reader-content">
+              <p className="article-meta">{t.services.overlayLabel} · 0{activeServiceDetailIndex + 1}</p>
+              <h2 id="active-service-title">{activeServiceDetail[0]}</h2>
+              <p className="article-reader-lead">{activeServiceDetail[1]}</p>
+              <div className="article-body service-body">
+                <p><span>01</span><span><strong>{activeServiceDetail[0]}</strong>{activeServiceDetail[2]}</span></p>
+                <p><span>02</span><span><strong>{t.services.approachTitle}</strong>{t.services.approach}</span></p>
+                <p><span>03</span><span><strong>{t.services.contactTitle}</strong>{t.services.contact}</span></p>
+              </div>
+              <button className="button button-primary article-inline-close" type="button" onClick={closeServiceDetails}>{t.services.close}<span>×</span></button>
+            </div>
+          </article>
         </div>
       )}
 
