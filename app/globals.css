@@ -189,8 +189,12 @@ section[id] { scroll-margin-top: 76px; }
 .project-copy ul { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 22px 0 0; }
 .project-copy li { background: var(--soft); border-radius: 99px; font-size: .62rem; font-weight: 600; padding: 8px 11px; }
 
-.featured { background: var(--soft); border: 1px solid rgba(0,0,0,.06); border-radius: 26px; margin: 12px; overflow: hidden; }
-.featured-marquee { -webkit-mask-image: linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent); height: 108px; mask-image: linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent); overflow: hidden; }
+.featured { overflow: hidden; padding: clamp(54px,7vw,88px) 0; }
+.featured-title { margin: 0 auto 22px; max-width: var(--max); padding: 0 clamp(24px,6vw,88px); }
+.featured-title h2 { font-size: clamp(1.65rem,3.2vw,2.85rem); letter-spacing: -.05em; line-height: 1.04; margin: 0; }
+.featured-marquee { -webkit-mask-image: linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent); background: var(--soft); border: 1px solid rgba(0,0,0,.06); border-radius: 26px; height: 108px; margin: 0 12px; mask-image: linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent); overflow: hidden; }
+.animations-ready .featured-marquee.reveal-item { filter: blur(7px); transform: translateX(150px); transition-duration: 1s; }
+.animations-ready .featured-marquee.reveal-item.is-visible { filter: blur(0); transform: translateX(0); }
 .featured-track { animation: featured-loop 24s linear infinite; display: flex; height: 100%; width: max-content; will-change: transform; }
 .featured-marquee:hover .featured-track, .featured-marquee:focus-within .featured-track { animation-play-state: paused; }
 .featured-logo-group { display: flex; flex: 0 0 auto; height: 100%; padding-right: 12px; }
@@ -369,8 +373,9 @@ section[id] { scroll-margin-top: 76px; }
   .service-grid { grid-template-columns: 1fr; }
   .service-card { min-height: 280px; }
   .service-card, .service-card.active { grid-column: auto; min-height: 210px; }
-  .featured { border-radius: 20px; margin-inline: 8px; }
-  .featured-marquee { height: 90px; }
+  .featured { padding-block: 48px; }
+  .featured-title { margin-bottom: 18px; padding-inline: 24px; }
+  .featured-marquee { border-radius: 20px; height: 90px; margin-inline: 8px; }
   .featured-logo { flex-basis: 220px; padding: 15px 24px; }
   .featured-logo img { height: 52px; max-width: 165px; }
   .review-heading-row { align-items: flex-start; flex-direction: column; }

@@ -331,7 +331,7 @@ export default function DomiSite() {
 
   useEffect(() => {
     const revealTargets = Array.from(document.querySelectorAll<HTMLElement>(
-      ".section-intro, .about-copy, .about-image, .service-card, .process-list li, .project-card, .featured-heading, .featured-card, .placeholder-note, .review-card, .knowledge-card, .contact-intro, .contact-form, .footer-top",
+      ".section-intro, .about-copy, .about-image, .service-card, .process-list li, .project-card, .featured-title, .featured-marquee, .placeholder-note, .review-card, .knowledge-card, .contact-intro, .contact-form, .footer-top",
     ));
 
     document.documentElement.classList.add("animations-ready");
@@ -641,7 +641,9 @@ export default function DomiSite() {
         </section>
 
         <section className="featured" aria-labelledby="featured-title">
-          <h2 className="visually-hidden" id="featured-title">{t.featured.title}</h2>
+          <div className="featured-title">
+            <h2 id="featured-title">{t.featured.title}</h2>
+          </div>
           <p className="visually-hidden">{t.featured.note}</p>
           <div className="featured-marquee" role="list" aria-label={t.featured.title}>
             <div className="featured-track">
