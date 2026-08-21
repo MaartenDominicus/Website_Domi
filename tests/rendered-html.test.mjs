@@ -26,6 +26,12 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.match(html, /id="reviews"/);
   assert.match(html, /id="kennis"/);
   assert.match(html, /id="contact"/);
+  assert.match(html, /domi-logo-intro\.gif/);
+  assert.match(html, /Our work featured in/);
+  assert.match(html, /Instagram/);
+  assert.match(html, /LinkedIn/);
+  assert.equal((html.match(/<small>Voorbeeldreview<\/small>/g) ?? []).length, 6);
+  assert.match(html, /aria-label="Pauzeer"/);
   assert.match(html, /aria-pressed="true"[^>]*>NL</);
   assert.match(html, /aria-pressed="false"[^>]*>EN</);
   assert.doesNotMatch(html, /Troos Bouw/i);

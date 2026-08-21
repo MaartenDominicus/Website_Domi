@@ -4,6 +4,13 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 
 type Language = "nl" | "en";
 
+const socials = [
+  ["Instagram", "https://www.instagram.com/"],
+  ["Facebook", "https://www.facebook.com/"],
+  ["LinkedIn", "https://www.linkedin.com/"],
+  ["YouTube", "https://www.youtube.com/"],
+] as const;
+
 const images = {
   hero: "https://images.pexels.com/photos/32990521/pexels-photo-32990521/free-photo-of-construction-worker-at-indoor-renovation-site.jpeg?auto=compress&dpr=1&h=1200&w=2000",
   craft: "https://images.pexels.com/photos/37152389/pexels-photo-37152389/free-photo-of-carpenter-measuring-wood-with-precision-tools.jpeg?auto=compress&dpr=1&h=900&w=1400",
@@ -88,12 +95,21 @@ const content = {
     reviews: {
       eyebrow: "Reviews", title: "Goed werk merkt u aan het resultaat én aan de samenwerking.",
       note: "Voorbeeldreviews — vervang deze vóór definitieve publicatie door geverifieerde klantreacties.",
-      label: "Voorbeeldreview",
+      label: "Voorbeeldreview", pause: "Pauzeer", play: "Afspelen", previous: "Vorige review", next: "Volgende review",
       items: [
         ["“Vanaf de eerste opname was duidelijk wat er ging gebeuren. Er werd netjes gewerkt, goed meegedacht en de ruimte is precies geworden zoals we hoopten.”", "Opdrachtgever · Badkamerrenovatie"],
         ["“Heel prettig dat één team de leidingen, elektra én afwerking kon verzorgen. Dat maakte de verbouwing een stuk overzichtelijker.”", "Opdrachtgever · Woningverbouwing"],
         ["“Duidelijke afspraken, snel schakelen en een verzorgde oplevering. De werkzaamheden verliepen in rustige, overzichtelijke fases.”", "Opdrachtgever · Bedrijfsruimte"],
+        ["“De planning was realistisch en iedere dag wisten we waar we aan toe waren. Ook kleine wijzigingen werden zonder gedoe meegenomen.”", "Opdrachtgever · Keukenrenovatie"],
+        ["“Van een lastig probleem met de leidingen tot strak herstel van de wand: alles werd door hetzelfde team opgelost.”", "Opdrachtgever · Onderhoud woning"],
+        ["“Er werd goed geluisterd naar onze wensen en praktisch meegedacht over materiaal en indeling. Het eindresultaat voelt echt als maatwerk.”", "Opdrachtgever · Zolderverbouwing"],
       ],
+    },
+    featured: {
+      eyebrow: "In de schijnwerpers", title: "Our work featured in",
+      note: "Voorbeeldweergave — voeg hier vóór publicatie echte publicaties, keurmerken of samenwerkingspartners toe.",
+      items: ["Bouw & Wonen", "Vakwerk Nederland", "De Installateur", "Project in Beeld"],
+      placeholder: "Placeholder",
     },
     knowledge: {
       eyebrow: "Blog & kennis", title: "Praktische kennis vóór u beslist.",
@@ -120,7 +136,7 @@ const content = {
     footer: {
       line: "Bouw, techniek en afwerking onder één dak.", navigation: "Navigatie", contact: "Contact",
       contactLine: "Contactgegevens worden vóór publicatie toegevoegd.", closing: "Met aandacht gemaakt. Netjes opgeleverd.",
-      imageCredit: "Sfeerbeelden via Pexels",
+      imageCredit: "Sfeerbeelden via Pexels", social: "Volg Domi", socialNote: "Vervang deze links door de officiële Domi-profielen.",
     },
   },
   en: {
@@ -186,12 +202,21 @@ const content = {
     reviews: {
       eyebrow: "Reviews", title: "Good work shows in both the result and the experience.",
       note: "Sample reviews — replace these with verified client feedback before final publication.",
-      label: "Sample review",
+      label: "Sample review", pause: "Pause", play: "Play", previous: "Previous review", next: "Next review",
       items: [
         ["“From the first visit, it was clear what would happen. The team worked carefully, offered useful ideas and delivered exactly the room we had hoped for.”", "Client · Bathroom renovation"],
         ["“It was great to have one team handle the plumbing, electrical work and finishing. It made the renovation much easier to manage.”", "Client · Home renovation"],
         ["“Clear agreements, responsive communication and a tidy handover. The work progressed in calm, clearly planned phases.”", "Client · Commercial space"],
+        ["“The schedule was realistic and we always knew what to expect. Even small changes were handled without any fuss.”", "Client · Kitchen renovation"],
+        ["“From a difficult pipework issue to the clean wall repair, everything was solved by the same team.”", "Client · Home maintenance"],
+        ["“They listened carefully and offered practical ideas about materials and layout. The result genuinely feels made to measure.”", "Client · Loft conversion"],
       ],
+    },
+    featured: {
+      eyebrow: "In the spotlight", title: "Our work featured in",
+      note: "Sample presentation — add verified publications, certifications or project partners here before launch.",
+      items: ["Build & Living", "Dutch Craft", "The Installer", "Project Focus"],
+      placeholder: "Placeholder",
     },
     knowledge: {
       eyebrow: "Blog & insights", title: "Practical knowledge before you decide.",
@@ -218,7 +243,7 @@ const content = {
     footer: {
       line: "Construction, technical work and finishing under one roof.", navigation: "Navigation", contact: "Contact",
       contactLine: "Contact details will be added before publication.", closing: "Built with care. Finished properly.",
-      imageCredit: "Atmospheric images via Pexels",
+      imageCredit: "Atmospheric images via Pexels", social: "Follow Domi", socialNote: "Replace these links with Domi's official profiles.",
     },
   },
 } as const;
@@ -227,8 +252,12 @@ export default function DomiSite() {
   const [language, setLanguage] = useState<Language>("nl");
   const [menuOpen, setMenuOpen] = useState(false);
   const [formStatus, setFormStatus] = useState("");
+  const [reviewIndex, setReviewIndex] = useState(0);
+  const [reviewsPaused, setReviewsPaused] = useState(false);
+  const [reviewsHovered, setReviewsHovered] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLElement>(null);
+  const reviewViewportRef = useRef<HTMLDivElement>(null);
   const t = content[language];
 
   useEffect(() => {
@@ -284,7 +313,7 @@ export default function DomiSite() {
 
   useEffect(() => {
     const revealTargets = Array.from(document.querySelectorAll<HTMLElement>(
-      ".section-intro, .about-copy, .about-image, .service-card, .process-list li, .project-card, .placeholder-note, .review-card, .knowledge-card, .contact-intro, .contact-form, .footer-top",
+      ".section-intro, .about-copy, .about-image, .service-card, .process-list li, .project-card, .featured-heading, .featured-card, .placeholder-note, .review-card, .knowledge-card, .contact-intro, .contact-form, .footer-top",
     ));
 
     document.documentElement.classList.add("animations-ready");
@@ -311,6 +340,22 @@ export default function DomiSite() {
       });
     };
   }, []);
+
+  useEffect(() => {
+    if (reviewsPaused || reviewsHovered || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => {
+      setReviewIndex((current) => (current + 1) % t.reviews.items.length);
+    }, 5200);
+    return () => window.clearInterval(timer);
+  }, [reviewsHovered, reviewsPaused, t.reviews.items.length]);
+
+  useEffect(() => {
+    const viewport = reviewViewportRef.current;
+    const cards = viewport?.querySelectorAll<HTMLElement>(".review-card");
+    const card = cards?.[reviewIndex];
+    if (!viewport || !card) return;
+    viewport.scrollTo({ left: card.offsetLeft, behavior: "smooth" });
+  }, [reviewIndex, language]);
 
   useEffect(() => {
     const heroImage = document.querySelector<HTMLElement>(".hero-image");
@@ -344,6 +389,7 @@ export default function DomiSite() {
   }, []);
 
   function changeLanguage(next: Language) {
+    setReviewIndex(0);
     setLanguage(next);
     setMenuOpen(false);
   }
@@ -360,7 +406,7 @@ export default function DomiSite() {
       <header className="site-header">
         <div className="scroll-progress" aria-hidden="true" />
         <a className="brand" href="#home" aria-label="Domi Installatie home" onClick={() => setMenuOpen(false)}>
-          <span className="brand-mark"><img src="/domi-logo.jpg" alt="" /></span>
+          <span className="brand-mark"><img src="/domi-logo-intro.gif" alt="" /></span>
           <span className="brand-name"><strong>DOMI</strong><small>Installatie</small></span>
         </a>
 
@@ -467,17 +513,51 @@ export default function DomiSite() {
           </div>
         </section>
 
-        <section className="reviews section-pad" id="reviews">
-          <SectionIntro eyebrow={t.reviews.eyebrow} title={t.reviews.title} />
-          <p className="placeholder-note">{t.reviews.note}</p>
-          <div className="review-grid">
-            {t.reviews.items.map(([quote, attribution], index) => (
-              <article className="review-card" key={attribution}>
-                <div className="review-meta"><span>0{index + 1}</span><span className="stars" aria-label={language === "nl" ? "5 sterren" : "5 stars"}>★★★★★</span></div>
-                <blockquote>{quote}</blockquote><p>{attribution}</p><small>{t.reviews.label}</small>
-              </article>
+        <section className="featured section-pad" aria-labelledby="featured-title">
+          <div className="featured-heading">
+            <p className="eyebrow dark"><span />{t.featured.eyebrow}</p>
+            <h2 id="featured-title">{t.featured.title}</h2>
+            <p>{t.featured.note}</p>
+          </div>
+          <div className="featured-grid">
+            {t.featured.items.map((item, index) => (
+              <div className="featured-card" key={item}>
+                <span>0{index + 1}</span><strong>{item}</strong><small>{t.featured.placeholder}</small>
+              </div>
             ))}
           </div>
+        </section>
+
+        <section className="reviews section-pad" id="reviews">
+          <SectionIntro eyebrow={t.reviews.eyebrow} title={t.reviews.title} />
+          <div className="review-heading-row">
+            <p className="placeholder-note">{t.reviews.note}</p>
+            <div className="review-controls">
+              <button type="button" aria-label={t.reviews.previous} onClick={() => setReviewIndex((reviewIndex - 1 + t.reviews.items.length) % t.reviews.items.length)}>←</button>
+              <button type="button" className="review-pause" aria-label={reviewsPaused ? t.reviews.play : t.reviews.pause} aria-pressed={reviewsPaused} onClick={() => setReviewsPaused((paused) => !paused)}>{reviewsPaused ? "▶" : "Ⅱ"}</button>
+              <button type="button" aria-label={t.reviews.next} onClick={() => setReviewIndex((reviewIndex + 1) % t.reviews.items.length)}>→</button>
+            </div>
+          </div>
+          <div
+            className="review-viewport"
+            ref={reviewViewportRef}
+            onMouseEnter={() => setReviewsHovered(true)}
+            onMouseLeave={() => setReviewsHovered(false)}
+            onFocusCapture={() => setReviewsHovered(true)}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setReviewsHovered(false);
+            }}
+          >
+            <div className="review-grid">
+              {t.reviews.items.map(([quote, attribution], index) => (
+                <article className="review-card" key={attribution}>
+                  <div className="review-meta"><span>0{index + 1}</span><span className="stars" aria-label={language === "nl" ? "5 sterren" : "5 stars"}>★★★★★</span></div>
+                  <blockquote>{quote}</blockquote><p>{attribution}</p><small>{t.reviews.label}</small>
+                </article>
+              ))}
+            </div>
+          </div>
+          <div className="review-position" aria-hidden="true">{t.reviews.items.map((_, index) => <i className={index === reviewIndex ? "active" : ""} key={index} />)}</div>
         </section>
 
         <section className="knowledge section-pad" id="kennis">
@@ -522,9 +602,14 @@ export default function DomiSite() {
 
       <footer className="site-footer">
         <div className="footer-top">
-          <div className="footer-brand"><span className="brand-mark"><img src="/domi-logo.jpg" alt="" /></span><div><p>DOMI INSTALLATIE</p><h2>{t.footer.line}</h2></div></div>
+          <div className="footer-brand"><span className="brand-mark"><img src="/domi-logo-intro.gif" alt="" /></span><div><p>DOMI INSTALLATIE</p><h2>{t.footer.line}</h2></div></div>
           <nav aria-label={t.footer.navigation}>{t.nav.map(([label, href]) => <a href={href} key={href}>{label}</a>)}</nav>
           <div><p className="footer-label">{t.footer.contact}</p><p>{t.footer.contactLine}</p><a className="footer-contact-link" href="#contact">{t.quote} ↗</a></div>
+          <div className="social-block">
+            <p className="footer-label">{t.footer.social}</p>
+            <div className="social-links">{socials.map(([name, href]) => <a href={href} target="_blank" rel="noreferrer" key={name}>{name}<span>↗</span></a>)}</div>
+            <small>{t.footer.socialNote}</small>
+          </div>
         </div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} Domi Installatie</span><span>{t.footer.closing}</span><a href="https://www.pexels.com/license/" target="_blank" rel="noreferrer">{t.footer.imageCredit} ↗</a></div>
       </footer>
