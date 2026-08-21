@@ -448,7 +448,7 @@ export default function DomiSite() {
       }
       if (processList) {
         const rect = processList.getBoundingClientRect();
-        const travelled = window.innerHeight * .78 - rect.top;
+        const travelled = window.innerHeight * .58 - rect.top;
         const distance = rect.height + window.innerHeight * .18;
         const processProgress = Math.max(0, Math.min(1, (travelled / distance) * 1.45));
         processList.style.setProperty("--process-progress", `${processProgress * 100}%`);
@@ -628,21 +628,25 @@ export default function DomiSite() {
         <section className="services section-pad" id="diensten">
           <SectionIntro eyebrow={t.services.eyebrow} title={t.services.title} text={t.services.intro} light />
           <div className="service-grid">
-            {t.services.items.map(([title, text, detail], index) => (
-              <button
-                className={`service-card${activeServiceIndex === index ? " active" : ""}`}
-                type="button"
-                key={title}
-                aria-expanded={activeServiceIndex === index}
-                onClick={() => setActiveServiceIndex(index)}
-              >
-                <span className="service-image" aria-hidden="true"><img src={serviceImages[index]} alt="" loading="lazy" decoding="async" /></span>
-                <div className="service-top"><span>0{index + 1}</span><i aria-hidden="true" /></div>
-                <h3>{title}</h3>
-                <p className="service-summary">{text}</p>
-                <span className="service-detail"><span>{detail}</span></span>
-              </button>
-            ))}
+            {t.services.items.map(([title, text, detail], index) => {
+              const isActive = activeServiceIndex === index;
+              return (
+                <div className={`service-card-shell${isActive ? " active" : ""}`} key={title}>
+                  <button
+                    className={`service-card${isActive ? " active" : ""}`}
+                    type="button"
+                    aria-expanded={isActive}
+                    onClick={() => setActiveServiceIndex(index)}
+                  >
+                    <span className="service-image" aria-hidden="true"><img src={serviceImages[index]} alt="" loading="lazy" decoding="async" /></span>
+                    <div className="service-top"><span>0{index + 1}</span><i aria-hidden="true" /></div>
+                    <h3>{title}</h3>
+                    <p className="service-summary">{text}</p>
+                    <span className="service-detail"><span>{detail}</span></span>
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </section>
 
