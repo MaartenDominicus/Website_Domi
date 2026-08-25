@@ -314,6 +314,7 @@ export default function DomiSite() {
   const [reviewsPaused, setReviewsPaused] = useState(false);
   const [reviewsHovered, setReviewsHovered] = useState(false);
   const [activeServiceIndex, setActiveServiceIndex] = useState<number | null>(null);
+  const [typedServiceDetail, setTypedServiceDetail] = useState("");
   const [closingServiceIndex, setClosingServiceIndex] = useState<number | null>(null);
   const [activeServiceDetailIndex, setActiveServiceDetailIndex] = useState<number | null>(null);
   const [activeProjectIndex, setActiveProjectIndex] = useState<number | null>(null);
@@ -364,6 +365,31 @@ export default function DomiSite() {
   useEffect(() => () => {
     if (serviceTileCloseTimer.current !== null) window.clearTimeout(serviceTileCloseTimer.current);
   }, []);
+
+  useEffect(() => {
+    if (activeServiceIndex === null) return;
+
+    const detail = t.services.items[activeServiceIndex][2];
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let interval = 0;
+    const delay = window.setTimeout(() => {
+      if (reduceMotion) {
+        setTypedServiceDetail(detail);
+        return;
+      }
+      let cursor = 0;
+      interval = window.setInterval(() => {
+        cursor = Math.min(detail.length, cursor + 2);
+        setTypedServiceDetail(detail.slice(0, cursor));
+        if (cursor >= detail.length) window.clearInterval(interval);
+      }, 18);
+    }, reduceMotion ? 0 : 420);
+
+    return () => {
+      window.clearTimeout(delay);
+      if (interval) window.clearInterval(interval);
+    };
+  }, [activeServiceIndex, language, t.services.items]);
 
   useEffect(() => {
     if (!menuOpen) {
@@ -656,6 +682,7 @@ export default function DomiSite() {
 
   function changeLanguage(next: Language) {
     setReviewCursor(content[next].reviews.items.length);
+    setTypedServiceDetail("");
     setLanguage(next);
     setMenuOpen(false);
   }
@@ -667,6 +694,7 @@ export default function DomiSite() {
   }
 
   function toggleServiceTile(index: number) {
+    setTypedServiceDetail("");
     if (activeServiceIndex === index) {
       if (serviceTileCloseTimer.current !== null) window.clearTimeout(serviceTileCloseTimer.current);
       setClosingServiceIndex(index);
@@ -878,12 +906,12 @@ export default function DomiSite() {
                   <div
                     className={`service-card${isActive ? " active" : ""}`}
                   >
-                    <button className="service-expand-trigger" type="button" aria-expanded={isActive} aria-label={`${title}: ${text}`} onClick={() => toggleServiceTile(index)} />
+                    <button className="service-expand-trigger" type="button" aria-expanded={isActive} aria-label={`${title}: ${text} ${detail}`} onClick={() => toggleServiceTile(index)} />
                     <span className="service-image" aria-hidden="true"><img src={serviceImages[index]} alt="" loading="lazy" decoding="async" /></span>
                     <div className="service-top"><span>0{index + 1}</span><i aria-hidden="true" /></div>
                     <h3>{title}</h3>
                     <p className="service-summary">{text}</p>
-                    <span className="service-detail"><span>{detail}</span></span>
+                    <span className="service-detail"><span className={`service-detail-visible${isActive && typedServiceDetail.length < detail.length ? " typing" : ""}`} aria-hidden="true">{isActive ? typedServiceDetail : detail}</span></span>
                     <button
                       className="service-more-button"
                       type="button"

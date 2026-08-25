@@ -147,21 +147,21 @@ section[id] { scroll-margin-top: 76px; }
 .services .eyebrow { color: var(--orange); }
 .services .section-intro { margin-bottom: clamp(42px,5vw,68px); }
 .service-grid { display: grid; gap: 14px; grid-auto-flow: dense; grid-template-columns: repeat(4, 1fr); }
-.service-card-shell { min-height: 224px; position: relative; z-index: 1; }
+.service-card-shell { container-type: inline-size; min-height: 224px; position: relative; z-index: 1; }
 .service-card-shell.active { z-index: 20; }
 .service-card-shell.closing { z-index: 30; }
 .service-card { appearance: none; background: white; border: 0; border-radius: 22px; box-shadow: 0 4px 18px rgba(0,0,0,.035); color: var(--ink); height: 100%; isolation: isolate; left: 0; min-height: 224px; overflow: hidden; padding: 22px; position: absolute; text-align: left; top: 0; transition: background .35s, color .35s, transform .35s, box-shadow .35s, width .48s cubic-bezier(.22,.8,.24,1) .22s, height .48s cubic-bezier(.22,.8,.24,1) .22s; width: 100%; }
-.service-card > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { position: relative; transition: margin-left .48s cubic-bezier(.22,.8,.24,1) .22s, transform .48s cubic-bezier(.22,.8,.24,1) .22s; z-index: 2; }
+.service-card > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { position: relative; transition: margin-left .48s cubic-bezier(.22,.8,.24,1) .22s, transform .48s cubic-bezier(.22,.8,.24,1) .22s, width .48s cubic-bezier(.22,.8,.24,1) .22s; z-index: 2; }
 .service-expand-trigger { background: transparent; border: 0; inset: 0; position: absolute; z-index: 3; }
 .service-expand-trigger:focus-visible { box-shadow: inset 0 0 0 3px var(--blue); outline: 0; }
 .service-image { border-radius: 14px; bottom: 16px; height: 62px; opacity: .9; overflow: hidden; position: absolute; right: 16px; transition: border-radius .55s cubic-bezier(.2,.75,.25,1) .22s, bottom .55s cubic-bezier(.2,.75,.25,1) .22s, height .55s cubic-bezier(.2,.75,.25,1) .22s, opacity .4s ease .22s, right .55s cubic-bezier(.2,.75,.25,1) .22s, width .55s cubic-bezier(.2,.75,.25,1) .22s; width: 82px; z-index: 0; }
 .service-image img { height: 100%; object-fit: cover; transform: scale(1.03); transition: transform .7s cubic-bezier(.2,.75,.25,1) .22s; width: 100%; }
 .service-card-shell.active .service-card { height: 310px; width: calc(200% + 14px); }
 .service-card-shell:nth-child(4n).active .service-card { left: auto; right: 0; }
-.service-card.active .service-image { border-radius: 22px 0 0 22px; bottom: 0; height: 100%; left: 0; opacity: 1; right: auto; width: 44%; }
+.service-card.active .service-image { border-radius: 0 22px 22px 0; bottom: 0; height: 100%; left: auto; opacity: 1; right: 0; width: 44%; }
 .service-card:hover .service-image img { transform: scale(1.09); }
 .service-card.active .service-image img { transform: scale(1.1); }
-.service-card.active > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { margin-left: 48%; }
+.service-card.active > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { margin-left: 0; width: calc(100cqw - 44px); }
 .service-card:hover, .service-card:focus-within { box-shadow: 0 20px 46px rgba(0,0,0,.09); }
 .service-card.active { background: var(--ink); color: white; }
 .service-top { align-items: center; display: flex; justify-content: space-between; }
@@ -180,6 +180,8 @@ section[id] { scroll-margin-top: 76px; }
 .service-detail > span { color: var(--muted); font-size: .83rem; line-height: 1.62; overflow: hidden; }
 .service-card.active .service-detail { grid-template-rows: 1fr; margin-top: 16px; opacity: 1; }
 .service-card.active .service-detail > span { color: rgba(255,255,255,.78); max-width: 620px; }
+.service-detail-visible.typing::after { animation: service-caret .72s steps(1,end) infinite; background: var(--blue); content: ""; display: inline-block; height: 1.05em; margin-left: 4px; transform: translateY(2px); width: 2px; }
+@keyframes service-caret { 0%,48% { opacity: 1; } 49%,100% { opacity: 0; } }
 .service-more-button { align-items: center; background: var(--blue); border: 0; border-radius: 999px; bottom: 22px; color: white; display: flex; font-size: .68rem; font-weight: 600; gap: 18px; min-height: 38px; opacity: 0; padding: 9px 13px 9px 16px; pointer-events: none; position: absolute !important; right: 22px; transition: opacity .25s .42s, transform .3s .42s !important; transform: translateY(7px); z-index: 5 !important; }
 .service-card.active .service-more-button { opacity: 1; pointer-events: auto; transform: translateY(0); }
 .service-more-button span { font-size: .9rem; }
@@ -427,7 +429,7 @@ section[id] { scroll-margin-top: 76px; }
   .service-card { min-height: 210px; }
   .service-card-shell.active .service-card { height: 420px; left: 0; right: auto; width: 100%; }
   .service-card.active .service-image { border-radius: 22px 22px 0 0; bottom: auto; height: 160px; left: 0; top: 0; width: 100%; }
-  .service-card.active > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { margin-left: 0; transform: translateY(164px); }
+  .service-card.active > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { margin-left: 0; transform: translateY(164px); width: auto; }
   .service-more-button { bottom: 18px; }
   .project-grid { grid-template-columns: 1fr; }
   .featured { padding-block: 48px; }
