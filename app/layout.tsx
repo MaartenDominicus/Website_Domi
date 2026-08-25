@@ -1,34 +1,45 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import "./globals.css";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const requestHeaders = await headers();
-  const host = requestHeaders.get("x-forwarded-host") || requestHeaders.get("host") || "localhost:3000";
-  const protocol = requestHeaders.get("x-forwarded-proto") || (host.includes("localhost") ? "http" : "https");
-  const origin = `${protocol}://${host}`;
-  const title = "Domi Installatie | Bouw, installatie & renovatie";
-  const description = "Domi Installatie helpt met renovatie, installatiewerk, onderhoud en complete afwerking — helder geregeld door één vakkundig team.";
-  const socialImage = new URL("/og.png", origin).toString();
+const title = "Domi Installatie | Bouw, installatie & renovatie";
+const description = "Domi Installatie verzorgt renovatie, installatiewerk, onderhoud en complete afwerking door heel Nederland — met één vakkundig team.";
 
-  return {
+export const metadata: Metadata = {
+  metadataBase: new URL("https://troosbouw.com"),
+  title,
+  description,
+  icons: { icon: "/domi-logo.jpg", shortcut: "/domi-logo.jpg" },
+  keywords: ["Domi Installatie", "bouwbedrijf", "installatie", "renovatie", "elektra", "sanitair", "verbouwing", "Nederland"],
+  alternates: { canonical: "/", languages: { nl: "/", en: "/en" } },
+  openGraph: {
     title,
     description,
-    icons: { icon: "/domi-logo.jpg", shortcut: "/domi-logo.jpg" },
-    keywords: ["Domi Installatie", "bouwbedrijf", "installatie", "renovatie", "elektra", "sanitair", "verbouwing"],
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      locale: "nl_NL",
-      siteName: "Domi Installatie",
-      url: origin,
-      images: [{ url: socialImage, width: 1730, height: 909, alt: "Domi Installatie — één vakteam voor uw hele project" }],
-    },
-    twitter: { card: "summary_large_image", title, description, images: [socialImage] },
-  };
-}
+    type: "website",
+    locale: "nl_NL",
+    siteName: "Domi Installatie",
+    url: "/",
+    images: [{ url: "/og.png", width: 1730, height: 909, alt: "Domi Installatie — één vakteam voor uw hele project" }],
+  },
+  twitter: { card: "summary_large_image", title, description, images: ["/og.png"] },
+};
+
+const localBusiness = {
+  "@context": "https://schema.org",
+  "@type": "GeneralContractor",
+  name: "Domi Installatie",
+  url: "https://troosbouw.com",
+  image: "https://troosbouw.com/og.png",
+  email: "troosbouw@gmail.com",
+  telephone: "+31610983085",
+  areaServed: { "@type": "Country", name: "Nederland" },
+  openingHours: "Mo-Fr 09:00-18:00",
+  sameAs: [
+    "https://instagram.com/troosbouw",
+    "https://www.facebook.com/people/Troos-Bouw/pfbid02mzgVYbe8DtqCVUW8Gu2NAk5bhdB7QAfE8g1fA43yLXcMGoFjUs2U2zWom1eVh2DUl/",
+    "https://nl.pinterest.com/troosbouw/",
+  ],
+};
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="nl"><body>{children}</body></html>;
+  return <html lang="nl"><body>{children}<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }} /></body></html>;
 }

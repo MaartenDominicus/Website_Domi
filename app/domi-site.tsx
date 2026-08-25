@@ -1,35 +1,26 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 
 type Language = "nl" | "en";
 
 const socials = [
-  ["Instagram", "https://www.instagram.com/"],
-  ["Facebook", "https://www.facebook.com/"],
-  ["LinkedIn", "https://www.linkedin.com/"],
-  ["YouTube", "https://www.youtube.com/"],
-] as const;
-
-const featuredLogos = [
-  { name: "LINDA.", image: "/logos/linda.png", source: "https://commons.wikimedia.org/wiki/File:Linda-logoprint.png" },
-  { name: "vtwonen", image: "/logos/vtwonen.png", source: "https://commons.wikimedia.org/wiki/File:Logo_van_vtwonen.svg" },
-  { name: "Eigen Huis & Interieur", image: "/logos/eigen-huis-interieur.png", source: "https://www.vtwonen.nl/auteur/redactie-eigen-huis-interieur" },
-  { name: "Beurs Eigen Huis", image: "/logos/beurs-eigen-huis.png", source: "https://www.beurseigenhuis.nl/" },
+  ["Instagram", "https://instagram.com/troosbouw"],
+  ["Facebook", "https://www.facebook.com/people/Troos-Bouw/pfbid02mzgVYbe8DtqCVUW8Gu2NAk5bhdB7QAfE8g1fA43yLXcMGoFjUs2U2zWom1eVh2DUl/"],
+  ["Pinterest", "https://nl.pinterest.com/troosbouw/"],
 ] as const;
 
 const images = {
-  hero: "https://images.pexels.com/photos/32990521/pexels-photo-32990521/free-photo-of-construction-worker-at-indoor-renovation-site.jpeg?auto=compress&dpr=1&h=1200&w=2000",
-  craft: "https://images.pexels.com/photos/37152389/pexels-photo-37152389/free-photo-of-carpenter-measuring-wood-with-precision-tools.jpeg?auto=compress&dpr=1&h=900&w=1400",
-  bathroom: "https://images.pexels.com/photos/36446636/pexels-photo-36446636.jpeg?auto=compress&cs=tinysrgb&w=1600",
-  kitchen: "https://images.pexels.com/photos/37357024/pexels-photo-37357024/free-photo-of-modern-renovated-kitchen-with-hardwood-floors.jpeg?auto=compress&dpr=1&h=900&w=1400",
-  electric: "https://images.pexels.com/photos/27928760/pexels-photo-27928760/free-photo-of-a-man-is-working-on-an-electrical-panel.jpeg?auto=compress&dpr=1&h=900&w=1400",
-  plumbing: "https://images.pexels.com/photos/32588548/pexels-photo-32588548/free-photo-of-plumber-repairing-pipe-with-wrench-indoors.jpeg?auto=compress&dpr=1&h=900&w=1400",
-  tiling: "https://images.pexels.com/photos/29181494/pexels-photo-29181494/free-photo-of-construction-worker-laying-tile-in-renovation-project.jpeg?auto=compress&dpr=1&h=900&w=1400",
+  hero: "/projects/apeldoorn-hideaway.webp",
+  craft: "/projects/tuinhuis-amsterdam.webp",
+  bathroom: "/projects/badkamer-amsterdam.webp",
+  kitchen: "/projects/renovatie-amsterdam.webp",
+  electric: "/projects/renovatie-rotterdam.webp",
+  plumbing: "/projects/riolering-apeldoorn.webp",
+  tiling: "/projects/vloerverwarming-kampen.webp",
 } as const;
-
-const heroVideo = "https://videos.pexels.com/video-files/6474358/6474358-hd_1920_1080_25fps.mp4";
 
 const serviceImages = [
   images.electric,
@@ -37,31 +28,21 @@ const serviceImages = [
   images.plumbing,
   images.bathroom,
   images.kitchen,
-  "https://images.pexels.com/photos/6474471/pexels-photo-6474471.jpeg?auto=compress&dpr=1&h=900&w=1400",
+  images.electric,
   images.craft,
   images.tiling,
 ] as const;
 
+const projectArchive = "https://github.com/MaartenDominicus/TroosCom";
 const imageSources = {
-  hero: "https://www.pexels.com/video/construction-worker-inside-unfinished-room-6474358/",
-  craft: "https://www.pexels.com/photo/carpenter-measuring-wood-with-precision-tools-37152389/",
-  bathroom: "https://www.pexels.com/photo/elegant-modern-bathroom-with-marble-and-chrome-faucet-36446636/",
-  kitchen: "https://www.pexels.com/photo/modern-renovated-kitchen-with-hardwood-floors-37357024/",
-  electric: "https://www.pexels.com/photo/a-man-is-working-on-an-electrical-panel-27928760/",
-  plumbing: "https://www.pexels.com/photo/plumber-repairing-pipe-with-wrench-indoors-32588548/",
-  tiling: "https://www.pexels.com/photo/construction-worker-laying-tile-in-renovation-project-29181494/",
+  hero: projectArchive,
+  craft: projectArchive,
+  bathroom: projectArchive,
+  kitchen: projectArchive,
+  electric: projectArchive,
+  plumbing: projectArchive,
+  tiling: projectArchive,
 } as const;
-
-const serviceSources = [
-  imageSources.electric,
-  imageSources.plumbing,
-  imageSources.plumbing,
-  imageSources.bathroom,
-  imageSources.kitchen,
-  "https://www.pexels.com/photo/person-painting-a-wall-with-a-roller-6474471/",
-  imageSources.craft,
-  imageSources.tiling,
-] as const;
 
 const content = {
   nl: {
@@ -76,20 +57,20 @@ const content = {
     ],
     quote: "Offerte aanvragen",
     hero: {
-      eyebrow: "Bouwen · Installeren · Afwerken",
+      eyebrow: "Heel Nederland · Bouwen · Installeren · Afwerken",
       titleTop: "Eén vakteam.", titleAccent: "Uw hele project.",
       text: "Van elektra, water en verwarming tot badkamers, verbouwingen en de laatste afwerking. Domi Installatie brengt alle werkzaamheden samen in één helder plan.",
       primary: "Bespreek uw project", secondary: "Bekijk ons werk",
-      proofTitle: "Alles in één lijn.", proofText: "Bouw, techniek en afwerking zorgvuldig op elkaar afgestemd.",
-      alt: "Sfeerbeeld van een vakman tijdens een woningrenovatie",
+      proofTitle: "Alles in één lijn.", proofText: "Eigen projecten, heldere afspraken en één aanspreekpunt.",
+      alt: "Door het team gerealiseerde recreatiewoning in de Veluwe",
     },
     ticker: ["Breed inzetbaar", "Korte lijnen", "Heldere afspraken", "Netjes opgeleverd"],
     about: {
       eyebrow: "Over Domi", title: "Alles komt samen bij Domi.",
       lead: "Bouwkundige kennis, installatietechniek en een scherp oog voor afwerking — bij Domi vindt u het onder één dak.",
-      body: "Daardoor hoeft u niet voor iedere stap een andere partij te regelen. We denken praktisch mee, stemmen werkzaamheden goed op elkaar af en houden u tijdens het project op de hoogte. Van een gerichte reparatie tot een complete verbouwing: we kijken naar het geheel en leveren een resultaat waar u direct mee verder kunt.",
+      body: "Daardoor hoeft u niet voor iedere stap een andere partij te regelen. We denken praktisch mee, stemmen werkzaamheden goed op elkaar af en houden u tijdens het project op de hoogte. Van Amsterdam en Rotterdam tot Apeldoorn, Kampen en de Veluwe: het projectarchief laat uiteenlopende verbouwingen, installaties en maatwerk zien.",
       detail: "Eén aanspreekpunt. Minder losse schakels. Meer grip op het resultaat.",
-      imageAlt: "Sfeerbeeld van nauwkeurig timmerwerk",
+      imageAlt: "Gerealiseerd tuinhuis met overdekte lounge in Amsterdam",
     },
     services: {
       eyebrow: "Onze vakgebieden", title: "Vakwerk voor iedere fase.",
@@ -121,40 +102,40 @@ const content = {
     },
     projects: {
       eyebrow: "Projecten", title: "Verschillende vragen. Eén hoge standaard.",
-      intro: "Onderstaande projecten en beelden zijn voorbeelden en kunnen later eenvoudig worden vervangen door eigen Domi-werk.",
-      placeholder: "Voorbeeldproject",
+      intro: "Een selectie uit het eigen projectarchief: van complete renovaties en badkamers tot vloerverwarming, riolering en maatwerk buitenruimtes.",
+      placeholder: "Eigen project",
       open: "Bekijk project", close: "Project sluiten", overlayLabel: "Project",
       coordinationTitle: "Werkzaamheden in samenhang",
-      coordination: "Bouwkundige aanpassingen, installatiewerk en afwerking zijn als één planning uitgevoerd. Zo sloten de verschillende fases direct op elkaar aan en bleef er tijdens het werk één duidelijk aanspreekpunt.",
+      coordination: "Bij deze projecten zijn bouwkundige werkzaamheden, installatie en afwerking in samenhang uitgevoerd. De projectfoto’s en locaties komen uit het eigen openbare projectarchief.",
       resultTitle: "Zorgvuldig opgeleverd",
       result: "Details, aansluitingen en afwerking zijn gezamenlijk nagelopen. Het resultaat is gebruiksklaar, praktisch in dagelijks gebruik en voorbereid op de toekomst.",
       items: [
-        { title: "Van gedateerd naar dagelijks comfort", type: "Complete badkamerrenovatie", text: "Leidingwerk verlegd, elektra aangepast en de ruimte opnieuw opgebouwd met tegelwerk, sanitair en maatwerkdetails.", tags: ["Sanitair", "Tegelwerk", "Elektra", "Afwerking"], image: images.bathroom, source: imageSources.bathroom, alt: "Sfeerbeeld van een moderne afgewerkte badkamer" },
-        { title: "Wonen, koken en techniek als één geheel", type: "Renovatie begane grond", text: "Een nieuwe indeling met aansluitingen, wandafwerking, verlichting en zorgvuldig timmerwerk als samenhangend geheel.", tags: ["Verbouwing", "Elektra", "Water", "Timmerwerk"], image: images.kitchen, source: imageSources.kitchen, alt: "Sfeerbeeld van een lichte gerenoveerde keuken" },
-        { title: "Een lichtere, praktischere werkplek", type: "Modernisering bedrijfsruimte", text: "Verlichting en aansluitpunten vernieuwd en de pantry en sanitaire ruimte opgefrist in overzichtelijke fases.", tags: ["Bedrijfspand", "Verlichting", "Sanitair", "Onderhoud"], image: images.electric, source: imageSources.electric, alt: "Sfeerbeeld van een elektricien bij een installatiekast" },
-        { title: "Historisch pand, klaar voor een nieuw hoofdstuk", type: "Historisch pand renovatie", text: "Oorspronkelijke details behouden en gecombineerd met vernieuwde installaties, zorgvuldig herstel en een afwerking die past bij het karakter van het pand.", tags: ["Renovatie", "Herstel", "Elektra", "Maatwerk"], image: images.craft, source: imageSources.craft, alt: "Sfeerbeeld van zorgvuldig timmerwerk in een karakteristiek pand" },
-        { title: "Meer ruimte onder het schuine dak", type: "Zolderverbouwing", text: "De verdieping opnieuw ingedeeld met extra aansluitpunten, maatwerk aftimmering en een lichte, gebruiksklare afwerking.", tags: ["Timmerwerk", "Elektra", "Afwerking"], image: images.plumbing, source: imageSources.plumbing, alt: "Sfeerbeeld van installatiewerk tijdens een woningverbouwing" },
-        { title: "Technisch herstel zonder zichtbaar compromis", type: "Onderhoud & reparatie", text: "Een leidingprobleem gericht opgelost en wand en tegelwerk daarna netjes hersteld, zonder onnodig werk aan de rest van de ruimte.", tags: ["Leidingwerk", "Tegelwerk", "Herstel"], image: images.tiling, source: imageSources.tiling, alt: "Sfeerbeeld van nauwkeurig tegelwerk tijdens herstel" },
+        { title: "Badkamer en toilet vernieuwd", type: "Badkamerrenovatie · Amsterdam", text: "Een compacte badkamer en toiletruimte opnieuw opgebouwd en afgewerkt met contrasterend tegelwerk, sanitair en maatwerkmeubilair.", tags: ["Sanitair", "Tegelwerk", "Afwerking"], image: images.bathroom, source: projectArchive, alt: "Gerealiseerde badkamer met blauw en wit tegelwerk in Amsterdam" },
+        { title: "Wonen met meer licht en ruimte", type: "Complete renovatie · Amsterdam", text: "Een volledige woningrenovatie waarin indeling, glas, afwerking en technische werkzaamheden als één geheel zijn aangepakt.", tags: ["Renovatie", "Glas", "Afwerking"], image: images.kitchen, source: projectArchive, alt: "Lichte uitbouw na een complete renovatie in Amsterdam" },
+        { title: "Van woning naar compleet thuis", type: "Complete renovatie · Rotterdam", text: "Een complete renovatie met een strak afgewerkte trap, maatwerkdetails en vernieuwde woonruimtes.", tags: ["Renovatie", "Timmerwerk", "Schilderwerk"], image: images.electric, source: projectArchive, alt: "Afgewerkte trap na een complete woningrenovatie in Rotterdam" },
+        { title: "Een extra woonkamer in de tuin", type: "Tuinhuis · Amsterdam", text: "Een tuinhuis met beschutte lounge, elektra en praktische bergruimte, ontworpen voor gebruik in meerdere seizoenen.", tags: ["Tuinhuis", "Elektra", "Maatwerk"], image: images.craft, source: projectArchive, alt: "Gerealiseerd tuinhuis met overdekte lounge in Amsterdam" },
+        { title: "Nieuwe aansluiting door bosgrond", type: "Riolering · Apeldoorn", text: "Een nieuwe rioolaansluiting aangelegd door bosrijke grond, inclusief graafwerk en leidingtracé.", tags: ["Riolering", "Grondwerk", "Installatie"], image: images.plumbing, source: projectArchive, alt: "Aanleg van een rioolaansluiting in Apeldoorn" },
+        { title: "Comfort vanaf de vloer", type: "Vloerverwarming · Kampen", text: "Een vloerverwarmingsverdeler en leidingnet aangelegd als basis voor gelijkmatige verwarming van de ruimte.", tags: ["Verwarming", "Leidingwerk", "Installatie"], image: images.tiling, source: projectArchive, alt: "Vloerverwarmingsverdeler en leidingwerk in Kampen" },
       ],
     },
     reviews: {
       eyebrow: "Reviews", title: "Goed werk merkt u aan het resultaat én aan de samenwerking.",
-      note: "Voorbeeldreviews — vervang deze vóór definitieve publicatie door geverifieerde klantreacties.",
-      label: "Voorbeeldreview", pause: "Pauzeer", play: "Afspelen", previous: "Vorige review", next: "Volgende review",
+      note: "Klantreacties uit het openbare Troos Bouw-projectarchief.",
+      label: "Klantreactie", pause: "Pauzeer", play: "Afspelen", previous: "Vorige review", next: "Volgende review",
       items: [
-        ["“Vanaf de eerste opname was duidelijk wat er ging gebeuren. Er werd netjes gewerkt, goed meegedacht en de ruimte is precies geworden zoals we hoopten.”", "Opdrachtgever · Badkamerrenovatie"],
-        ["“Heel prettig dat één team de leidingen, elektra én afwerking kon verzorgen. Dat maakte de verbouwing een stuk overzichtelijker.”", "Opdrachtgever · Woningverbouwing"],
-        ["“Duidelijke afspraken, snel schakelen en een verzorgde oplevering. De werkzaamheden verliepen in rustige, overzichtelijke fases.”", "Opdrachtgever · Bedrijfsruimte"],
-        ["“De planning was realistisch en iedere dag wisten we waar we aan toe waren. Ook kleine wijzigingen werden zonder gedoe meegenomen.”", "Opdrachtgever · Keukenrenovatie"],
-        ["“Van een lastig probleem met de leidingen tot strak herstel van de wand: alles werd door hetzelfde team opgelost.”", "Opdrachtgever · Onderhoud woning"],
-        ["“Er werd goed geluisterd naar onze wensen en praktisch meegedacht over materiaal en indeling. Het eindresultaat voelt echt als maatwerk.”", "Opdrachtgever · Zolderverbouwing"],
+        ["“Eindelijk een 2e living room. De plaatjes spreken voor zich; heel leuk om gezamenlijk tijdens een bouwproject alles zo te krijgen hoe je het wilt. En ja, nadat het klaar is kan ik volmondig zeggen: het is gelukt!”", "Christiaan · Tuinhuis Amsterdam"],
+        ["“Er wordt hard gewerkt en heel fijn dat er inhoudelijk wordt meegedacht over het bouwproject. We zijn ontzettend blij en tevreden met het tuinhuisje!”", "Robin · Tiny House Amsterdam"],
+        ["“Ze gebruiken goede materialen en komen met prima oplossingen om de constructie praktischer en onderhoudsarm te maken. Precies wat we wensten. Dank!”", "Hans · Tuinhuis"],
+        ["“De bouw van onze prachtige cabin heeft onder leiding van Troos tot een mooi resultaat geleid, binnen de afgesproken tijd. Troos dacht goed mee en kwam met creatieve oplossingen.”", "Mirjam · Recreatiewoning IJsselmuiden"],
+        ["“Troos levert goed en vakkundig werk voor een goede prijs. Ik vond het erg fijn dat ze allround zijn: elektra, stucwerk, tegelzetten, schilderen, timmer- en loodgieterswerk.”", "Mona · Volledige verbouwing"],
+        ["“Troos heeft van een inimini washok een prachtige kinderkamer ontworpen en gebouwd. Ze denken mee, zijn flexibel en leveren vakwerk in een snelle tijd.”", "Maria · Maatwerk bed en kast"],
       ],
     },
     featured: {
-      eyebrow: "In de schijnwerpers", title: "Our work featured in",
-      note: "Voorbeeldweergave — voeg hier vóór publicatie echte publicaties, keurmerken of samenwerkingspartners toe.",
-      items: featuredLogos,
-      placeholder: "Placeholder",
+      eyebrow: "Werkgebied", title: "Actief door heel Nederland",
+      note: "Projecten in onder meer Amsterdam, Apeldoorn, de Veluwe, Kampen, Rotterdam en IJsselmuiden.",
+      items: ["Amsterdam", "Apeldoorn", "Veluwe", "Kampen", "Rotterdam", "IJsselmuiden"],
+      placeholder: "Projectlocatie",
     },
     knowledge: {
       eyebrow: "Blog & kennis", title: "Praktische kennis vóór u beslist.",
@@ -169,19 +150,19 @@ const content = {
     contact: {
       eyebrow: "Contact", title: "Een plan, klus of verbouwing in gedachten?",
       text: "Vertel ons kort wat u wilt laten uitvoeren. We bekijken de mogelijkheden en nemen contact met u op over een passende vervolgstap.",
-      benefits: ["Voor woningen en bedrijfsruimtes", "Eén aanspreekpunt voor meerdere vakgebieden", "Duidelijke afstemming vóór de start"],
+      benefits: ["Actief door heel Nederland", "Maandag–vrijdag van 9:00–18:00", "Eén aanspreekpunt voor meerdere vakgebieden"],
       formTitle: "Vertel ons over uw project",
       name: "Naam", email: "E-mailadres", phone: "Telefoonnummer (optioneel)", location: "Postcode en plaats",
       type: "Type project", typePrompt: "Maak een keuze", typeOptions: ["Renovatie of verbouwing", "Elektra", "Water of sanitair", "Badkamer of toilet", "Timmer- of afbouwwerk", "Onderhoud of reparatie", "Anders"],
       timing: "Gewenste startperiode", message: "Uw vraag of plan", messagePlaceholder: "Vertel kort wat er moet gebeuren, waar en wanneer.",
       consent: "Ik ga akkoord met het verwerken van mijn gegevens voor deze aanvraag.", submit: "Verstuur aanvraag",
-      demo: "Demoversie: dit formulier bewaart of verzendt nog geen persoonsgegevens. Koppel vóór publicatie het gewenste e-mailadres of formulierenplatform.",
-      success: "Bedankt voor uw aanvraag. In deze demo is niets verzonden; de formulierkoppeling kan nu worden toegevoegd.",
+      demo: "Uw aanvraag wordt veilig doorgestuurd naar troosbouw@gmail.com.",
+      success: "Bedankt voor uw aanvraag.",
     },
     footer: {
       line: "Bouw, techniek en afwerking onder één dak.", navigation: "Navigatie", contact: "Contact",
-      contactLine: "Contactgegevens worden vóór publicatie toegevoegd.", closing: "Met aandacht gemaakt. Netjes opgeleverd.",
-      imageCredit: "Sfeerbeelden via Pexels", social: "Volg Domi", socialNote: "Vervang deze links door de officiële Domi-profielen.",
+      contactLine: "troosbouw@gmail.com · 06 10 98 30 85 · ma–vr 9:00–18:00", closing: "Met aandacht gemaakt. Netjes opgeleverd.",
+      imageCredit: "Eigen projectarchief", social: "Volg ons", socialNote: "Bekijk actuele projecten en werk in uitvoering.",
     },
   },
   en: {
@@ -196,20 +177,20 @@ const content = {
     ],
     quote: "Request a quote",
     hero: {
-      eyebrow: "Build · Install · Finish",
+      eyebrow: "Throughout the Netherlands · Build · Install · Finish",
       titleTop: "One skilled team.", titleAccent: "Your entire project.",
       text: "From electrical, plumbing and heating work to bathrooms, renovations and the finishing touches. Domi Installatie brings every part of the job together in one clear plan.",
       primary: "Discuss your project", secondary: "View our work",
-      proofTitle: "Everything aligned.", proofText: "Construction, technical work and finishing carefully coordinated.",
-      alt: "Atmospheric image of a professional working on a home renovation",
+      proofTitle: "Everything aligned.", proofText: "Real projects, clear agreements and one point of contact.",
+      alt: "Recreational home completed by the team in the Veluwe",
     },
     ticker: ["Versatile expertise", "Direct communication", "Clear agreements", "Careful completion"],
     about: {
       eyebrow: "About Domi", title: "Everything comes together at Domi.",
       lead: "Construction expertise, technical installations and a sharp eye for finishing — all available from one team.",
-      body: "You do not need to coordinate a different contractor for every stage. We think practically, align the work carefully and keep you informed throughout the project. From a focused repair to a complete renovation, we look at the full picture and deliver a result that is ready to use.",
+      body: "You do not need to coordinate a different contractor for every stage. We think practically, align the work carefully and keep you informed. The project archive covers renovation, installation and bespoke work in Amsterdam, Rotterdam, Apeldoorn, Kampen and the Veluwe.",
       detail: "One point of contact. Fewer loose ends. More control over the result.",
-      imageAlt: "Atmospheric image of precise carpentry work",
+      imageAlt: "Completed garden room with covered lounge in Amsterdam",
     },
     services: {
       eyebrow: "Our expertise", title: "Skilled work at every stage.",
@@ -241,40 +222,40 @@ const content = {
     },
     projects: {
       eyebrow: "Projects", title: "Different needs. One high standard.",
-      intro: "The projects and images below are examples and can easily be replaced with Domi's own work later.",
-      placeholder: "Sample project",
+      intro: "A selection from the company project archive, ranging from full renovations and bathrooms to underfloor heating, drainage and bespoke outdoor spaces.",
+      placeholder: "Completed project",
       open: "View project", close: "Close project", overlayLabel: "Project",
       coordinationTitle: "Work carried out as one plan",
       coordination: "Construction alterations, technical installations and finishing were delivered through one coordinated schedule. Each phase connected directly to the next, with one clear point of contact throughout the work.",
       resultTitle: "Carefully completed",
       result: "Details, connections and finishes were reviewed together. The result is ready to use, practical in everyday life and prepared for future needs.",
       items: [
-        { title: "From dated to everyday comfort", type: "Complete bathroom renovation", text: "Pipework was relocated, electrics adapted and the room rebuilt with new tiling, sanitary fittings and bespoke details.", tags: ["Plumbing", "Tiling", "Electrical", "Finishing"], image: images.bathroom, source: imageSources.bathroom, alt: "Atmospheric image of a modern finished bathroom" },
-        { title: "Living, cooking and technical work as one", type: "Ground-floor renovation", text: "A new layout with connections, wall finishes, lighting and careful carpentry brought together as one coherent space.", tags: ["Renovation", "Electrical", "Plumbing", "Carpentry"], image: images.kitchen, source: imageSources.kitchen, alt: "Atmospheric image of a bright renovated kitchen" },
-        { title: "A brighter, more practical workplace", type: "Commercial space upgrade", text: "Lighting and outlets were upgraded, while the kitchenette and washroom were refreshed in clearly planned phases.", tags: ["Commercial", "Lighting", "Sanitary", "Maintenance"], image: images.electric, source: imageSources.electric, alt: "Atmospheric image of an electrician at a distribution board" },
-        { title: "A historic property ready for a new chapter", type: "Historic property renovation", text: "Original details were preserved and combined with renewed installations, careful repairs and finishes that respect the building's character.", tags: ["Renovation", "Restoration", "Electrical", "Bespoke"], image: images.craft, source: imageSources.craft, alt: "Atmospheric image of careful carpentry in a character property" },
-        { title: "More space beneath the sloping roof", type: "Loft conversion", text: "The floor was reorganised with additional connections, bespoke finish carpentry and a bright, ready-to-use finish.", tags: ["Carpentry", "Electrical", "Finishing"], image: images.plumbing, source: imageSources.plumbing, alt: "Atmospheric image of installation work during a home renovation" },
-        { title: "Technical repair without a visible compromise", type: "Maintenance & repair", text: "A pipework issue was resolved precisely before the wall and tiling were restored neatly, without unnecessary work elsewhere in the room.", tags: ["Pipework", "Tiling", "Repair"], image: images.tiling, source: imageSources.tiling, alt: "Atmospheric image of precise tiling during repair work" },
+        { title: "Bathroom and toilet renewed", type: "Bathroom renovation · Amsterdam", text: "A compact bathroom and toilet rebuilt and finished with contrasting tiles, sanitary fittings and bespoke furniture.", tags: ["Plumbing", "Tiling", "Finishing"], image: images.bathroom, source: projectArchive, alt: "Completed blue and white tiled bathroom in Amsterdam" },
+        { title: "More light and living space", type: "Full renovation · Amsterdam", text: "A complete home renovation bringing layout, glazing, finishing and technical work together.", tags: ["Renovation", "Glazing", "Finishing"], image: images.kitchen, source: projectArchive, alt: "Bright extension after a complete renovation in Amsterdam" },
+        { title: "A complete home transformation", type: "Full renovation · Rotterdam", text: "A full renovation with a carefully finished staircase, bespoke details and renewed living spaces.", tags: ["Renovation", "Carpentry", "Painting"], image: images.electric, source: projectArchive, alt: "Finished staircase after a complete home renovation in Rotterdam" },
+        { title: "A second living room in the garden", type: "Garden room · Amsterdam", text: "A garden room with a sheltered lounge, electrics and practical storage, designed for use across several seasons.", tags: ["Garden room", "Electrical", "Bespoke"], image: images.craft, source: projectArchive, alt: "Completed garden room with covered lounge in Amsterdam" },
+        { title: "A new drainage connection", type: "Drainage · Apeldoorn", text: "A new sewer connection installed through woodland, including excavation and the full pipe route.", tags: ["Drainage", "Groundwork", "Installation"], image: images.plumbing, source: projectArchive, alt: "Installation of a sewer connection in Apeldoorn" },
+        { title: "Comfort from the floor up", type: "Underfloor heating · Kampen", text: "An underfloor heating manifold and pipe network installed as the basis for evenly distributed heat.", tags: ["Heating", "Pipework", "Installation"], image: images.tiling, source: projectArchive, alt: "Underfloor heating manifold and pipework in Kampen" },
       ],
     },
     reviews: {
       eyebrow: "Reviews", title: "Good work shows in both the result and the experience.",
-      note: "Sample reviews — replace these with verified client feedback before final publication.",
-      label: "Sample review", pause: "Pause", play: "Play", previous: "Previous review", next: "Next review",
+      note: "Customer feedback from the public Troos Bouw project archive.",
+      label: "Customer review", pause: "Pause", play: "Play", previous: "Previous review", next: "Next review",
       items: [
-        ["“From the first visit, it was clear what would happen. The team worked carefully, offered useful ideas and delivered exactly the room we had hoped for.”", "Client · Bathroom renovation"],
-        ["“It was great to have one team handle the plumbing, electrical work and finishing. It made the renovation much easier to manage.”", "Client · Home renovation"],
-        ["“Clear agreements, responsive communication and a tidy handover. The work progressed in calm, clearly planned phases.”", "Client · Commercial space"],
-        ["“The schedule was realistic and we always knew what to expect. Even small changes were handled without any fuss.”", "Client · Kitchen renovation"],
-        ["“From a difficult pipework issue to the clean wall repair, everything was solved by the same team.”", "Client · Home maintenance"],
-        ["“They listened carefully and offered practical ideas about materials and layout. The result genuinely feels made to measure.”", "Client · Loft conversion"],
+        ["“Troos has worked with me on multiple projects over the last decade. They have a fantastic work ethic and are straightforward in communication.”", "Lucinda · Recreational home"],
+        ["“We felt really lucky to have found Troos. Someone honest and trustworthy is so rare.”", "Tijmen · Recreational home Maarn"],
+        ["“I wanted to thank you for the great work. The ladies said you were very respectful and tidy. I really appreciate that you were so well organised and made it all happen.”", "Lizette · Decking Amsterdam"],
+        ["“They work hard and offer very useful ideas about the project. We are incredibly happy and satisfied with the garden room.”", "Robin · Tiny House Amsterdam · translated"],
+        ["“They use good materials and offer practical, low-maintenance solutions. Exactly what we wanted.”", "Hans · Garden room · translated"],
+        ["“They are flexible, think along with you and deliver skilled work quickly.”", "Maria · Bespoke bed and wardrobe · translated"],
       ],
     },
     featured: {
-      eyebrow: "In the spotlight", title: "Our work featured in",
-      note: "Sample presentation — add verified publications, certifications or project partners here before launch.",
-      items: featuredLogos,
-      placeholder: "Placeholder",
+      eyebrow: "Service area", title: "Working throughout the Netherlands",
+      note: "Projects in Amsterdam, Apeldoorn, the Veluwe, Kampen, Rotterdam and IJsselmuiden, among other locations.",
+      items: ["Amsterdam", "Apeldoorn", "Veluwe", "Kampen", "Rotterdam", "IJsselmuiden"],
+      placeholder: "Project location",
     },
     knowledge: {
       eyebrow: "Blog & insights", title: "Practical knowledge before you decide.",
@@ -289,27 +270,26 @@ const content = {
     contact: {
       eyebrow: "Contact", title: "Have a project, repair or renovation in mind?",
       text: "Tell us briefly what you would like to have done. We will review the possibilities and contact you to discuss a suitable next step.",
-      benefits: ["For homes and commercial spaces", "One point of contact across multiple trades", "Clear coordination before work starts"],
+      benefits: ["Working throughout the Netherlands", "Monday–Friday, 9:00–18:00", "One point of contact across multiple trades"],
       formTitle: "Tell us about your project",
       name: "Name", email: "Email address", phone: "Phone number (optional)", location: "Postcode and city",
       type: "Project type", typePrompt: "Select an option", typeOptions: ["Renovation or remodelling", "Electrical", "Plumbing or sanitary", "Bathroom or toilet", "Carpentry or finishing", "Maintenance or repair", "Other"],
       timing: "Preferred start period", message: "Your question or plan", messagePlaceholder: "Briefly describe what needs doing, where and when.",
       consent: "I agree to my details being processed for this enquiry.", submit: "Submit enquiry",
-      demo: "Demo version: this form does not yet store or send personal data. Connect the preferred email address or form platform before publication.",
-      success: "Thank you for your enquiry. Nothing was sent in this demo; the form connection can now be added.",
+      demo: "Your enquiry is securely forwarded to troosbouw@gmail.com.",
+      success: "Thank you for your enquiry.",
     },
     footer: {
       line: "Construction, technical work and finishing under one roof.", navigation: "Navigation", contact: "Contact",
-      contactLine: "Contact details will be added before publication.", closing: "Built with care. Finished properly.",
-      imageCredit: "Atmospheric images via Pexels", social: "Follow Domi", socialNote: "Replace these links with Domi's official profiles.",
+      contactLine: "troosbouw@gmail.com · +31 6 10 98 30 85 · Mon–Fri 9:00–18:00", closing: "Built with care. Finished properly.",
+      imageCredit: "Company project archive", social: "Follow us", socialNote: "See current projects and work in progress.",
     },
   },
 } as const;
 
-export default function DomiSite() {
-  const [language, setLanguage] = useState<Language>("nl");
+export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?: Language }) {
+  const [language, setLanguage] = useState<Language>(initialLanguage);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [formStatus, setFormStatus] = useState("");
   const [reviewCursor, setReviewCursor] = useState(content.nl.reviews.items.length);
   const [reviewsPaused, setReviewsPaused] = useState(false);
   const [reviewsHovered, setReviewsHovered] = useState(false);
@@ -685,12 +665,7 @@ export default function DomiSite() {
     setTypedServiceDetail("");
     setLanguage(next);
     setMenuOpen(false);
-  }
-
-  function submitContact(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    event.currentTarget.reset();
-    setFormStatus(t.contact.success);
+    window.history.replaceState(null, "", next === "en" ? "/en" : "/");
   }
 
   function toggleServiceTile(index: number) {
@@ -836,7 +811,7 @@ export default function DomiSite() {
   }
 
   return (
-    <>
+    <div lang={language}>
       <a className="skip-link" href="#main">{t.skip}</a>
       <header className="site-header">
         <div className="scroll-progress" aria-hidden="true" />
@@ -871,9 +846,7 @@ export default function DomiSite() {
 
       <main id="main">
         <section className="hero" id="home">
-          <video className="hero-image" autoPlay muted loop playsInline preload="metadata" poster={images.hero} aria-label={t.hero.alt}>
-            <source src={heroVideo} type="video/mp4" />
-          </video>
+          <img className="hero-image" src={images.hero} alt={t.hero.alt} width="640" height="530" fetchPriority="high" />
           <div className="hero-overlay" />
           <div className="hero-content">
             <p className="eyebrow"><span />{t.hero.eyebrow}</p>
@@ -888,12 +861,25 @@ export default function DomiSite() {
             <strong>01</strong>
             <p><b>{t.hero.proofTitle}</b><br />{t.hero.proofText}</p>
           </aside>
-          <a className="image-credit hero-credit" href={imageSources.hero} target="_blank" rel="noreferrer">Pexels ↗</a>
         </section>
 
         <div className="promise-bar" aria-label={t.ticker.join(", ")}>
           {t.ticker.map((item) => <span key={item}>{item}<i /></span>)}
         </div>
+
+        <section className="about section-pad" id="over">
+          <div className="about-copy">
+            <p className="eyebrow dark"><span />{t.about.eyebrow}</p>
+            <h2>{t.about.title}</h2>
+            <p className="lead-copy">{t.about.lead}</p>
+            <p className="body-copy">{t.about.body}</p>
+            <p className="about-detail"><span>01</span>{t.about.detail}</p>
+          </div>
+          <figure className="about-image">
+            <img src={images.craft} alt={t.about.imageAlt} width="640" height="530" loading="lazy" decoding="async" />
+            <figcaption><span>{language === "nl" ? "Eigen project" : "Completed project"}</span><span>Amsterdam</span></figcaption>
+          </figure>
+        </section>
 
         <section className="services section-pad" id="diensten">
           <SectionIntro eyebrow={t.services.eyebrow} title={t.services.title} text={t.services.intro} light />
@@ -939,7 +925,7 @@ export default function DomiSite() {
           <h2 className="visually-hidden">{t.projects.eyebrow}</h2>
           <div className="project-grid">
             {t.projects.items.map((project, index) => (
-              <article className={`project-card${index === 0 ? " text-only" : ""}`} key={project.title}>
+              <article className="project-card" key={project.title}>
                 <button
                   className="project-card-trigger"
                   type="button"
@@ -948,11 +934,10 @@ export default function DomiSite() {
                   aria-haspopup="dialog"
                   onClick={() => openProject(index)}
                 />
-                {index !== 0 && <figure>
-                  <img src={project.image} alt={project.alt} loading="lazy" decoding="async" />
+                <figure>
+                  <img src={project.image} alt={project.alt} width="640" height="530" loading="lazy" decoding="async" />
                   <span className="placeholder-badge">{t.projects.placeholder}</span>
-                  <a className="image-credit" href={project.source} target="_blank" rel="noreferrer">Pexels ↗</a>
-                </figure>}
+                </figure>
                 <div className="project-number">0{index + 1}</div>
                 <div className="project-copy">
                   <p className="project-type">{project.type}</p><h3>{project.title}</h3><p>{project.text}</p>
@@ -964,34 +949,20 @@ export default function DomiSite() {
           </div>
         </section>
 
-        <section className="about section-pad" id="over">
-          <div className="about-copy">
-            <p className="eyebrow dark"><span />{t.about.eyebrow}</p>
-            <h2>{t.about.title}</h2>
-            <p className="lead-copy">{t.about.lead}</p>
-            <p className="body-copy">{t.about.body}</p>
-            <p className="about-detail"><span>01</span>{t.about.detail}</p>
-          </div>
-          <figure className="about-image">
-            <img src={images.craft} alt={t.about.imageAlt} loading="lazy" decoding="async" />
-            <figcaption><span>{language === "nl" ? "Sfeerbeeld" : "Atmospheric image"}</span><a href={imageSources.craft} target="_blank" rel="noreferrer">Pexels ↗</a></figcaption>
-          </figure>
-        </section>
-
         <section className="featured" aria-labelledby="featured-title">
           <div className="featured-title">
             <h2 id="featured-title">{t.featured.title}</h2>
           </div>
-          <p className="visually-hidden">{t.featured.note}</p>
+          <p className="featured-note">{t.featured.note}</p>
           <div className="featured-marquee" role="list" aria-label={t.featured.title}>
             <div className="featured-track">
               {[0, 1].map((group) => (
                 <div className="featured-logo-group" aria-hidden={group === 1} key={group}>
                   {t.featured.items.map((item, index) => (
-                    <a className="featured-logo" href={item.source} target="_blank" rel="noreferrer" key={item.name} role={group === 0 ? "listitem" : undefined} tabIndex={group === 1 ? -1 : undefined}>
-                      <img src={item.image} alt={item.name} loading="lazy" decoding="async" />
+                    <span className="featured-logo featured-location" key={item} role={group === 0 ? "listitem" : undefined}>
+                      <strong>{item}</strong>
                       <small className="visually-hidden">{t.featured.placeholder} · 0{index + 1}</small>
-                    </a>
+                    </span>
                   ))}
                 </div>
               ))}
@@ -1017,7 +988,7 @@ export default function DomiSite() {
             <div className="review-grid">
               {[0, 1, 2].map((group) => t.reviews.items.map(([quote, attribution], index) => (
                 <article className="review-card" aria-hidden={group !== 1} key={`${group}-${attribution}`}>
-                  <div className="review-meta"><span>0{index + 1}</span><span className="stars" aria-label={language === "nl" ? "5 sterren" : "5 stars"}>★★★★★</span></div>
+                  <div className="review-meta"><span>0{index + 1}</span><span>{t.reviews.label}</span></div>
                   <blockquote>{quote}</blockquote><p>{attribution}</p><small>{t.reviews.label}</small>
                 </article>
               )))}
@@ -1046,7 +1017,7 @@ export default function DomiSite() {
                   aria-label={`${t.knowledge.read}: ${article.title}`}
                   aria-haspopup="dialog"
                 />
-                <figure><img src={article.image} alt={article.alt} loading="lazy" decoding="async" /><a className="image-credit" href={article.source} target="_blank" rel="noreferrer">Pexels ↗</a></figure>
+                <figure><img src={article.image} alt={article.alt} width="640" height="530" loading="lazy" decoding="async" /></figure>
                 <div className="knowledge-copy">
                   <p className="article-meta">{article.category}</p><h3>{article.title}</h3><p>{article.text}</p>
                   <span className="article-open-button" aria-hidden="true">
@@ -1062,8 +1033,15 @@ export default function DomiSite() {
           <div className="contact-intro">
             <p className="eyebrow"><span />{t.contact.eyebrow}</p><h2>{t.contact.title}</h2><p>{t.contact.text}</p>
             <ul>{t.contact.benefits.map((benefit) => <li key={benefit}><span>✓</span>{benefit}</li>)}</ul>
+            <div className="contact-direct">
+              <a href="mailto:troosbouw@gmail.com">troosbouw@gmail.com</a>
+              <a href="tel:+31610983085">{language === "nl" ? "06 10 98 30 85" : "+31 6 10 98 30 85"}</a>
+              <a href="https://wa.me/31610983085" target="_blank" rel="noreferrer">WhatsApp ↗</a>
+            </div>
           </div>
-          <form className="contact-form" onSubmit={submitContact}>
+          <form className="contact-form" action="https://formsubmit.co/e2a3109e56f2b784903eb6ae24352c31" method="POST">
+            <input type="hidden" name="_subject" value="Nieuwe aanvraag via Domi Installatie" />
+            <input type="hidden" name="_template" value="table" />
             <div className="form-heading"><span>01</span><h3>{t.contact.formTitle}</h3></div>
             <div className="form-grid">
               <Field label={t.contact.name}><input name="name" autoComplete="name" required /></Field>
@@ -1076,12 +1054,13 @@ export default function DomiSite() {
               <Field label={t.contact.timing}><input name="timing" placeholder={language === "nl" ? "Bijv. najaar 2026" : "E.g. autumn 2026"} /></Field>
             </div>
             <Field label={t.contact.message}><textarea name="message" rows={5} required placeholder={t.contact.messagePlaceholder} /></Field>
-            <label className="consent"><input type="checkbox" required /><span>{t.contact.consent}</span></label>
+            <label className="consent"><input type="checkbox" name="privacyConsent" value="Akkoord" required /><span>{t.contact.consent} <Link href="/privacy">{language === "nl" ? "Lees de privacyverklaring." : "Read the privacy notice."}</Link></span></label>
             <div className="form-submit"><button className="button button-primary" type="submit">{t.contact.submit}<span>↗</span></button><p>{t.contact.demo}</p></div>
-            <p className="form-status" aria-live="polite" role="status">{formStatus}</p>
           </form>
         </section>
       </main>
+
+      <a className="whatsapp-float" href="https://wa.me/31610983085" target="_blank" rel="noreferrer" aria-label={language === "nl" ? "Stuur een WhatsApp-bericht" : "Send a WhatsApp message"}>WhatsApp <span>↗</span></a>
 
       {activeArticle && (
         <div
@@ -1099,7 +1078,6 @@ export default function DomiSite() {
             <figure className="article-cover">
               <img src={activeArticle.image} alt={activeArticle.alt} />
               <div className="article-cover-shade" />
-              <a className="image-credit" href={activeArticle.source} target="_blank" rel="noreferrer">Pexels ↗</a>
             </figure>
             <div className="article-reader-content">
               <p className="article-meta">{activeArticle.category}</p>
@@ -1131,7 +1109,6 @@ export default function DomiSite() {
             <figure className="article-cover service-cover">
               <img src={serviceImages[activeServiceDetailIndex]} alt="" />
               <div className="article-cover-shade" />
-              <a className="image-credit" href={serviceSources[activeServiceDetailIndex]} target="_blank" rel="noreferrer">Pexels ↗</a>
             </figure>
             <div className="article-reader-content">
               <p className="article-meta">{t.services.overlayLabel} · 0{activeServiceDetailIndex + 1}</p>
@@ -1158,7 +1135,6 @@ export default function DomiSite() {
               <img src={activeProject.image} alt={activeProject.alt} />
               <div className="article-cover-shade" />
               <span className="placeholder-badge">{t.projects.placeholder}</span>
-              <a className="image-credit" href={activeProject.source} target="_blank" rel="noreferrer">Pexels ↗</a>
             </figure>
             <div className="article-reader-content">
               <p className="article-meta">{t.projects.overlayLabel} · 0{activeProjectIndex + 1} · {activeProject.type}</p>
@@ -1180,16 +1156,16 @@ export default function DomiSite() {
         <div className="footer-top">
           <div className="footer-brand"><span className="brand-mark"><img src="/domi-logo-intro.gif" alt="" /></span><div><p>DOMI INSTALLATIE</p><h2>{t.footer.line}</h2></div></div>
           <nav aria-label={t.footer.navigation}>{t.nav.map(([label, href]) => <a href={href} key={href}>{label}</a>)}</nav>
-          <div><p className="footer-label">{t.footer.contact}</p><p>{t.footer.contactLine}</p><a className="footer-contact-link" href="#contact">{t.quote} ↗</a></div>
+          <div><p className="footer-label">{t.footer.contact}</p><p>{t.footer.contactLine}</p><a className="footer-contact-link" href="mailto:troosbouw@gmail.com">troosbouw@gmail.com ↗</a></div>
           <div className="social-block">
             <p className="footer-label">{t.footer.social}</p>
             <div className="social-links">{socials.map(([name, href]) => <a href={href} target="_blank" rel="noreferrer" key={name}>{name}<span>↗</span></a>)}</div>
             <small>{t.footer.socialNote}</small>
           </div>
         </div>
-        <div className="footer-bottom"><span>© {new Date().getFullYear()} Domi Installatie</span><span>{t.footer.closing}</span><a href="https://www.pexels.com/license/" target="_blank" rel="noreferrer">{t.footer.imageCredit} ↗</a></div>
+        <div className="footer-bottom"><span>© {new Date().getFullYear()} Domi Installatie</span><span>{t.footer.closing}</span><span><Link href="/privacy">Privacy</Link> · <Link href="/voorwaarden">{language === "nl" ? "Voorwaarden" : "Terms"}</Link></span></div>
       </footer>
-    </>
+    </div>
   );
 }
 
