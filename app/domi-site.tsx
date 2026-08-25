@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
+import { knowledgeArticlesEn, knowledgeArticlesNl } from "./knowledge-data";
 
 type Language = "nl" | "en";
 
@@ -308,7 +309,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const articleReaderRef = useRef<HTMLDivElement>(null);
   const articleExitRef = useRef<HTMLDivElement>(null);
   const articleCloseRef = useRef<HTMLButtonElement>(null);
-  const articleTriggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const articleTriggerRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const lastArticleScrollTop = useRef(0);
   const articleOriginScrollY = useRef(0);
   const articleClosing = useRef(false);
@@ -324,9 +325,10 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const projectOriginScrollY = useRef(0);
   const projectClosing = useRef(false);
   const t = content[language];
+  const knowledgeItems = language === "nl" ? knowledgeArticlesNl : knowledgeArticlesEn;
   const reviewCount = t.reviews.items.length;
   const reviewIndex = ((reviewCursor % reviewCount) + reviewCount) % reviewCount;
-  const activeArticle = activeArticleIndex === null ? null : t.knowledge.items[activeArticleIndex];
+  const activeArticle = activeArticleIndex === null ? null : knowledgeItems[activeArticleIndex];
   const activeServiceDetail = activeServiceDetailIndex === null ? null : t.services.items[activeServiceDetailIndex];
   const activeProject = activeProjectIndex === null ? null : t.projects.items[activeProjectIndex];
 
@@ -1007,15 +1009,14 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
         <section className="knowledge section-pad" id="kennis">
           <SectionIntro eyebrow={t.knowledge.eyebrow} title={t.knowledge.title} text={t.knowledge.intro} />
           <div className="knowledge-grid">
-            {t.knowledge.items.map((article, index) => (
+            {knowledgeItems.map((article, index) => (
               <article className="knowledge-card" key={article.title}>
-                <button
+                <Link
                   className="knowledge-card-trigger"
-                  type="button"
                   ref={(element) => { articleTriggerRefs.current[index] = element; }}
                   onClick={() => openArticle(index)}
+                  href={language === "nl" ? `/kennis/${article.slug}` : `/en/insights/${article.slug}`}
                   aria-label={`${t.knowledge.read}: ${article.title}`}
-                  aria-haspopup="dialog"
                 />
                 <figure><img src={article.image} alt={article.alt} width="640" height="530" loading="lazy" decoding="async" /></figure>
                 <div className="knowledge-copy">

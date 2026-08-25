@@ -35,7 +35,7 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.equal((html.match(/<small>Klantreactie<\/small>/g) ?? []).length, 18);
   assert.equal((html.match(/class="review-card"/g) ?? []).length, 18);
   assert.match(html, /aria-label="Pauzeer"/);
-  assert.equal((html.match(/aria-haspopup="dialog"/g) ?? []).length, 17);
+  assert.equal((html.match(/aria-haspopup="dialog"/g) ?? []).length, 14);
   assert.equal((html.match(/class="service-card-shell/g) ?? []).length, 8);
   assert.equal((html.match(/class="service-more-button"/g) ?? []).length, 8);
   assert.equal((html.match(/class="service-image"/g) ?? []).length, 8);
@@ -59,6 +59,10 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.match(html, /aria-pressed="true"[^>]*>NL</);
   assert.match(html, /aria-pressed="false"[^>]*>EN</);
   assert.match(html, /Troos Bouw/i);
+  assert.match(html, /Oudere elektrische installatie: waar let u op\?/);
+  assert.match(html, /Hang- en sluitwerk in oudere woningen/);
+  assert.match(html, /Tegels en voegen kiezen voor de badkamer/);
+  assert.match(html, /href="\/kennis\/veilige-elektrische-installatie"/);
 });
 
 test("server-renders an indexable English route", async () => {
@@ -69,6 +73,29 @@ test("server-renders an indexable English route", async () => {
   assert.match(html, /lang="en"/);
   assert.match(html, /Working throughout the Netherlands/);
   assert.match(html, /Lucinda · Recreational home/);
+  assert.match(html, /href="\/en\/insights\/tegels-en-voegen-kiezen"/);
+});
+
+test("publishes source-based knowledge articles with metadata and references", async () => {
+  const routes = [
+    ["/kennis/veilige-elektrische-installatie", "Oudere elektrische installatie", "electriciteit.html"],
+    ["/kennis/binnendeuren-hang-en-sluitwerk", "Hang- en sluitwerk in oudere woningen", "Binnendeuren_hang_en_sluitwerk.html"],
+    ["/kennis/tegels-en-voegen-kiezen", "Tegels en voegen kiezen voor de badkamer", "tilesandgrout.html"],
+  ];
+
+  for (const [path, title, source] of routes) {
+    const response = await request(path);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, new RegExp(title));
+    assert.match(html, new RegExp(source.replaceAll(".", "\\.")));
+    assert.match(html, /Herkomst &amp; actualiteit/);
+    assert.match(html, /Bespreek uw project/);
+  }
+
+  const english = await request("/en/insights/veilige-elektrische-installatie");
+  assert.equal(english.status, 200);
+  assert.match(await english.text(), /Older electrical systems: what should you check\?/);
 });
 
 test("privacy and terms pages are available", async () => {
