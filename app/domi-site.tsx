@@ -40,6 +40,25 @@ const cabinVideos = [
   { id: "xUzktAPs1ho", title: "Maja's Hideaway", start: 10, end: 30 },
 ] as const;
 
+const reviewHighlights = {
+  nl: [
+    ["2e living room", "het is gelukt"],
+    ["hard gewerkt", "meegedacht", "blij en tevreden"],
+    ["goede materialen", "praktischer en onderhoudsarm", "Precies wat we wensten"],
+    ["mooi resultaat", "binnen de afgesproken tijd", "creatieve oplossingen"],
+    ["vakkundig werk", "allround"],
+    ["denken mee", "flexibel", "vakwerk"],
+  ],
+  en: [
+    ["fantastic work ethic", "straightforward in communication"],
+    ["honest and trustworthy"],
+    ["great work", "respectful and tidy", "well organised"],
+    ["work hard", "useful ideas", "happy and satisfied"],
+    ["good materials", "practical, low-maintenance solutions", "Exactly what we wanted"],
+    ["flexible", "think along with you", "skilled work"],
+  ],
+} as const;
+
 const projectArchive = "https://github.com/MaartenDominicus/TroosCom";
 const imageSources = {
   hero: projectArchive,
@@ -998,7 +1017,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
               {[0, 1, 2].map((group) => t.reviews.items.map(([quote, attribution], index) => (
                 <article className="review-card" aria-hidden={group !== 1} key={`${group}-${attribution}`}>
                   <div className="review-meta"><span>0{index + 1}</span><span>{t.reviews.label}</span></div>
-                  <blockquote>{quote}</blockquote><p>{attribution}</p><small>{t.reviews.label}</small>
+                  <blockquote><HighlightedReview quote={quote} terms={reviewHighlights[language][index]} /></blockquote><p>{attribution}</p><small>{t.reviews.label}</small>
                 </article>
               )))}
             </div>
@@ -1151,6 +1170,16 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
 function SectionIntro({ eyebrow, title, text, light = false }: { eyebrow: string; title: string; text?: string; light?: boolean }) {
   return <div className="section-intro"><div><p className={`eyebrow${light ? "" : " dark"}`}><span />{eyebrow}</p><h2>{title}</h2></div>{text && <p>{text}</p>}</div>;
+}
+
+function HighlightedReview({ quote, terms }: { quote: string; terms: readonly string[] }) {
+  const escapedTerms = terms.map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const matcher = new RegExp(`(${escapedTerms.join("|")})`, "gi");
+  const highlightedTerms = new Set(terms.map((term) => term.toLowerCase()));
+
+  return quote.split(matcher).map((part, index) => highlightedTerms.has(part.toLowerCase())
+    ? <mark className="review-highlight" key={`${part}-${index}`}>{part}</mark>
+    : part);
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
