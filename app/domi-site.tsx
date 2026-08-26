@@ -358,6 +358,8 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const [activeCabinVideoIndex, setActiveCabinVideoIndex] = useState(0);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLElement>(null);
+  const reviewShowcaseRef = useRef<HTMLDivElement>(null);
+  const reviewNavigationRef = useRef<HTMLDivElement>(null);
   const reviewViewportRef = useRef<HTMLDivElement>(null);
   const reviewCarouselReady = useRef(false);
   const articleReaderRef = useRef<HTMLDivElement>(null);
@@ -508,6 +510,20 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
     }, 5200);
     return () => window.clearTimeout(timer);
   }, [reviewCursor, reviewsHovered, reviewsPaused, selectedReviewIndex]);
+
+  useEffect(() => {
+    if (selectedReviewIndex === null) return;
+
+    function closeReviewOnOutsidePointer(event: PointerEvent) {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (reviewShowcaseRef.current?.contains(target) || reviewNavigationRef.current?.contains(target)) return;
+      setSelectedReviewIndex(null);
+    }
+
+    document.addEventListener("pointerdown", closeReviewOnOutsidePointer);
+    return () => document.removeEventListener("pointerdown", closeReviewOnOutsidePointer);
+  }, [selectedReviewIndex]);
 
   useEffect(() => {
     const viewport = reviewViewportRef.current;
@@ -1053,7 +1069,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           <div className="review-heading-row">
             <p className="placeholder-note">{t.reviews.note} <span>{language === "nl" ? "Klik op een review voor de projectfoto." : "Select a review to see the project photo."}</span></p>
           </div>
-          <div className={`review-showcase${selectedReviewPhoto ? " has-selection" : ""}`}>
+          <div ref={reviewShowcaseRef} className={`review-showcase${selectedReviewPhoto ? " has-selection" : ""}`}>
             {reviewSelectionPaused && (
               <button type="button" className="review-side-previous" aria-label={t.reviews.previous} onClick={() => stepReview(-1)}>←</button>
             )}
@@ -1098,7 +1114,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
               </aside>
             )}
           </div>
-          <div className="review-navigation">
+          <div ref={reviewNavigationRef} className="review-navigation">
             <div className="review-controls">
               <button type="button" aria-label={t.reviews.previous} onClick={() => stepReview(-1)}>←</button>
               <button type="button" className="review-pause" aria-label={reviewSelectionPaused ? (language === "nl" ? "Automatische carrousel gepauzeerd zolang een review is geselecteerd" : "Automatic carousel paused while a review is selected") : reviewsPaused ? t.reviews.play : t.reviews.pause} aria-pressed={reviewsPaused || reviewSelectionPaused} disabled={reviewSelectionPaused} onClick={() => setReviewsPaused((paused) => !paused)}>{reviewsPaused ? "▶" : "Ⅱ"}</button>
