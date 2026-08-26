@@ -82,41 +82,41 @@ test("server-renders an indexable English route", async () => {
   assert.match(html, /href="\/en\/insights\/tegels-en-voegen-kiezen"/);
 });
 
-test("publishes source-based knowledge articles with metadata and references", async () => {
+test("publishes source-based knowledge articles as one cohesive article", async () => {
   const routes = [
-    ["/kennis/veilige-elektrische-installatie", "Electriciteit", "Ook dit kan dmv domotica", 8, "/blog/hoofdschakelaar.jpg"],
-    ["/kennis/binnendeuren-hang-en-sluitwerk", "Hang- en sluitwerk: Deursloten, scharnieren en beslag", "een definitieve prijsopgave pas mogelijk na inspectie op locatie", 3, "/blog/doorhangende-deurhendel.jpg"],
-    ["/kennis/tegels-en-voegen-kiezen", "Bathroom & Tiles Guide", "Washer-Dryer Combo", 42, "/blog/badkamer-tegels.jpg"],
+    ["/kennis/veilige-elektrische-installatie", "Ook dit kan dmv domotica", 8, "/blog/hoofdschakelaar.jpg", "/", "en"],
+    ["/kennis/binnendeuren-hang-en-sluitwerk", "een definitieve prijsopgave pas mogelijk na inspectie op locatie", 3, "/blog/doorhangende-deurhendel.jpg", "/", "en"],
+    ["/en/insights/tegels-en-voegen-kiezen", "Washer-Dryer Combo", 42, "/blog/badkamer-tegels.jpg", "/en", "nl"],
   ];
 
-  for (const [path, title, finalText, imageCount, cover] of routes) {
+  for (const [path, finalText, imageCount, cover, home, alternateLocale] of routes) {
     const response = await request(path);
     assert.equal(response.status, 200);
     const html = await response.text();
-    assert.match(html, new RegExp(title.replace("&", "(?:&|&amp;)")));
     assert.match(html, new RegExp(finalText));
     assert.match(html, new RegExp(`<figure class="original-blog-cover"><img src="${cover.replaceAll(".", "\\.")}"`));
     assert.doesNotMatch(html, /Over deze publicatie|About this publication/);
     assert.doesNotMatch(html, /class="original-blog-note"/);
-    assert.doesNotMatch(html, /<details class="legacy-article"/);
-    assert.match(html, /<section class="legacy-article"/);
-    assert.match(html, /<a class="brand" href="\/"/);
-    assert.match(html, /<a class="blog-back" href="\/#kennis"/);
+    assert.doesNotMatch(html, /legacy-article|Volledige informatie uit de bestaande blogpost/);
+    assert.match(html, new RegExp(`<a class="brand" href="${home}"`));
+    assert.match(html, new RegExp(`<a class="blog-back" href="${home}/?#kennis"`));
     assert.match(html, /class="scroll-progress"/);
-    assert.match(html, new RegExp(`href="/en/insights/${path.split("/").at(-1)}"`));
+    const alternatePath = alternateLocale === "en" ? "/en/insights" : "/kennis";
+    assert.match(html, new RegExp(`href="${alternatePath}/${path.split("/").at(-1)}"`));
     const articleStart = html.indexOf('<div class="original-article">');
     const articleEnd = html.indexOf('<section class="blog-cta">', articleStart);
     const visibleArticle = html.slice(articleStart, articleEnd).replace(/<!--[\s\S]*?-->/g, "");
     assert.equal((visibleArticle.match(/<img\b/g) ?? []).length, imageCount);
-    assert.match(visibleArticle, /<nav id="toc"/);
-    const tocHtml = visibleArticle.slice(visibleArticle.indexOf('<nav id="toc"'), visibleArticle.indexOf("</nav>") + 6);
+    assert.doesNotMatch(visibleArticle, /<nav id="toc"/);
+    const asideStart = html.indexOf('<aside class="blog-aside">');
+    const asideEnd = html.indexOf('</aside>', asideStart);
+    const tocHtml = html.slice(asideStart, asideEnd);
     const tocTargets = [...tocHtml.matchAll(/<a href="#([^"]+)"/g)].map((match) => match[1]);
     assert.ok(tocTargets.length > 0);
     for (const target of tocTargets) assert.match(visibleArticle, new RegExp(`id="${target}"`));
 
     if (path.endsWith("tegels-en-voegen-kiezen")) {
-      assert.match(visibleArticle, /<button id="collapse-all">Expand All<\/button>/);
-      assert.doesNotMatch(visibleArticle, /<button[^>]*disabled/);
+      assert.doesNotMatch(visibleArticle, /collapse-all/);
       assert.match(visibleArticle, /class="bond-diagram half-bond"/);
       assert.match(visibleArticle, /class="bond-diagram full-bond"/);
       assert.equal((visibleArticle.match(/class="visually-hidden pattern-source"/g) ?? []).length, 2);
@@ -125,7 +125,15 @@ test("publishes source-based knowledge articles with metadata and references", a
 
   const english = await request("/en/insights/veilige-elektrische-installatie");
   assert.equal(english.status, 200);
-  assert.match(await english.text(), /Complete information from the existing blog post/);
+  const englishHtml = await english.text();
+  assert.match(englishHtml, /class="blog-body"/);
+  assert.doesNotMatch(englishHtml, /class="original-article"/);
+
+  const dutchTiles = await request("/kennis/tegels-en-voegen-kiezen");
+  assert.equal(dutchTiles.status, 200);
+  const dutchTilesHtml = await dutchTiles.text();
+  assert.match(dutchTilesHtml, /class="blog-body"/);
+  assert.doesNotMatch(dutchTilesHtml, /class="original-article"/);
 });
 
 test("publishes every new suggestion-based article in Dutch and English", async () => {

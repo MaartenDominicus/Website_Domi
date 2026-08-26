@@ -11,6 +11,7 @@ type Props = {
 
 export default function KnowledgeArticlePage({ article, locale, original }: Props) {
   const isDutch = locale === "nl";
+  const usesOriginal = original?.language === locale;
   const home = isDutch ? "/" : "/en";
   const nlPath = `/kennis/${article.slug}`;
   const enPath = `/en/insights/${article.slug}`;
@@ -22,8 +23,6 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
         practical: "Praktische gids",
         source: "Bron & redactie",
         sourceText: "Dit artikel is door Domi Installatie uitgewerkt op basis van praktijkkennis en het genoemde onderwerp uit het openbare TroosCom-archief.",
-        original: "Volledige informatie uit de bestaande blogpost",
-        originalNote: "Het oorspronkelijke bronmateriaal blijft hieronder volledig beschikbaar.",
         updated: article.updated ?? "Domi Installatie kennisbank",
         ctaEyebrow: "Van kennis naar uitvoering",
         ctaTitle: "Uw situatie professioneel laten beoordelen?",
@@ -37,14 +36,15 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
         practical: "Practical guide",
         source: "Source & editorial",
         sourceText: "Domi Installation developed this article from practical experience and the referenced topic in the public TroosCom archive.",
-        original: "Complete information from the existing blog post",
-        originalNote: "The full original source material remains available below in its source language.",
         updated: article.updated ?? "Domi Installation knowledge base",
         ctaEyebrow: "From advice to execution",
         ctaTitle: "Would you like a professional assessment?",
         ctaText: "Tell us what you want to change. We review technical work, planning and finishing as one project.",
         ctaButton: "Discuss your project",
       };
+  const contents = usesOriginal
+    ? original.toc
+    : article.headings.map((label, index) => ({ id: `stap-${index + 1}`, label }));
 
   return (
     <main className="blog-page">
@@ -82,8 +82,8 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
             <p>{labels.contents}</p>
             <nav aria-label={labels.contents}>
               <ol>
-                {article.headings.map((heading, index) => (
-                  <li key={heading}><a href={`#stap-${index + 1}`}><span>{String(index + 1).padStart(2, "0")}</span>{heading}</a></li>
+                {contents.map(({ id, label }, index) => (
+                  <li key={id}><a href={`#${id}`}><span>{String(index + 1).padStart(2, "0")}</span>{label}</a></li>
                 ))}
               </ol>
             </nav>
@@ -91,19 +91,25 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
           </aside>
 
           <div className="blog-main-column">
-            <section className="blog-intro" aria-labelledby="blog-intro-title">
-              <p>{labels.intro}</p>
-              <h2 id="blog-intro-title">{article.text}</h2>
-            </section>
-
-            <div className="blog-body">
-              {article.body.map((paragraph, index) => (
-                <section id={`stap-${index + 1}`} key={article.headings[index]}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <div><h2>{article.headings[index]}</h2><p>{paragraph}</p></div>
+            {usesOriginal ? (
+              <OriginalArticleBody html={original.html} />
+            ) : (
+              <>
+                <section className="blog-intro" aria-labelledby="blog-intro-title">
+                  <p>{labels.intro}</p>
+                  <h2 id="blog-intro-title">{article.text}</h2>
                 </section>
-              ))}
-            </div>
+
+                <div className="blog-body">
+                  {article.body.map((paragraph, index) => (
+                    <section id={`stap-${index + 1}`} key={article.headings[index]}>
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                      <div><h2>{article.headings[index]}</h2><p>{paragraph}</p></div>
+                    </section>
+                  ))}
+                </div>
+              </>
+            )}
 
             <section className="blog-sources">
               <p>{labels.source}</p>
@@ -111,18 +117,6 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
               <a href={article.source} target="_blank" rel="noreferrer">{article.sourceLabel} ↗</a>
             </section>
 
-            {original ? (
-              <section className="legacy-article" aria-labelledby="complete-original-title">
-                <header className="legacy-article-heading">
-                  <p>{labels.original}</p>
-                  <h2 id="complete-original-title">{original.title}</h2>
-                  <span>{labels.originalNote}</span>
-                </header>
-                <div className="legacy-article-content">
-                  <OriginalArticleBody html={original.html} />
-                </div>
-              </section>
-            ) : null}
           </div>
         </div>
       </article>

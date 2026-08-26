@@ -8,6 +8,7 @@ export type OriginalArticle = {
   category: string;
   language: "nl" | "en";
   html: string;
+  toc: readonly { id: string; label: string }[];
   source: string;
   image: string;
   imageAlt: string;
@@ -41,6 +42,59 @@ function prepareOriginalHtml(raw: string, moveFirstHeading = false) {
   return html
     .replaceAll('href="ventilatie.html"', `href="${repository}/ventilatie.html" target="_blank" rel="noreferrer"`)
     .replace(/<img\s+/gi, '<img loading="lazy" decoding="async" ');
+}
+
+function plainText(html: string) {
+  return html
+    .replace(/<[^>]+>/g, "")
+    .replaceAll("&amp;", "&")
+    .replaceAll("&nbsp;", " ")
+    .replaceAll("&ndash;", "–")
+    .replaceAll("&mdash;", "—")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function slugifyHeading(label: string) {
+  return label
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "") || "onderdeel";
+}
+
+function normalizeOriginalArticle(html: string) {
+  const withoutEmbeddedToc = html.replace(/<nav\b[^>]*\bid=["']toc["'][^>]*>[\s\S]*?<\/nav>/i, "");
+  const withParts = withoutEmbeddedToc.replace(
+    /<h1\b[^>]*>([\s\S]*?)<\/h1>/gi,
+    '<h2 class="article-part-title" data-article-part="true">$1</h2>',
+  );
+  const usedIds = new Set<string>();
+  const headings: Array<{ id: string; label: string; part: boolean }> = [];
+  const normalizedHtml = withParts.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (_heading, attributes: string, content: string) => {
+    const label = plainText(content);
+    const existingId = attributes.match(/\bid=["']([^"']+)["']/i)?.[1];
+    const base = existingId ?? slugifyHeading(label);
+    let id = base;
+    let suffix = 2;
+    while (usedIds.has(id)) id = `${base}-${suffix++}`;
+    usedIds.add(id);
+
+    const part = /\bdata-article-part=["']true["']/i.test(attributes);
+    const cleanAttributes = attributes
+      .replace(/\s+id=["'][^"']+["']/i, "")
+      .replace(/\s+data-article-part=["']true["']/i, "");
+    headings.push({ id, label, part });
+    return `<h2${cleanAttributes} id="${id}">${content}</h2>`;
+  });
+  const parts = headings.filter((heading) => heading.part);
+  const tocHeadings = parts.length > 1 ? parts : headings;
+
+  return {
+    html: normalizedHtml,
+    toc: tocHeadings.map(({ id, label }) => ({ id, label })),
+  };
 }
 
 function addTileHeadingAnchors(html: string) {
@@ -84,35 +138,6 @@ function addTileHeadingAnchors(html: string) {
   );
 }
 
-function addGeneratedToc(html: string, title = "Inhoudsopgave") {
-  const usedIds = new Set<string>();
-  const headings: Array<{ id: string; label: string }> = [];
-  const withAnchors = html.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (heading, attributes: string, content: string) => {
-    const label = content.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").trim();
-    const existingId = attributes.match(/\bid=["']([^"']+)["']/i)?.[1];
-    let id = existingId ?? label
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "");
-
-    const base = id || "onderdeel";
-    id = base;
-    let suffix = 2;
-    while (usedIds.has(id)) id = `${base}-${suffix++}`;
-    usedIds.add(id);
-    headings.push({ id, label });
-
-    const cleanAttributes = attributes.replace(/\s+id=["'][^"']+["']/i, "");
-    return `<h2${cleanAttributes} id="${id}">${content}</h2>`;
-  });
-
-  if (!headings.length) return withAnchors;
-  const links = headings.map(({ id, label }) => `<li><a href="#${id}">${label}</a></li>`).join("");
-  return `<nav id="toc" aria-label="${title}"><h2>${title}</h2><ul>${links}</ul></nav>${withAnchors}`;
-}
-
 function improveBrickPatterns(html: string) {
   const diagram = (type: "half" | "full", label: string) => {
     const rows = Array.from({ length: 6 }, (_, row) => {
@@ -133,13 +158,18 @@ function improveBrickPatterns(html: string) {
     );
 }
 
+const electricity = normalizeOriginalArticle(prepareOriginalHtml(electricityRaw, true));
+const doors = normalizeOriginalArticle(prepareOriginalHtml(doorsRaw, true));
+const tiles = normalizeOriginalArticle(improveBrickPatterns(addTileHeadingAnchors(prepareOriginalHtml(tilesRaw))));
+
 export const originalArticles = [
   {
     slug: "veilige-elektrische-installatie",
     title: "Electriciteit",
     category: "Electriciteit",
     language: "nl",
-    html: addGeneratedToc(prepareOriginalHtml(electricityRaw, true)),
+    html: electricity.html,
+    toc: electricity.toc,
     source: `${repository}/electriciteit.html`,
     image: "/blog/hoofdschakelaar.jpg",
     imageAlt: "Hoofdschakelaar in een bestaande groepenkast",
@@ -149,7 +179,8 @@ export const originalArticles = [
     title: "Hang- en sluitwerk: Deursloten, scharnieren en beslag",
     category: "Binnendeuren Renovatie & Hang- en sluitwerk",
     language: "nl",
-    html: addGeneratedToc(prepareOriginalHtml(doorsRaw, true)),
+    html: doors.html,
+    toc: doors.toc,
     source: `${repository}/Binnendeuren_hang_en_sluitwerk.html`,
     image: "/blog/doorhangende-deurhendel.jpg",
     imageAlt: "Doorhangende deurhendel op een oudere binnendeur",
@@ -159,7 +190,8 @@ export const originalArticles = [
     title: "Bathroom & Tiles Guide",
     category: "Tiles, grout, standard heights and sizes, design choices and more...",
     language: "en",
-    html: improveBrickPatterns(addTileHeadingAnchors(prepareOriginalHtml(tilesRaw))),
+    html: tiles.html,
+    toc: tiles.toc,
     source: `${repository}/tilesandgrout.html`,
     image: "/blog/badkamer-tegels.jpg",
     imageAlt: "Badkamer met tegelwerk uit het eigen projectarchief",
