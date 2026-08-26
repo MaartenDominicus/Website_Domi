@@ -134,8 +134,10 @@ test("publishes source-based knowledge articles as one cohesive article", async 
   const dutchTiles = await request("/kennis/tegels-en-voegen-kiezen");
   assert.equal(dutchTiles.status, 200);
   const dutchTilesHtml = await dutchTiles.text();
-  assert.match(dutchTilesHtml, /class="blog-body"/);
-  assert.doesNotMatch(dutchTilesHtml, /class="original-article"/);
+  assert.match(dutchTilesHtml, /class="original-article"/);
+  assert.match(dutchTilesHtml, /Volledige technische bron/);
+  assert.match(dutchTilesHtml, /Washer-Dryer Combo/);
+  assert.doesNotMatch(dutchTilesHtml, /class="blog-body"/);
 });
 
 test("publishes every new suggestion-based article in Dutch and English", async () => {

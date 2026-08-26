@@ -11,7 +11,8 @@ type Props = {
 
 export default function KnowledgeArticlePage({ article, locale, original }: Props) {
   const isDutch = locale === "nl";
-  const usesOriginal = original?.language === locale;
+  const displayedOriginal = original && (original.language === locale || locale === "nl") ? original : undefined;
+  const sourceLanguageDiffers = displayedOriginal?.language !== undefined && displayedOriginal.language !== locale;
   const home = isDutch ? "/" : "/en";
   const nlPath = `/kennis/${article.slug}`;
   const enPath = `/en/insights/${article.slug}`;
@@ -23,6 +24,8 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
         practical: "Praktische gids",
         source: "Bron & redactie",
         sourceText: "Dit artikel is door Domi Installatie uitgewerkt op basis van praktijkkennis en het genoemde onderwerp uit het openbare TroosCom-archief.",
+        sourceLanguageTitle: "Volledige technische bron",
+        sourceLanguageText: "De complete broninformatie staat hieronder in de oorspronkelijke Engelse taal. Zo blijven alle maten, tabellen en technische keuzemogelijkheden behouden.",
         updated: article.updated ?? "Domi Installatie kennisbank",
         ctaEyebrow: "Van kennis naar uitvoering",
         ctaTitle: "Uw situatie professioneel laten beoordelen?",
@@ -36,14 +39,16 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
         practical: "Practical guide",
         source: "Source & editorial",
         sourceText: "Domi Installation developed this article from practical experience and the referenced topic in the public TroosCom archive.",
+        sourceLanguageTitle: "Complete technical source",
+        sourceLanguageText: "The complete source information appears below in its original language, preserving every measurement, table and technical option.",
         updated: article.updated ?? "Domi Installation knowledge base",
         ctaEyebrow: "From advice to execution",
         ctaTitle: "Would you like a professional assessment?",
         ctaText: "Tell us what you want to change. We review technical work, planning and finishing as one project.",
         ctaButton: "Discuss your project",
       };
-  const contents = usesOriginal
-    ? original.toc
+  const contents = displayedOriginal
+    ? displayedOriginal.toc
     : article.headings.map((label, index) => ({ id: `stap-${index + 1}`, label }));
 
   return (
@@ -91,8 +96,16 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
           </aside>
 
           <div className="blog-main-column">
-            {usesOriginal ? (
-              <OriginalArticleBody html={original.html} />
+            {displayedOriginal ? (
+              <>
+                {sourceLanguageDiffers ? (
+                  <aside className="source-language-note">
+                    <p>{labels.sourceLanguageTitle}</p>
+                    <span>{labels.sourceLanguageText}</span>
+                  </aside>
+                ) : null}
+                <OriginalArticleBody html={displayedOriginal.html} />
+              </>
             ) : (
               <>
                 <section className="blog-intro" aria-labelledby="blog-intro-title">
