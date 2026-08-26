@@ -35,6 +35,7 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.match(html, /Pinterest/);
   assert.equal((html.match(/<small>Klantreactie<\/small>/g) ?? []).length, 18);
   assert.equal((html.match(/class="review-card"/g) ?? []).length, 18);
+  assert.equal((html.match(/class="review-card-trigger"/g) ?? []).length, 18);
   assert.match(html, /<mark class="review-highlight">hard gewerkt<\/mark>/);
   assert.match(html, /<mark class="review-highlight">allround<\/mark>/);
   assert.match(html, /aria-label="Pauzeer"/);

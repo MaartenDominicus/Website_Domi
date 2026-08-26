@@ -59,6 +59,25 @@ const reviewHighlights = {
   ],
 } as const;
 
+const reviewPhotos = {
+  nl: [
+    { src: images.craft, alt: "Gerealiseerd tuinhuis met overdekte lounge in Amsterdam", label: "Tuinhuis · Amsterdam" },
+    { src: images.craft, alt: "Gerealiseerd tiny house met houten buitenruimte", label: "Tiny House · Amsterdam" },
+    { src: images.craft, alt: "Onderhoudsarm uitgevoerd tuinhuis", label: "Tuinhuis · Amsterdam" },
+    { src: images.hero, alt: "Afgewerkte recreatiewoning tussen de bomen", label: "Recreatiewoning · IJsselmuiden" },
+    { src: images.electric, alt: "Afgewerkte woning na een complete renovatie", label: "Complete verbouwing" },
+    { src: images.kitchen, alt: "Maatwerk en afwerking in een gerenoveerde woning", label: "Maatwerk bed & kast" },
+  ],
+  en: [
+    { src: images.hero, alt: "Completed recreational home among the trees", label: "Recreational home" },
+    { src: images.hero, alt: "Completed recreational home in woodland", label: "Recreational home · Maarn" },
+    { src: images.craft, alt: "Completed timber decking and garden room", label: "Decking · Amsterdam" },
+    { src: images.craft, alt: "Completed tiny house with timber exterior", label: "Tiny House · Amsterdam" },
+    { src: images.craft, alt: "Low-maintenance completed garden room", label: "Garden room · Amsterdam" },
+    { src: images.kitchen, alt: "Bespoke joinery in a renovated home", label: "Bespoke bed & wardrobe" },
+  ],
+} as const;
+
 const projectArchive = "https://github.com/MaartenDominicus/TroosCom";
 const imageSources = {
   hero: projectArchive,
@@ -319,6 +338,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const [reviewCursor, setReviewCursor] = useState(content.nl.reviews.items.length);
   const [reviewsPaused, setReviewsPaused] = useState(false);
   const [reviewsHovered, setReviewsHovered] = useState(false);
+  const [selectedReviewIndex, setSelectedReviewIndex] = useState<number | null>(null);
   const [activeServiceIndex, setActiveServiceIndex] = useState<number | null>(null);
   const [typedServiceDetail, setTypedServiceDetail] = useState("");
   const [closingServiceIndex, setClosingServiceIndex] = useState<number | null>(null);
@@ -351,6 +371,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const activeArticle = activeArticleIndex === null ? null : knowledgeItems[activeArticleIndex];
   const activeServiceDetail = activeServiceDetailIndex === null ? null : t.services.items[activeServiceDetailIndex];
   const activeCabinVideo = cabinVideos[activeCabinVideoIndex];
+  const selectedReviewPhoto = selectedReviewIndex === null ? null : reviewPhotos[language][selectedReviewIndex];
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -471,12 +492,12 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   }, []);
 
   useEffect(() => {
-    if (reviewsPaused || reviewsHovered || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (selectedReviewIndex !== null || reviewsPaused || reviewsHovered || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const timer = window.setTimeout(() => {
       setReviewCursor((cursor) => cursor + 1);
     }, 5200);
     return () => window.clearTimeout(timer);
-  }, [reviewCursor, reviewsHovered, reviewsPaused]);
+  }, [reviewCursor, reviewsHovered, reviewsPaused, selectedReviewIndex]);
 
   useEffect(() => {
     const viewport = reviewViewportRef.current;
@@ -664,6 +685,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
   function changeLanguage(next: Language) {
     setReviewCursor(content[next].reviews.items.length);
+    setSelectedReviewIndex(null);
     setTypedServiceDetail("");
     setLanguage(next);
     setMenuOpen(false);
@@ -1001,26 +1023,47 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
         <section className="reviews section-pad" id="reviews">
           <SectionIntro eyebrow={t.reviews.eyebrow} title={t.reviews.title} />
           <div className="review-heading-row">
-            <p className="placeholder-note">{t.reviews.note}</p>
+            <p className="placeholder-note">{t.reviews.note} <span>{language === "nl" ? "Klik op een review voor de projectfoto." : "Select a review to see the project photo."}</span></p>
           </div>
-          <div
-            className="review-viewport"
-            ref={reviewViewportRef}
-            onMouseEnter={() => setReviewsHovered(true)}
-            onMouseLeave={() => setReviewsHovered(false)}
-            onFocusCapture={() => setReviewsHovered(true)}
-            onBlurCapture={(event) => {
-              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setReviewsHovered(false);
-            }}
-          >
-            <div className="review-grid">
-              {[0, 1, 2].map((group) => t.reviews.items.map(([quote, attribution], index) => (
-                <article className="review-card" aria-hidden={group !== 1} key={`${group}-${attribution}`}>
-                  <div className="review-meta"><span>0{index + 1}</span><span>{t.reviews.label}</span></div>
-                  <blockquote><HighlightedReview quote={quote} terms={reviewHighlights[language][index]} /></blockquote><p>{attribution}</p><small>{t.reviews.label}</small>
-                </article>
-              )))}
+          <div className={`review-showcase${selectedReviewPhoto ? " has-selection" : ""}`}>
+            <div
+              className="review-viewport"
+              ref={reviewViewportRef}
+              onMouseEnter={() => setReviewsHovered(true)}
+              onMouseLeave={() => setReviewsHovered(false)}
+              onFocusCapture={() => setReviewsHovered(true)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setReviewsHovered(false);
+              }}
+            >
+              <div className="review-grid">
+                {[0, 1, 2].map((group) => t.reviews.items.map(([quote, attribution], index) => (
+                  <article className={`review-card${selectedReviewIndex === index ? " selected" : ""}`} aria-hidden={group !== 1} key={`${group}-${attribution}`}>
+                    <button
+                      className="review-card-trigger"
+                      type="button"
+                      tabIndex={group === 1 ? 0 : -1}
+                      aria-expanded={selectedReviewIndex === index}
+                      aria-controls="selected-review-photo"
+                      aria-label={language === "nl" ? `Bekijk projectfoto bij review van ${attribution}` : `View project photo for review by ${attribution}`}
+                      onClick={() => {
+                        setSelectedReviewIndex(index);
+                        setReviewCursor(group * reviewCount + index);
+                      }}
+                    />
+                    <div className="review-meta"><span>0{index + 1}</span><span>{t.reviews.label}</span></div>
+                    <blockquote><HighlightedReview quote={quote} terms={reviewHighlights[language][index]} /></blockquote><p>{attribution}</p><small>{t.reviews.label}</small>
+                  </article>
+                )))}
+              </div>
             </div>
+            {selectedReviewPhoto && selectedReviewIndex !== null && (
+              <aside className="review-photo-panel" id="selected-review-photo" aria-live="polite">
+                <img src={selectedReviewPhoto.src} alt={selectedReviewPhoto.alt} width="640" height="530" />
+                <button type="button" className="review-photo-close" aria-label={language === "nl" ? "Projectfoto sluiten" : "Close project photo"} onClick={() => setSelectedReviewIndex(null)}>×</button>
+                <div className="review-photo-caption"><span>{language === "nl" ? "Bij deze review" : "Featured review"}</span><strong>{selectedReviewPhoto.label}</strong><small>{t.reviews.items[selectedReviewIndex][1]}</small></div>
+              </aside>
+            )}
           </div>
           <div className="review-navigation">
             <div className="review-controls">
