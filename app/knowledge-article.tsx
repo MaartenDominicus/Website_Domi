@@ -112,13 +112,16 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
             </section>
 
             {original ? (
-              <details className="legacy-article">
-                <summary><span>{labels.original}</span><small>{labels.originalNote}</small></summary>
+              <section className="legacy-article" aria-labelledby="complete-original-title">
+                <header className="legacy-article-heading">
+                  <p>{labels.original}</p>
+                  <h2 id="complete-original-title">{original.title}</h2>
+                  <span>{labels.originalNote}</span>
+                </header>
                 <div className="legacy-article-content">
-                  <h2>{original.title}</h2>
                   <OriginalArticleBody html={original.html} />
                 </div>
-              </details>
+              </section>
             ) : null}
           </div>
         </div>

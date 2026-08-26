@@ -97,6 +97,8 @@ test("publishes source-based knowledge articles with metadata and references", a
     assert.match(html, new RegExp(`<figure class="original-blog-cover"><img src="${cover.replaceAll(".", "\\.")}"`));
     assert.doesNotMatch(html, /Over deze publicatie|About this publication/);
     assert.doesNotMatch(html, /class="original-blog-note"/);
+    assert.doesNotMatch(html, /<details class="legacy-article"/);
+    assert.match(html, /<section class="legacy-article"/);
     assert.match(html, /<a class="brand" href="\/"/);
     assert.match(html, /<a class="blog-back" href="\/#kennis"/);
     assert.match(html, /class="scroll-progress"/);
