@@ -504,22 +504,35 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
     const cards = viewport?.querySelectorAll<HTMLElement>(".review-card");
     const card = cards?.[reviewCursor];
     if (!viewport || !card) return;
-    const targetLeft = card.getBoundingClientRect().left - viewport.getBoundingClientRect().left + viewport.scrollLeft;
-    viewport.scrollTo({ left: targetLeft, behavior: reviewCarouselReady.current ? "smooth" : "auto" });
-    reviewCarouselReady.current = true;
 
+    function alignCard(target: HTMLElement, behavior: ScrollBehavior) {
+      const targetLeft = target.getBoundingClientRect().left - viewport.getBoundingClientRect().left + viewport.scrollLeft;
+      viewport.scrollTo({ left: targetLeft, behavior });
+    }
+
+    alignCard(card, reviewCarouselReady.current ? "smooth" : "auto");
+    reviewCarouselReady.current = true;
+    const realignTimer = selectedReviewIndex === null ? null : window.setTimeout(() => {
+      const selectedCard = cards[reviewCursor];
+      if (selectedCard) alignCard(selectedCard, "smooth");
+    }, 500);
+
+    let resetTimer: number | null = null;
     if (reviewCursor >= reviewCount * 2 || reviewCursor < reviewCount) {
       const resetCursor = reviewCount + reviewIndex;
-      const resetTimer = window.setTimeout(() => {
+      resetTimer = window.setTimeout(() => {
         const resetCard = cards[resetCursor];
         if (!resetCard) return;
-        const resetLeft = resetCard.getBoundingClientRect().left - viewport.getBoundingClientRect().left + viewport.scrollLeft;
-        viewport.scrollTo({ left: resetLeft, behavior: "auto" });
+        alignCard(resetCard, "auto");
         setReviewCursor(resetCursor);
       }, 720);
-      return () => window.clearTimeout(resetTimer);
     }
-  }, [language, reviewCount, reviewCursor, reviewIndex]);
+
+    return () => {
+      if (realignTimer !== null) window.clearTimeout(realignTimer);
+      if (resetTimer !== null) window.clearTimeout(resetTimer);
+    };
+  }, [language, reviewCount, reviewCursor, reviewIndex, selectedReviewIndex]);
 
   useEffect(() => {
     if (activeArticleIndex === null) return;

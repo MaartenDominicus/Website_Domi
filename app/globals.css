@@ -344,7 +344,7 @@ section[id] { scroll-margin-top: 76px; }
 .review-showcase { display: grid; transition: grid-template-columns .45s cubic-bezier(.22,.8,.24,1); }
 .review-showcase.has-selection { gap: 18px; grid-template-columns: minmax(0,1.25fr) minmax(300px,.75fr); }
 .review-viewport { margin-right: calc(-1 * max(24px, calc((100vw - var(--max))/2 + 88px))); min-width: 0; overflow: hidden; overscroll-behavior-x: none; padding-right: max(24px, calc((100vw - var(--max))/2 + 88px)); scrollbar-width: none; touch-action: pan-y; }
-.review-showcase.has-selection .review-viewport { margin-right: 0; padding-right: 0; }
+.review-showcase.has-selection .review-viewport { margin-right: 0; padding: 6px 12px 18px 6px; }
 .review-viewport::-webkit-scrollbar { display: none; }
 .review-grid { display: flex; gap: 18px; width: max-content; }
 .review-card { background: rgba(255,255,255,.78); border-radius: 26px; cursor: pointer; display: flex; flex: 0 0 min(405px, calc((100vw - 224px) / 3)); flex-direction: column; min-height: 390px; overflow: hidden; padding: 28px; position: relative; transition: background .25s,box-shadow .25s,transform .25s; }
