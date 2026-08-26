@@ -888,7 +888,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           <div className="project-grid">
             {t.projects.items.map((project, index) => (
               <article className="project-card" key={project.title}>
-                <Link
+                <a
                   className="project-card-trigger"
                   href={language === "nl" ? `/projecten/${project.slug}` : `/en/projects/${project.slug}`}
                   aria-label={`${t.projects.open}: ${project.title}`}

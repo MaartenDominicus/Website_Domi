@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { ProjectLocale, ProjectStory } from "./project-data";
 
 const copy = {
@@ -38,12 +37,12 @@ export default function ProjectDetail({ project, locale }: { project: ProjectSto
     <div className="project-page" lang={locale}>
       <a className="skip-link" href="#project-content">{locale === "nl" ? "Direct naar de inhoud" : "Skip to content"}</a>
       <header className="project-detail-header">
-        <Link className="brand" href={home} aria-label={t.home}>
+        <a className="brand" href={home} aria-label={t.home}>
           <span className="brand-mark"><img src="/domi-logo-intro.gif" alt="" /></span>
           <span className="brand-name"><strong>DOMI</strong><small>Installatie</small></span>
-        </Link>
-        <Link className="project-back" href={`${home}#projecten`}><span>←</span>{t.back}</Link>
-        <Link className="header-cta" href={`${home}#contact`}>{t.cta}</Link>
+        </a>
+        <a className="project-back" href={`${home}#projecten`}><span>←</span>{t.back}</a>
+        <a className="header-cta" href={`${home}#contact`}>{t.cta}</a>
       </header>
 
       <main id="project-content">
@@ -94,13 +93,13 @@ export default function ProjectDetail({ project, locale }: { project: ProjectSto
           <p className="eyebrow"><span />{t.ctaEyebrow}</p>
           <h2>{t.ctaTitle}</h2>
           <p>{t.ctaText}</p>
-          <Link className="button button-light" href={`${home}#contact`}>{t.cta}<span>↗</span></Link>
+          <a className="button button-light" href={`${home}#contact`}>{t.cta}<span>↗</span></a>
         </section>
       </main>
 
       <footer className="project-detail-footer">
         <span>© {new Date().getFullYear()} Domi Installatie</span>
-        <Link href={home}>{t.home} ↗</Link>
+        <a href={home}>{t.home} ↗</a>
       </footer>
     </div>
   );
