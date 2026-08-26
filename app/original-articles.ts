@@ -36,9 +36,48 @@ function prepareOriginalHtml(raw: string, moveFirstHeading = false) {
 
   return html
     .replaceAll('href="ventilatie.html"', `href="${repository}/ventilatie.html" target="_blank" rel="noreferrer"`)
-    .replaceAll('class="collapsed"', 'class="expanded"')
-    .replace(/<button\s+/gi, '<button type="button" disabled ')
     .replace(/<img\s+/gi, '<img loading="lazy" decoding="async" ');
+}
+
+function addTileHeadingAnchors(html: string) {
+  const headings = [
+    ["h3", "Tile Size", "tile-size"],
+    ["h4", "Half-brick pattern", "half-brick-pattern"],
+    ["h4", "Full-brick pattern", "full-brick-pattern"],
+    ["h3", "Tile Shape", "tile-shape"],
+    ["h3", "Tiling Height", "tiling-height"],
+    ["h3", "Tile Edge Corner Types", "tile-edge-corner-types"],
+    ["h3", "Tile Surface Finish", "tile-surface-finish"],
+    ["h3", "Tile Type (wall or floor)", "tile-type"],
+    ["h3", "Exterior Corner Finish", "exterior-corner-finish"],
+    ["h3", "Bathroom / Toilet Door Threshold", "bathroom-toilet-door-threshold"],
+    ["h3", "Natural Stone", "natural-stone"],
+    ["h3", "Grout width", "grout-width"],
+    ["h3", "Grout Type", "grout-type"],
+    ["h3", "Grout and Sealant Color", "grout-and-sealant-color"],
+    ["h2", "Seniors, Limited Mobility, Wheelchair Users", "seniors-limited-mobility-wheelchair-users"],
+    ["h2", "Shower", "shower"],
+    ["h2", "Bath", "bath"],
+    ["h2", "Sink / Vanity", "sink-vanity"],
+    ["h2", "1. Sink or Vanity", "sink-or-vanity"],
+    ["h3", "Shower Faucet", "shower-faucet"],
+    ["h3", "Shower Floor", "shower-floor"],
+    ["h3", "Shower Drain", "shower-drain"],
+    ["h2", "3. Toilet", "toilet-section"],
+    ["h2", "4. Bath", "bath-section"],
+    ["h2", "5. Wash Basin/Sink", "wash-basin"],
+    ["h2", "6. Mirror", "mirror-section"],
+    ["h2", "7. Power Outlets Near Sink", "power-outlets"],
+    ["h2", "8. Lighting", "lighting-section"],
+    ["h2", "9. Fountain (Small Washbasin for Toilet)", "fountain"],
+    ["h2", "11. Heating", "heating"],
+    ["h2", "12. Accessories", "accessories"],
+  ] as const;
+
+  return headings.reduce(
+    (result, [tag, label, id]) => result.replace(`<${tag}>${label}</${tag}>`, `<${tag} id="${id}">${label}</${tag}>`),
+    html,
+  );
 }
 
 export const originalArticles = [
@@ -63,7 +102,7 @@ export const originalArticles = [
     title: "Bathroom & Tiles Guide",
     category: "Tiles, grout, standard heights and sizes, design choices and more...",
     language: "en",
-    html: prepareOriginalHtml(tilesRaw),
+    html: addTileHeadingAnchors(prepareOriginalHtml(tilesRaw)),
     source: `${repository}/tilesandgrout.html`,
   },
 ] as const satisfies readonly OriginalArticle[];

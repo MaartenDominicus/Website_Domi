@@ -91,10 +91,19 @@ test("publishes source-based knowledge articles with metadata and references", a
     assert.match(html, new RegExp(source.replaceAll(".", "\\.")));
     assert.match(html, new RegExp(finalText));
     assert.match(html, /letterlijk en volledig overgenomen/);
+    assert.match(html, /<a class="brand" href="\/"/);
+    assert.match(html, /<a class="blog-back" href="\/#kennis"/);
     const articleStart = html.indexOf('<div class="original-article">');
     const articleEnd = html.indexOf('<section class="blog-cta">', articleStart);
     const visibleArticle = html.slice(articleStart, articleEnd).replace(/<!--[\s\S]*?-->/g, "");
     assert.equal((visibleArticle.match(/<img\b/g) ?? []).length, imageCount);
+
+    if (path.endsWith("tegels-en-voegen-kiezen")) {
+      assert.match(visibleArticle, /<button id="collapse-all">Expand All<\/button>/);
+      assert.doesNotMatch(visibleArticle, /<button[^>]*disabled/);
+      const tocTargets = [...visibleArticle.matchAll(/<a href="#([^"]+)"/g)].map((match) => match[1]);
+      for (const target of tocTargets) assert.match(visibleArticle, new RegExp(`id="${target}"`));
+    }
   }
 
   const english = await request("/en/insights/veilige-elektrische-installatie");

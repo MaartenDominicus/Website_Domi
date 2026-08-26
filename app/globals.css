@@ -396,8 +396,6 @@ section[id] { scroll-margin-top: 76px; }
 .original-article #toc h2 { color: var(--blue); font-size: clamp(2rem,4vw,3.6rem); margin: 0 0 20px; }
 .original-article #toc button { background: white; border: 1px solid #c9dbe5; border-radius: 99px; color: var(--ink); font-size: .75rem; font-weight: 700; padding: 9px 13px; text-align: left; }
 .original-article #toc button:hover { border-color: var(--blue); color: var(--blue); }
-.original-article #toc #collapse-all { display: none; }
-.original-article #toc button:disabled { cursor: default; opacity: 1; }
 .original-article #toc > ul { margin-bottom: 0; }
 .original-article #toc ul { gap: 6px; list-style: none; padding-left: 0; }
 .original-article #toc ul ul { border-left: 1px solid #b9ced9; margin: 5px 0 2px 9px; padding-left: 18px; }
