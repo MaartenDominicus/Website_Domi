@@ -948,10 +948,18 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           <span className="scroll-depth-glow" aria-hidden="true" />
           <span className="scroll-depth-foreground" aria-hidden="true" />
           <div className="scroll-depth-story-copy">
-            <p className="eyebrow"><span />{language === "nl" ? "Onzichtbaar goed geregeld" : "Seamlessly taken care of"}</p>
-            <h2>{language === "nl" ? <>Techniek verdwijnt.<br /><em>Comfort blijft.</em></> : <>The technology disappears.<br /><em>Comfort remains.</em></>}</h2>
-            <p>{language === "nl" ? "Van leidingwerk tot de laatste voeg: één lijn in techniek, materiaal en afwerking." : "From utilities to the final grout line: one coherent approach to engineering, materials and finish."}</p>
-            <a className="button button-light" href="#projecten">{language === "nl" ? "Bekijk projecten" : "View projects"}<span>↓</span></a>
+            <p className="eyebrow"><span />{language === "nl" ? "Van ruwbouw tot eindresultaat" : "From first fix to final finish"}</p>
+            <h2>{language === "nl" ? <>Alles klopt.<br /><em>Tot in de voeg.</em></> : <>Every detail works.<br /><em>Right down to the grout.</em></>}</h2>
+            <p>{language === "nl" ? "Elektra, leidingwerk, tegelwerk en afwerking komen samen in één doordacht plan — met één aanspreekpunt voor het hele project." : "Electrics, pipework, tiling and finishing come together in one considered plan — with one point of contact throughout."}</p>
+            <ul className="scroll-depth-proof" aria-label={language === "nl" ? "Voordelen van één vakteam" : "Benefits of one specialist team"}>
+              <li>{language === "nl" ? "Eén vakteam" : "One specialist team"}</li>
+              <li>{language === "nl" ? "Eén planning" : "One schedule"}</li>
+              <li>{language === "nl" ? "Eén eindresultaat" : "One finished result"}</li>
+            </ul>
+            <div className="scroll-depth-actions">
+              <a className="button button-light" href="#projecten">{language === "nl" ? "Bekijk onze projecten" : "View our projects"}<span>↓</span></a>
+              <p><span>{language === "nl" ? "Uitgelicht" : "Featured"}</span>{language === "nl" ? "Badkamerrenovatie · Amsterdam" : "Bathroom renovation · Amsterdam"}</p>
+            </div>
           </div>
         </section>
 
