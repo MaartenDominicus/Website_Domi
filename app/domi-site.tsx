@@ -78,6 +78,15 @@ const reviewPhotos = {
   ],
 } as const;
 
+const reviewProjectSlugs = [
+  "tuinhuis-amsterdam",
+  "tuinhuis-amsterdam",
+  "tuinhuis-amsterdam",
+  "tuinhuis-amsterdam",
+  "complete-renovatie-rotterdam",
+  "complete-renovatie-amsterdam",
+] as const;
+
 const projectArchive = "https://github.com/MaartenDominicus/TroosCom";
 const imageSources = {
   hero: projectArchive,
@@ -1068,6 +1077,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
                     <div className="review-meta"><span>0{index + 1}</span><span>{t.reviews.label}</span></div>
                     <span className="review-photo-hint" aria-hidden="true">{language === "nl" ? "Klik voor projectfoto" : "Click for project photo"}<i>↗</i></span>
                     <blockquote><HighlightedReview quote={quote} terms={reviewHighlights[language][index]} /></blockquote><p>{attribution}</p><small>{t.reviews.label}</small>
+                    <a className="review-project-link" href={language === "nl" ? `/projecten/${reviewProjectSlugs[index]}` : `/en/projects/${reviewProjectSlugs[index]}`}>{language === "nl" ? "Bekijk project" : "View project"}<span>↗</span></a>
                   </article>
                 )))}
               </div>

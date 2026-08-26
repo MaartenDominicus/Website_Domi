@@ -36,6 +36,8 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.equal((html.match(/<small>Klantreactie<\/small>/g) ?? []).length, 18);
   assert.equal((html.match(/class="review-card"/g) ?? []).length, 18);
   assert.equal((html.match(/class="review-card-trigger"/g) ?? []).length, 18);
+  assert.equal((html.match(/class="review-project-link"/g) ?? []).length, 18);
+  assert.match(html, /href="\/projecten\/tuinhuis-amsterdam"[^>]*>Bekijk project/);
   assert.match(html, /Klik voor projectfoto/);
   assert.match(html, /<mark class="review-highlight">hard gewerkt<\/mark>/);
   assert.match(html, /<mark class="review-highlight">allround<\/mark>/);
