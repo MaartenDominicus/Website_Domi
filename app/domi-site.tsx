@@ -1003,7 +1003,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           <div className="knowledge-grid">
             {knowledgeItems.map((article, index) => (
               <article className="knowledge-card" key={article.title}>
-                <Link
+                <a
                   className="knowledge-card-trigger"
                   ref={(element) => { articleTriggerRefs.current[index] = element; }}
                   href={language === "nl" ? `/kennis/${article.slug}` : `/en/insights/${article.slug}`}
