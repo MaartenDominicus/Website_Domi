@@ -99,6 +99,7 @@ test("publishes source-based knowledge articles with metadata and references", a
     assert.doesNotMatch(html, /class="original-blog-note"/);
     assert.match(html, /<a class="brand" href="\/"/);
     assert.match(html, /<a class="blog-back" href="\/#kennis"/);
+    assert.match(html, /class="scroll-progress"/);
     assert.match(html, new RegExp(`href="/en/insights/${path.split("/").at(-1)}"`));
     const articleStart = html.indexOf('<div class="original-article">');
     const articleEnd = html.indexOf('<section class="blog-cta">', articleStart);

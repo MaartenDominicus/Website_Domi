@@ -50,6 +50,7 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
     <main className="blog-page">
       <ArticleLocaleSync locale={locale} />
       <header className="blog-header">
+        <div className="scroll-progress" aria-hidden="true" />
         <a className="brand" href={home} aria-label={isDutch ? "Domi Installatie homepage" : "Domi Installation home"}>
           <span className="brand-mark"><img src="/domi-logo.jpg" alt="" width="58" height="58" /></span>
           <span className="brand-name"><strong>DOMI</strong><small>Installatie</small></span>
