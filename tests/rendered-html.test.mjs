@@ -21,6 +21,7 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.match(html, /<title>Domi Installatie \| Bouw, installatie &amp; renovatie<\/title>/i);
   assert.match(html, /Eén vakteam/);
   assert.match(html, /<img class="hero-image"[^>]*apeldoorn-hideaway\.webp/);
+  assert.match(html, /class="hero-video-background"[^>]*youtube-nocookie\.com\/embed\/VQybpgshfIs/);
   assert.doesNotMatch(html, /pexels/i);
   assert.match(html, /id="over"/);
   assert.match(html, /id="diensten"/);

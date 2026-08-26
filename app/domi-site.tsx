@@ -563,7 +563,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   }, [activeServiceDetailIndex]);
 
   useEffect(() => {
-    const heroImage = document.querySelector<HTMLElement>(".hero-image");
+    const heroMedia = document.querySelector<HTMLElement>(".hero-media");
     const processList = document.querySelector<HTMLElement>(".process-list");
     const scrollDepthStory = document.querySelector<HTMLElement>(".scroll-depth-story");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -574,8 +574,8 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
       const progress = scrollRange > 0 ? Math.min(1, window.scrollY / scrollRange) : 0;
       document.documentElement.style.setProperty("--scroll-progress", `${progress * 100}%`);
 
-      if (heroImage && !reduceMotion.matches && window.scrollY < window.innerHeight * 1.35) {
-        heroImage.style.transform = `translate3d(0, ${window.scrollY * 0.075}px, 0) scale(1.055)`;
+      if (heroMedia && !reduceMotion.matches && window.scrollY < window.innerHeight * 1.35) {
+        heroMedia.style.transform = `translate3d(0, ${window.scrollY * 0.075}px, 0) scale(1.055)`;
       }
       if (processList) {
         const rect = processList.getBoundingClientRect();
@@ -606,7 +606,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
     return () => {
       window.removeEventListener("scroll", handleScroll);
       document.documentElement.style.removeProperty("--scroll-progress");
-      heroImage?.style.removeProperty("transform");
+      heroMedia?.style.removeProperty("transform");
       processList?.style.removeProperty("--process-progress");
       scrollDepthStory?.style.removeProperty("--depth-bg-y");
       scrollDepthStory?.style.removeProperty("--depth-fg-y");
@@ -788,7 +788,17 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
       <main id="main">
         <section className="hero" id="home">
-          <img className="hero-image" src={images.hero} alt={t.hero.alt} width="640" height="530" fetchPriority="high" />
+          <div className="hero-media" aria-hidden="true">
+            <img className="hero-image" src={images.hero} alt="" width="640" height="530" fetchPriority="high" />
+            <iframe
+              key={`hero-${activeCabinVideo.id}`}
+              className="hero-video-background"
+              src={`https://www.youtube-nocookie.com/embed/${activeCabinVideo.id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${activeCabinVideo.id}&playsinline=1&rel=0&start=${activeCabinVideo.start}&end=${activeCabinVideo.end}`}
+              title={`${activeCabinVideo.title} — Fairytale Cabins`}
+              allow="autoplay; encrypted-media"
+              tabIndex={-1}
+            />
+          </div>
           <div className="hero-overlay" />
           <div className="hero-content">
             <p className="eyebrow"><span />{t.hero.eyebrow}</p>
