@@ -1,4 +1,3 @@
-import Link from "next/link";
 import ArticleLocaleSync from "./article-locale-sync";
 import type { KnowledgeArticle } from "./knowledge-data";
 import OriginalArticleBody from "./original-article-body";
@@ -51,17 +50,17 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
     <main className="blog-page">
       <ArticleLocaleSync locale={locale} />
       <header className="blog-header">
-        <Link className="brand" href={home} aria-label={isDutch ? "Domi Installatie homepage" : "Domi Installation home"}>
+        <a className="brand" href={home} aria-label={isDutch ? "Domi Installatie homepage" : "Domi Installation home"}>
           <span className="brand-mark"><img src="/domi-logo.jpg" alt="" width="58" height="58" /></span>
           <span className="brand-name"><strong>DOMI</strong><small>Installatie</small></span>
-        </Link>
+        </a>
         <div className="blog-header-actions">
           <nav className="language-switch" aria-label={isDutch ? "Selecteer taal" : "Select language"}>
-            <Link className={isDutch ? "active" : ""} aria-current={isDutch ? "page" : undefined} href={nlPath}>NL</Link>
+            <a className={isDutch ? "active" : ""} aria-current={isDutch ? "page" : undefined} href={nlPath}>NL</a>
             <span>/</span>
-            <Link className={!isDutch ? "active" : ""} aria-current={!isDutch ? "page" : undefined} href={enPath}>EN</Link>
+            <a className={!isDutch ? "active" : ""} aria-current={!isDutch ? "page" : undefined} href={enPath}>EN</a>
           </nav>
-          <Link className="blog-back" href={`${home}#kennis`}>← {labels.back}</Link>
+          <a className="blog-back" href={`${home}#kennis`}>← {labels.back}</a>
         </div>
       </header>
 
@@ -87,7 +86,7 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
                 ))}
               </ol>
             </nav>
-            <Link className="button button-primary" href={`${home}#contact`}>{labels.ctaButton}<span>↗</span></Link>
+            <a className="button button-primary" href={`${home}#contact`}>{labels.ctaButton}<span>↗</span></a>
           </aside>
 
           <div className="blog-main-column">
@@ -128,7 +127,7 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
         <p className="eyebrow"><span />{labels.ctaEyebrow}</p>
         <h2>{labels.ctaTitle}</h2>
         <p>{labels.ctaText}</p>
-        <Link className="button button-light" href={`${home}#contact`}>{labels.ctaButton}<span>↗</span></Link>
+        <a className="button button-light" href={`${home}#contact`}>{labels.ctaButton}<span>↗</span></a>
       </section>
     </main>
   );

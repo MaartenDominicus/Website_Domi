@@ -97,8 +97,8 @@ test("publishes source-based knowledge articles with metadata and references", a
     assert.match(html, new RegExp(`<figure class="original-blog-cover"><img src="${cover.replaceAll(".", "\\.")}"`));
     assert.doesNotMatch(html, /Over deze publicatie|About this publication/);
     assert.doesNotMatch(html, /class="original-blog-note"/);
-    assert.match(html, /<a href="\/" class="brand"/);
-    assert.match(html, /<a href="\/#kennis" class="blog-back"/);
+    assert.match(html, /<a class="brand" href="\/"/);
+    assert.match(html, /<a class="blog-back" href="\/#kennis"/);
     assert.match(html, new RegExp(`href="/en/insights/${path.split("/").at(-1)}"`));
     const articleStart = html.indexOf('<div class="original-article">');
     const articleEnd = html.indexOf('<section class="blog-cta">', articleStart);
