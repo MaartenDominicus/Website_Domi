@@ -915,6 +915,18 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           </ol>
         </section>
 
+        <section
+          className="fixed-photo-story"
+          aria-label={language === "nl" ? "Afgewerkt Domi renovatieproject" : "Completed Domi renovation project"}
+        >
+          <div className="fixed-photo-story-copy reveal-item">
+            <p className="eyebrow"><span />{language === "nl" ? "Onzichtbaar goed geregeld" : "Seamlessly taken care of"}</p>
+            <h2>{language === "nl" ? <>Techniek verdwijnt.<br /><em>Comfort blijft.</em></> : <>The technology disappears.<br /><em>Comfort remains.</em></>}</h2>
+            <p>{language === "nl" ? "Van leidingwerk tot de laatste voeg: één lijn in techniek, materiaal en afwerking." : "From utilities to the final grout line: one coherent approach to engineering, materials and finish."}</p>
+            <a className="button button-light" href="#projecten">{language === "nl" ? "Bekijk projecten" : "View projects"}<span>↓</span></a>
+          </div>
+        </section>
+
         <section className="projects section-pad" id="projecten">
           <h2 className="visually-hidden">{t.projects.eyebrow}</h2>
           <div className="project-grid">
