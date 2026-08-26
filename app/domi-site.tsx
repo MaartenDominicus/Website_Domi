@@ -862,7 +862,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
             <iframe
               key={`hero-${activeCabinVideo.id}`}
               className="hero-video-background"
-              src={`https://www.youtube-nocookie.com/embed/${activeCabinVideo.id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${activeCabinVideo.id}&playsinline=1&rel=0&start=${activeCabinVideo.start}&end=${activeCabinVideo.end}`}
+              src={`https://www.youtube-nocookie.com/embed/${activeCabinVideo.id}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&cc_load_policy=0&modestbranding=1&loop=1&playlist=${activeCabinVideo.id}&playsinline=1&rel=0&start=${activeCabinVideo.start}&end=${activeCabinVideo.end}`}
               title={`${activeCabinVideo.title} — Fairytale Cabins`}
               allow="autoplay; encrypted-media"
               tabIndex={-1}

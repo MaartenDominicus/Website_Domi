@@ -22,6 +22,8 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.match(html, /Eén vakteam/);
   assert.match(html, /<img class="hero-image"[^>]*apeldoorn-hideaway\.webp/);
   assert.match(html, /class="hero-video-background"[^>]*youtube-nocookie\.com\/embed\/VQybpgshfIs/);
+  assert.match(html, /class="hero-video-background"[^>]*disablekb=1/);
+  assert.match(html, /class="hero-video-background"[^>]*cc_load_policy=0/);
   assert.doesNotMatch(html, /pexels/i);
   assert.match(html, /id="over"/);
   assert.match(html, /id="diensten"/);
