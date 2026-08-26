@@ -35,7 +35,7 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.equal((html.match(/<small>Klantreactie<\/small>/g) ?? []).length, 18);
   assert.equal((html.match(/class="review-card"/g) ?? []).length, 18);
   assert.match(html, /aria-label="Pauzeer"/);
-  assert.equal((html.match(/aria-haspopup="dialog"/g) ?? []).length, 14);
+  assert.equal((html.match(/aria-haspopup="dialog"/g) ?? []).length, 8);
   assert.equal((html.match(/class="service-card-shell/g) ?? []).length, 8);
   assert.equal((html.match(/class="service-more-button"/g) ?? []).length, 8);
   assert.equal((html.match(/class="service-image"/g) ?? []).length, 8);
@@ -52,9 +52,13 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.match(html, /Christiaan · Tuinhuis Amsterdam/);
   assert.match(html, /Robin · Tiny House Amsterdam/);
   assert.match(html, /class="scroll-depth-story"/);
-  assert.match(html, /class="scroll-depth-foreground"/);
+  assert.match(html, /class="scroll-depth-video-stage"/);
+  assert.match(html, /youtube-nocookie\.com\/embed\/VQybpgshfIs/);
+  assert.match(html, /Gingerbread Huis/);
+  assert.match(html, /Luka&#x27;s Hut/);
+  assert.match(html, /Maja&#x27;s Hideaway/);
   assert.equal((html.match(/data-process-text=/g) ?? []).length, 12);
-  assert.match(html, /Alles klopt/);
+  assert.match(html, /Cabins die stap voor stap/);
   assert.match(html, /Eén vakteam/);
   assert.match(html, /Badkamerrenovatie · Amsterdam/);
   assert.match(html, /action="https:\/\/formsubmit\.co\/e2a3109e56f2b784903eb6ae24352c31"/);

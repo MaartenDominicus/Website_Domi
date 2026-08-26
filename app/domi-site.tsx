@@ -34,6 +34,12 @@ const serviceImages = [
   images.tiling,
 ] as const;
 
+const cabinVideos = [
+  { id: "VQybpgshfIs", title: "Gingerbread Huis", start: 0, end: 18 },
+  { id: "Z7VTo5eOYlU", title: "Luka's Hut", start: 8, end: 28 },
+  { id: "xUzktAPs1ho", title: "Maja's Hideaway", start: 10, end: 30 },
+] as const;
+
 const projectArchive = "https://github.com/MaartenDominicus/TroosCom";
 const imageSources = {
   hero: projectArchive,
@@ -301,6 +307,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const [activeSection, setActiveSection] = useState("");
   const [activeArticleIndex, setActiveArticleIndex] = useState<number | null>(null);
   const [articleExitVisible, setArticleExitVisible] = useState(false);
+  const [activeCabinVideoIndex, setActiveCabinVideoIndex] = useState(0);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLElement>(null);
   const reviewViewportRef = useRef<HTMLDivElement>(null);
@@ -324,6 +331,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const reviewIndex = ((reviewCursor % reviewCount) + reviewCount) % reviewCount;
   const activeArticle = activeArticleIndex === null ? null : knowledgeItems[activeArticleIndex];
   const activeServiceDetail = activeServiceDetailIndex === null ? null : t.services.items[activeServiceDetailIndex];
+  const activeCabinVideo = cabinVideos[activeCabinVideoIndex];
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -339,6 +347,14 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
   useEffect(() => () => {
     if (serviceTileCloseTimer.current !== null) window.clearTimeout(serviceTileCloseTimer.current);
+  }, []);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const interval = window.setInterval(() => {
+      setActiveCabinVideoIndex((current) => (current + 1) % cabinVideos.length);
+    }, 10000);
+    return () => window.clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -862,23 +878,47 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
         <section
           className="scroll-depth-story"
-          aria-label={language === "nl" ? "Afgewerkt Domi renovatieproject" : "Completed Domi renovation project"}
+          aria-label={language === "nl" ? "Cabinbouw van ruwbouw tot eindresultaat" : "Cabin construction from first fix to final finish"}
         >
-          <span className="scroll-depth-background" aria-hidden="true" />
           <span className="scroll-depth-glow" aria-hidden="true" />
-          <span className="scroll-depth-foreground" aria-hidden="true" />
+          <div className="scroll-depth-video-stage" id="cabin-video-stage">
+            <div className="cabin-video-frame" aria-hidden="true">
+              <iframe
+                key={activeCabinVideo.id}
+                src={`https://www.youtube-nocookie.com/embed/${activeCabinVideo.id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${activeCabinVideo.id}&playsinline=1&rel=0&start=${activeCabinVideo.start}&end=${activeCabinVideo.end}`}
+                title={`${activeCabinVideo.title} — Fairytale Cabins`}
+                loading="lazy"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                tabIndex={-1}
+              />
+            </div>
+            <div className="cabin-video-caption" aria-live="polite">
+              <span>0{activeCabinVideoIndex + 1} / 03</span>
+              <strong>{activeCabinVideo.title}</strong>
+              <a href={`https://www.youtube.com/watch?v=${activeCabinVideo.id}`} target="_blank" rel="noreferrer">
+                {language === "nl" ? "Bekijk video" : "Watch video"}<i>↗</i>
+              </a>
+            </div>
+          </div>
           <div className="scroll-depth-story-copy">
             <p className="eyebrow"><span />{language === "nl" ? "Van ruwbouw tot eindresultaat" : "From first fix to final finish"}</p>
-            <h2>{language === "nl" ? <>Alles klopt.<br /><em>Tot in de voeg.</em></> : <>Every detail works.<br /><em>Right down to the grout.</em></>}</h2>
-            <p>{language === "nl" ? "Elektra, leidingwerk, tegelwerk en afwerking komen samen in één doordacht plan — met één aanspreekpunt voor het hele project." : "Electrics, pipework, tiling and finishing come together in one considered plan — with one point of contact throughout."}</p>
-            <ul className="scroll-depth-proof" aria-label={language === "nl" ? "Voordelen van één vakteam" : "Benefits of one specialist team"}>
-              <li>{language === "nl" ? "Eén vakteam" : "One specialist team"}</li>
-              <li>{language === "nl" ? "Eén planning" : "One schedule"}</li>
-              <li>{language === "nl" ? "Eén eindresultaat" : "One finished result"}</li>
-            </ul>
+            <h2>{language === "nl" ? <>Cabins die stap voor stap<br /><em>tot leven komen.</em></> : <>Cabins brought to life,<br /><em>step by step.</em></>}</h2>
+            <p>{language === "nl" ? "Van houten casco en maatwerkdetails tot een volledig afgewerkt verblijf. Bekijk drie korte bouwverhalen uit het Fairytale Cabins-projectarchief." : "From timber shell and bespoke details to a fully finished retreat. Watch three short build stories from the Fairytale Cabins project archive."}</p>
+            <div className="cabin-video-tabs" role="group" aria-label={language === "nl" ? "Kies een cabinvideo" : "Choose a cabin video"}>
+              {cabinVideos.map((video, index) => (
+                <button
+                  type="button"
+                  key={video.id}
+                  className={activeCabinVideoIndex === index ? "active" : ""}
+                  aria-pressed={activeCabinVideoIndex === index}
+                  aria-controls="cabin-video-stage"
+                  onClick={() => setActiveCabinVideoIndex(index)}
+                ><span>0{index + 1}</span>{video.title}</button>
+              ))}
+            </div>
             <div className="scroll-depth-actions">
               <a className="button button-light" href="#projecten">{language === "nl" ? "Bekijk onze projecten" : "View our projects"}<span>↓</span></a>
-              <p><span>{language === "nl" ? "Uitgelicht" : "Featured"}</span>{language === "nl" ? "Badkamerrenovatie · Amsterdam" : "Bathroom renovation · Amsterdam"}</p>
+              <a className="cabin-channel-link" href="https://www.youtube.com/@FairytaleCabins/videos" target="_blank" rel="noreferrer">{language === "nl" ? "Alle video’s op YouTube" : "All videos on YouTube"}<span>↗</span></a>
             </div>
           </div>
         </section>
