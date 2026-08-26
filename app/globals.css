@@ -221,12 +221,16 @@ section[id] { scroll-margin-top: 76px; }
   100% { clip-path: polygon(0 0,100% 0,100% 100%,95% 100%,89% 100%,83% 100%,76% 100%,69% 100%,62% 100%,0 100%); filter: none; opacity: 1; transform: translate(0); }
 }
 
-.fixed-photo-story { align-items: center; background-attachment: fixed; background-image: linear-gradient(90deg,rgba(2,42,63,.9),rgba(7,107,156,.62) 42%,rgba(185,75,11,.18) 74%,rgba(0,0,0,.12)),url("/projects/renovatie-amsterdam.webp"); background-position: center; background-repeat: no-repeat; background-size: cover; border-radius: 36px; color: white; display: flex; margin: 12px; min-height: 108svh; overflow: hidden; padding: clamp(80px,11vw,160px) max(24px,calc((100vw - var(--max))/2 + 88px)); position: relative; }
-.fixed-photo-story::after { background: linear-gradient(180deg,var(--orange),var(--blue)); content: ""; inset: 0 auto 0 0; position: absolute; width: clamp(5px,.65vw,10px); }
-.fixed-photo-story-copy { background: rgba(3,37,54,.72); backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.2); border-radius: 30px; box-shadow: 0 30px 80px rgba(0,0,0,.25); max-width: 920px; padding: clamp(34px,6vw,78px); position: relative; }
-.fixed-photo-story-copy h2 { font-size: clamp(3.5rem,7.2vw,7.5rem); letter-spacing: -.07em; line-height: .9; margin: 0; text-wrap: balance; }
-.fixed-photo-story-copy h2 em { color: #ffb079; font-style: normal; }
-.fixed-photo-story-copy > p:not(.eyebrow) { color: rgba(255,255,255,.76); font-size: clamp(1rem,1.5vw,1.2rem); line-height: 1.7; margin: 30px 0; max-width: 630px; }
+.scroll-depth-story { --depth-bg-y: 0px; --depth-fg-y: 0px; --depth-glow-x: 0px; align-items: center; background: #082b3c; border-radius: 36px; color: white; display: flex; isolation: isolate; margin: 12px; min-height: 112svh; overflow: hidden; padding: clamp(80px,11vw,160px) max(24px,calc((100vw - var(--max))/2 + 88px)); position: relative; }
+.scroll-depth-story::before { background: linear-gradient(180deg,var(--orange),var(--blue)); content: ""; inset: 0 auto 0 0; position: absolute; width: clamp(5px,.65vw,10px); z-index: 5; }
+.scroll-depth-story::after { background: linear-gradient(90deg,rgba(1,28,42,.86),rgba(3,43,61,.48) 48%,rgba(0,0,0,.12)); content: ""; inset: 0; pointer-events: none; position: absolute; z-index: 1; }
+.scroll-depth-background { background-image: url("/projects/badkamer-amsterdam.webp"); background-position: center 38%; background-repeat: no-repeat; background-size: cover; inset: -10%; position: absolute; transform: translate3d(0,var(--depth-bg-y),0) scale(1.14); will-change: transform; z-index: 0; }
+.scroll-depth-glow { background: radial-gradient(circle,rgba(185,75,11,.78),rgba(7,107,156,.38) 42%,transparent 72%); filter: blur(18px); height: min(72vw,900px); position: absolute; right: -22%; top: 4%; transform: translate3d(var(--depth-glow-x),0,0); width: min(72vw,900px); will-change: transform; z-index: 2; }
+.scroll-depth-foreground { background-image: linear-gradient(180deg,rgba(255,255,255,.03),rgba(0,0,0,.18)),url("/projects/badkamer-amsterdam.webp"); background-position: 74% center; background-size: auto 135%; border: 10px solid rgba(255,255,255,.72); border-radius: 28px; bottom: -14%; box-shadow: 0 40px 90px rgba(0,0,0,.38); height: 72%; position: absolute; right: clamp(24px,7vw,120px); transform: translate3d(0,var(--depth-fg-y),0) rotate(2.5deg); width: min(34vw,520px); will-change: transform; z-index: 2; }
+.scroll-depth-story-copy { background: rgba(3,37,54,.76); backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.2); border-radius: 30px; box-shadow: 0 30px 80px rgba(0,0,0,.25); max-width: 820px; padding: clamp(34px,6vw,78px); position: relative; z-index: 3; }
+.scroll-depth-story-copy h2 { font-size: clamp(3.5rem,7.2vw,7.5rem); letter-spacing: -.07em; line-height: .9; margin: 0; text-wrap: balance; }
+.scroll-depth-story-copy h2 em { color: #ffb079; font-style: normal; }
+.scroll-depth-story-copy > p:not(.eyebrow) { color: rgba(255,255,255,.76); font-size: clamp(1rem,1.5vw,1.2rem); line-height: 1.7; margin: 30px 0; max-width: 630px; }
 
 .projects { background: linear-gradient(180deg,#fff,var(--blue-soft)); border-radius: 36px; border-top: 1px solid rgba(7,107,156,.14); margin-top: 12px; max-width: none; padding-left: max(24px,calc((100vw - var(--max))/2 + 88px)); padding-right: max(24px,calc((100vw - var(--max))/2 + 88px)); }
 .project-grid { display: grid; gap: 20px; grid-template-columns: repeat(3, 1fr); }
@@ -568,9 +572,11 @@ section[id] { scroll-margin-top: 76px; }
   .service-card.active > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { margin-left: 0; transform: translateY(164px); width: auto; }
   .service-more-button { bottom: 18px; }
   .project-grid { grid-template-columns: 1fr; }
-  .fixed-photo-story { background-attachment: scroll; background-position: 62% center; border-radius: 26px; margin: 8px; min-height: 100svh; padding: 72px 20px; }
-  .fixed-photo-story-copy { border-radius: 24px; padding: 32px 24px; }
-  .fixed-photo-story-copy h2 { font-size: clamp(3.2rem,14vw,5rem); }
+  .scroll-depth-story { border-radius: 26px; margin: 8px; min-height: 104svh; padding: 72px 20px; }
+  .scroll-depth-background { background-position: 58% center; }
+  .scroll-depth-foreground { border-width: 6px; bottom: -8%; height: 48%; opacity: .78; right: -9%; width: 58vw; }
+  .scroll-depth-story-copy { border-radius: 24px; max-width: 92%; padding: 32px 24px; }
+  .scroll-depth-story-copy h2 { font-size: clamp(3.2rem,14vw,5rem); }
   .featured { padding-block: 48px; }
   .featured-title { margin-bottom: 18px; padding-inline: 24px; }
   .featured-marquee { border-radius: 20px; height: 90px; margin-inline: 8px; }
@@ -622,5 +628,7 @@ section[id] { scroll-margin-top: 76px; }
   .featured-marquee { -webkit-mask-image: none; mask-image: none; overflow-x: auto; }
   .featured-track { animation: none; }
   .featured-logo-group[aria-hidden="true"] { display: none; }
-  .fixed-photo-story { background-attachment: scroll; }
+  .scroll-depth-background,
+  .scroll-depth-foreground,
+  .scroll-depth-glow { transform: none !important; will-change: auto; }
 }

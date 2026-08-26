@@ -414,7 +414,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
   useEffect(() => {
     const revealTargets = Array.from(document.querySelectorAll<HTMLElement>(
-      ".section-intro, .about-copy, .about-image, .service-card, .process-list li, .project-card, .featured-title, .featured-marquee, .placeholder-note, .review-card, .knowledge-card, .contact-intro, .contact-form, .footer-top",
+      ".section-intro, .about-copy, .about-image, .service-card, .process-list li, .scroll-depth-story-copy, .project-card, .featured-title, .featured-marquee, .placeholder-note, .review-card, .knowledge-card, .contact-intro, .contact-form, .footer-top",
     ));
 
     document.documentElement.classList.add("animations-ready");
@@ -596,6 +596,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   useEffect(() => {
     const heroImage = document.querySelector<HTMLElement>(".hero-image");
     const processList = document.querySelector<HTMLElement>(".process-list");
+    const scrollDepthStory = document.querySelector<HTMLElement>(".scroll-depth-story");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let ticking = false;
 
@@ -614,6 +615,14 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
         const processProgress = Math.max(0, Math.min(1, (travelled / distance) * 1.45));
         processList.style.setProperty("--process-progress", `${processProgress * 100}%`);
       }
+      if (scrollDepthStory && !reduceMotion.matches) {
+        const rect = scrollDepthStory.getBoundingClientRect();
+        const storyProgress = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / (window.innerHeight + rect.height)));
+        const centered = storyProgress - .5;
+        scrollDepthStory.style.setProperty("--depth-bg-y", `${centered * -150}px`);
+        scrollDepthStory.style.setProperty("--depth-fg-y", `${centered * 220}px`);
+        scrollDepthStory.style.setProperty("--depth-glow-x", `${centered * 180}px`);
+      }
       ticking = false;
     }
 
@@ -630,6 +639,9 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
       document.documentElement.style.removeProperty("--scroll-progress");
       heroImage?.style.removeProperty("transform");
       processList?.style.removeProperty("--process-progress");
+      scrollDepthStory?.style.removeProperty("--depth-bg-y");
+      scrollDepthStory?.style.removeProperty("--depth-fg-y");
+      scrollDepthStory?.style.removeProperty("--depth-glow-x");
     };
   }, []);
 
@@ -916,10 +928,13 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
         </section>
 
         <section
-          className="fixed-photo-story"
+          className="scroll-depth-story"
           aria-label={language === "nl" ? "Afgewerkt Domi renovatieproject" : "Completed Domi renovation project"}
         >
-          <div className="fixed-photo-story-copy reveal-item">
+          <span className="scroll-depth-background" aria-hidden="true" />
+          <span className="scroll-depth-glow" aria-hidden="true" />
+          <span className="scroll-depth-foreground" aria-hidden="true" />
+          <div className="scroll-depth-story-copy">
             <p className="eyebrow"><span />{language === "nl" ? "Onzichtbaar goed geregeld" : "Seamlessly taken care of"}</p>
             <h2>{language === "nl" ? <>Techniek verdwijnt.<br /><em>Comfort blijft.</em></> : <>The technology disappears.<br /><em>Comfort remains.</em></>}</h2>
             <p>{language === "nl" ? "Van leidingwerk tot de laatste voeg: één lijn in techniek, materiaal en afwerking." : "From utilities to the final grout line: one coherent approach to engineering, materials and finish."}</p>
