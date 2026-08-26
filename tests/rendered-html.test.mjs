@@ -78,24 +78,28 @@ test("server-renders an indexable English route", async () => {
 
 test("publishes source-based knowledge articles with metadata and references", async () => {
   const routes = [
-    ["/kennis/veilige-elektrische-installatie", "Oudere elektrische installatie", "electriciteit.html"],
-    ["/kennis/binnendeuren-hang-en-sluitwerk", "Hang- en sluitwerk in oudere woningen", "Binnendeuren_hang_en_sluitwerk.html"],
-    ["/kennis/tegels-en-voegen-kiezen", "Tegels en voegen kiezen voor de badkamer", "tilesandgrout.html"],
+    ["/kennis/veilige-elektrische-installatie", "Electriciteit", "electriciteit.html", "Ook dit kan dmv domotica", 8],
+    ["/kennis/binnendeuren-hang-en-sluitwerk", "Hang- en sluitwerk: Deursloten, scharnieren en beslag", "Binnendeuren_hang_en_sluitwerk.html", "een definitieve prijsopgave pas mogelijk na inspectie op locatie", 3],
+    ["/kennis/tegels-en-voegen-kiezen", "Bathroom & Tiles Guide", "tilesandgrout.html", "Washer-Dryer Combo", 42],
   ];
 
-  for (const [path, title, source] of routes) {
+  for (const [path, title, source, finalText, imageCount] of routes) {
     const response = await request(path);
     assert.equal(response.status, 200);
     const html = await response.text();
-    assert.match(html, new RegExp(title));
+    assert.match(html, new RegExp(title.replace("&", "(?:&|&amp;)")));
     assert.match(html, new RegExp(source.replaceAll(".", "\\.")));
-    assert.match(html, /Herkomst &amp; actualiteit/);
-    assert.match(html, /Bespreek uw project/);
+    assert.match(html, new RegExp(finalText));
+    assert.match(html, /letterlijk en volledig overgenomen/);
+    const articleStart = html.indexOf('<div class="original-article">');
+    const articleEnd = html.indexOf('<section class="blog-cta">', articleStart);
+    const visibleArticle = html.slice(articleStart, articleEnd).replace(/<!--[\s\S]*?-->/g, "");
+    assert.equal((visibleArticle.match(/<img\b/g) ?? []).length, imageCount);
   }
 
   const english = await request("/en/insights/veilige-elektrische-installatie");
   assert.equal(english.status, 200);
-  assert.match(await english.text(), /Older electrical systems: what should you check\?/);
+  assert.match(await english.text(), /Complete original blog post/);
 });
 
 test("privacy and terms pages are available", async () => {

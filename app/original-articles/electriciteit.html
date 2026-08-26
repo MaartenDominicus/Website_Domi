@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Electriciteit — Troosbouw</title>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+  h1 { color: #2E3B4E; }
+  h2 { color: #3E4C63; }
+  h3 { color: #4E5C73; }
+  h4 { color: #5E6C83; }
+  ul { margin-bottom: 15px; }
+  li { margin-bottom: 5px; }
+  img { max-width: 100%; height: auto; margin: 10px 0; }
+  table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+  table, th, td { border: 1px solid #999; }
+  th, td { padding: 8px; text-align: left; }
+  hr { margin: 30px 0; border: 0; border-top: 1px solid #ccc; }
+  img{width: 50%;}
+  
+  #toc {
+    font-family: Arial, sans-serif;
+    border: 1px solid #ccc;
+    padding: 1em;
+    max-width: 400px;
+    background: #f9f9f9;
+    border-radius: 6px;
+  }
+    ul { margin: 8px 0 16px 20px; }
+    .note { background: #fff8e6; border-left: 4px solid #ffd66b; padding: 10px 12px; color: #6a4b00; }
+    .image-placeholder {
+      height: 180px;
+      background: #f4f4f4;
+      border: 1px dashed #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      margin: 14px 0;
+    }
+  #toc h2 {
+    margin-top: 0;
+  }
+
+  #collapse-all {
+    margin-bottom: 0.5em;
+    padding: 0.3em 0.6em;
+    font-size: 0.9em;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #eee;
+  }
+
+  #toc ul {
+    list-style-type: none;
+    margin: 0;
+    padding-left: 0.5em;
+  }
+
+  #toc li {
+    margin: 0.2em 0;
+  }
+
+  #toc a {
+    text-decoration: none;
+    color: #0073e6;
+  }
+
+  #toc a:hover {
+    text-decoration: underline;
+  }
+
+  .toc-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 0.2em 0;
+    padding: 0;
+    color: #333;
+    display: block;
+    text-align: left;
+    width: 100%;
+  }
+
+  .collapsed {
+    display: none;
+  }
+  .expanded {
+    display: block;
+  }
+
+  /* Level styling */
+  #toc > ul > li > .toc-toggle {
+    font-size: 1.05em;
+    color: #222;
+  }
+  #toc ul ul > li > .toc-toggle,
+  #toc ul ul > li > a {
+    font-size: 0.95em;
+    color: #444;
+    padding-left: 1em;
+  }
+  #toc ul ul ul > li > .toc-toggle,
+  #toc ul ul ul > li > a {
+    font-size: 0.9em;
+    color: #555;
+    padding-left: 2em;
+    font-style: italic;
+  }
+  #toc ul ul ul ul > li > .toc-toggle,
+  #toc ul ul ul ul > li > a {
+    font-size: 0.85em;
+    color: #666;
+    padding-left: 3em;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Electriciteit</h1>
+    <p>Samenvatting en uitleg over groepenkasten, beveiligingen, aarding, capaciteit en veelvoorkomende problemen.</p>
+    <!-- <p class="note"><strong>Bronbestand:</strong> Electriciteit.docx. :contentReference[oaicite:1]{index=1}</p> -->
+  </header>
+
+  <section>
+    <!-- <h2>Inleiding</h2> -->
+    <p><b><i><u>Een oudere elektrische installatie vraagt vaak om verbetering of vervanging.</u></i></b></p>
+  </section>
+
+  <section>
+    <h2>Groepenkast / stoppenkast — wat is het?</h2>
+    <p>De elektra in een huis wordt opgedeeld over meerdere elektrische groepen. Iedere groep voedt een deel van de elektrische apparaten en aansluitpunten in het huis. Iedere groep heeft een aparte schakelaar om de groep aan en uit te schakelen; deze schakelaars zitten in een speciale kast (de groepenkast), meestal nabij de voordeur.</p>
+    <img src="https://www.elektramat.nl/media/wysiwyg/category-groepenkasten/220x330-3F.png" alt="">
+</section>
+
+  <section>
+    <h2>Ingebouwde veiligheden</h2>
+    <p>De schakelaars (ook wel <em>automaatjes</em> genoemd) schakelen bij overbelasting automatisch uit. Ook zijn er aardlekschakelaars aanwezig — schakelaars die uitschakelen wanneer er stroom via een verkeerde weg (via de aarde) loopt.</p>
+
+    <div class="note">
+      <strong>PS:</strong> Indien uw schakelaars te vaak en/of zonder duidelijke reden uitslaan, duidt dit op een mogelijk probleem in uw elektrische installatie (of, in uitzonderlijke gevallen, een probleem met de schakelaar(s) zelf). Dit vergt nader onderzoek.
+    </div>
+
+    <div class="note" style="margin-top:12px;">
+      <strong>PS:</strong> Bij oude huizen kom je soms een zogenaamde <em>stoppenkast</em> tegen: hetzelfde principe maar met smeltzekeringen in plaats van automaten.
+    </div>
+  </section>
+
+  <section>
+    <h2>Onderdelen van de groepenkast</h2>
+    <h3>Hoofdschakelaar</h3>
+    <p>Een hoofschakelaar schakelt de complete installatie uit en is handig en verplicht. De hoofschakelaar wordt in sommige gevallen aangebracht door de netbeheerder en bevindt zich dan onder de groepenkast.</p>
+
+<!-- <img src="https://www.elektramat.nl/media/catalog/product/4/0/401165373-1-jpg_1.png" alt=""> -->
+<img src="hoofdschakelaar.jpg" alt="">
+
+    <h3>De aardlekschakelaar</h3>
+    <p>In uitzonderlijke gevallen is er geen aardlekschakelaar aanwezig. Een aardlekschakelaar beveiligt ons tegen de aanraking met een niet geaard of niet goed geaard apparaat. We kunnen dan wel een schok krijgen maar die is alleen erg vervelend maar niet gevaarlijk. </p>
+    <p>Een aardlekschakelaar mag maximaal 4 groepen (zekeringen of automaatjes of circuits) beveiligen. Een aardlekschakelaar heeft een testknop waarop staat dat je hem elke maand moet testen, wat nooit iemand doet. Als hij niet reageert op de testknop moet de aardlekschakelaar vervangen worden.</p>
+    <img src="https://www.vekto.nl/media/catalog/product/g/a/gacia-automaten_2d_0013_1.jpg" alt="">
+</section>
+
+  <section>
+    <h3>De groepen</h3>
+    <p>Vroeger werden er smeltzekeringen (ook wel ‘stoppen’ genoemd) toegepast. Ze worden tegenwoordig vaak vervangen door ‘automaatjes’. </p>
+    <p>In Nederland is de standaard voor een zekerings- of installatieautomaat de zogenaamde B-curve. Voor het uitzonderlijke geval dat er zware machines of apparatuur op zouden worden aangesloten moet er een zogenaamde C-curve gekozen worden.</p> 
+    <p>De standaard groep is 16A (Ampère) --> Maximale belasting 230Volt x 16A = 3680 Watt</p>
+Voor elektrisch koken zijn er kookgroep automaatjes die twee groepen tegelijkertijd bedienen. <br>Voor nog ander toepassingen zijn er drie fasige automaatjes, bijvoorbeeld voor elektrisch laden van auto’s.
+<p>Elk apparaat dat meer dan 2000W verbruikt heeft een eigen groep nodig. Vaak zijn apparaten 1900W, bijvoorbeeld een vaatwasser of quooker kraan. Om deze samen op één groep aan te sluiten is toch niet aan te raden want samen verbruiken ze meer dan de capaciteit van die groep.</p>
+
+Er zijn ook zekeringsautomaatjes met ingebouwde aardlekschakelaar te koop. Deze zouden kunnen worden toegepast in het geval er slechts één extra groep wordt toegevoegd. 
+<br>
+<img src="https://www.vekto.nl/media/catalog/product/g/a/gacia-automaten_2d_0001_8.jpg" alt="">
+  </section>
+
+  <section>
+    <h2>Aarding</h2>
+        <p>Aarding is belangrijk voor onze veiligheid. Een goede aarding zorgt voor veiligheid. Vroeger werden stopcontacten soms individueel geaard door middel van een enkele draad die verbonden werd aan de waterleiding. De waterleidingen zijn tegenwoordig van kunststof zodat aarding via de waterleiding niet meer kan. </p>
+        <p> De standaard aarding bestaat nu uit een aardpen, op de begane grond veelal gemeenschappelijk gebruikt bij gestapelde bouw. Van daaruit loopt de aarddraad naar de groepenkast van waaruit elke groep zijn aarding ontvangt (geel-groen is de kleur van de isolatie).</p>
+  </section>
+
+  <section>
+    <h2>Slechte verbindingen</h2>
+        <p>Een belangrijke oorzaak van problemen en brand zijn slechte verbindingen, vaak in een schakelaar maar ook in verbindingsdozen (‘lasdozen’) die in oude huizen vaak onder de vloer of tegen het plafond in de gang te vinden zijn.</p> 
+        <p>Uitbreiding van zo’n installatie is uitdagend en vaak zal er voor een compleet nieuwe bekabeling gekozen moeten worden. </p>
+        <p>In nieuwere huizen zal je centraaldozen, veelal boven een lichtpunt, tegenkomen.</p>
+        <img src="slechte_verbinding.JPG" alt="">  
+</section>
+
+<section>
+    <h2>Verouderde bedrading</h2>
+    <p>Een andere, niet meer vaak voorkomende oorzaak van gevaren is verouderde bedrading. De isolatie van deze oude bedrading vergaat met de jaren. Om alleen deze bedrading te vernieuwen is vrijwel nooit een goede keuze. Vroeger werden stalen buizen gebruikt waar de draden doorheen liepen. Tegenwoordig wordt PVC hiervoor gebruikt.</p>
+    <img src="verouderde_bedrading.JPG" alt="">
+</section>
+
+  <section>
+    <h2>Capaciteit</h2>
+    <u>Hoeveel elektriciteit kan ik van mijn aansluiting vragen?</u> 
+        <p>De hoeveelheid wordt aangegeven in Ampère. Gebruikelijke woonhuis aansluitingen hebben een capaciteit van 1x40A of 3x25A. 
+        <p>Waarom 3x25A en niet 75A? 3x25A geeft aan dat het een zogenaamde driefase aansluiting betreft en dat de groepenkast daarop aangepast moet zijn. Er zijn ook oude woonhuis aansluitingen met een lagere capaciteit van bijv. 1x25A.</p> 
+        <p>De sterkte van je aansluiting is op te vragen bij de netbeheerder (bijv Liander of Stedin).</p>
+        <p><u>Waarom is die sterkte belangrijk?</u> 
+        <p>We verbruiken tegenwoordig veel meer elektriciteit dan vroeger. We hebben quookers in de keuken, een elektrische oven, inductie koken en ga zo maar door. Dat vraagt om betere bekabeling en voldoende capaciteit. Verhoging van de capaciteit zou dus nodig kunnen zijn en moet worden aangevraagd bij de netbeheerder. Let op: er kan een wachttijd zijn.</p>
+
+  </section>
+
+  <section>
+    <h2>In- of opbouw</h2>
+    <h3>Inbouw elektra</h3>
+  <p>Leidingen, schakelaars en stopcontacten worden <strong>in de muur of vloer weggewerkt</strong>. Netjes, modern en strak afgewerkt.</p>
+  <ul>
+    <li>Ligt vlakker (steekt minder uit ten opzichte van de muur)</li>
+    <li>Duurder</li>
+  </ul>
+
+  <h3>Opbouw elektra</h3>
+  <p>Leidingen, schakelaars en stopcontacten liggen <strong>zichtbaar op de muur</strong> in buizen of kabelgoten.</p>
+  <ul>
+    <li>Steekt verder uit ten opzichte van de muur (ligt erbovenop)</li>
+    <li>Goedkoper</li>
+  </ul>
+
+  <h3>Half inbouw</h3>
+  <p>Een <strong>tussenoplossing</strong>: ligt iets minder vlak tov de muur dan bij volledig inbouw. </p>
+---
+        <p>Inbouw van (nieuwe) leidingen  (en schakelaars en stopcontacten) is een duurdere keuze; hoe duur hangt af van de plek. </p>
+        <p>Als het via de kruipruimte kan is het makkelijk; als het met infrezen van een stenen muur gepaard gaat wordt het duidelijk prijziger. </p>
+        <p class="note">Inbouw vs opbouw elektra is en blijft een estetische keuze.</p>
+        <p>Er zijn voor sommige plekken compromissen mogelijk: zo kan je een dubbel half-inbouw stopcontact plaatsen in een enkele inbouwdoos (prijsgunstig).</p>
+
+        <img src="https://cdn.webshopapp.com/shops/260050/files/474114607/inbouw-en-opbouw-stopcontacten-xs.webp" alt="">
+        <img src="half_inbouw.JPG" alt="">
+</p>
+  </section>
+
+  <section>
+    <h2>Ventilatoren</h2>
+    <p>Voor bijv een badkamer of WC zijn de ventilatoren vaak op het licht geschakeld. Ze gaan dus aan als je het licht aanzet. </p>
+    <p>Wij adviseren hier modellen met zg. Naloop (blijven draaien op timer na uitschakelen licht). Hier moet echter wel de juiste bekabeling voor aanwezig zijn (constante spanning is nodig).</p>
+<a href="ventilatie.html">Meer lezen over ventilatie →</a>  </section>
+
+  <section>
+    <h2>Domotica</h2>
+    <p>Meer en meer worden lampen en apparaten geschakeld met domotica oftewel met afstandsbediening.</p>
+    <p>Voordeel hiervan is flexibiliteit en lagere kosten bij aanleg. Je kunt bijvoorbeeld gemakkelijk een schakelaar verplaatsen of er eentje toevoegen. Nadeel is dat er soms (bijv 1x per jaar) het batterijtje moet worden vervangen.</p>
+  </section>
+
+  <section>
+    <h2>Dimmen</h2>
+    <p>Lampen kunnen gedimd worden, maar ze moeten er wel geschikt voor zijn (‘dimbaar’). Ook kan een oude dimmer vaak niet goed overweg met nieuwe (LED) lampen en zal die vervangen moeten worden. Ook dit kan dmv domotica.</p>
+    <a href="ventilatie.html">Meer lezen over verlichting →</a>  </section>
+</section>
+
+

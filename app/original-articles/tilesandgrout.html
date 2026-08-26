@@ -1,0 +1,825 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bathroom & Tiles Guide</title>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+  h1 { color: #2E3B4E; }
+  h2 { color: #3E4C63; }
+  h3 { color: #4E5C73; }
+  h4 { color: #5E6C83; }
+  ul { margin-bottom: 15px; }
+  li { margin-bottom: 5px; }
+  img { max-width: 100%; height: auto; margin: 10px 0; }
+  table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+  table, th, td { border: 1px solid #999; }
+  th, td { padding: 8px; text-align: left; }
+  hr { margin: 30px 0; border: 0; border-top: 1px solid #ccc; }
+  img{width: 50%;}
+  
+  #toc {
+    font-family: Arial, sans-serif;
+    border: 1px solid #ccc;
+    padding: 1em;
+    max-width: 400px;
+    background: #f9f9f9;
+    border-radius: 6px;
+  }
+
+  #toc h2 {
+    margin-top: 0;
+  }
+
+  #collapse-all {
+    margin-bottom: 0.5em;
+    padding: 0.3em 0.6em;
+    font-size: 0.9em;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #eee;
+  }
+
+  #toc ul {
+    list-style-type: none;
+    margin: 0;
+    padding-left: 0.5em;
+  }
+
+  #toc li {
+    margin: 0.2em 0;
+  }
+
+  #toc a {
+    text-decoration: none;
+    color: #0073e6;
+  }
+
+  #toc a:hover {
+    text-decoration: underline;
+  }
+
+  .toc-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 0.2em 0;
+    padding: 0;
+    color: #333;
+    display: block;
+    text-align: left;
+    width: 100%;
+  }
+
+  .collapsed {
+    display: none;
+  }
+  .expanded {
+    display: block;
+  }
+
+  /* Level styling */
+  #toc > ul > li > .toc-toggle {
+    font-size: 1.05em;
+    color: #222;
+  }
+  #toc ul ul > li > .toc-toggle,
+  #toc ul ul > li > a {
+    font-size: 0.95em;
+    color: #444;
+    padding-left: 1em;
+  }
+  #toc ul ul ul > li > .toc-toggle,
+  #toc ul ul ul > li > a {
+    font-size: 0.9em;
+    color: #555;
+    padding-left: 2em;
+    font-style: italic;
+  }
+  #toc ul ul ul ul > li > .toc-toggle,
+  #toc ul ul ul ul > li > a {
+    font-size: 0.85em;
+    color: #666;
+    padding-left: 3em;
+  }
+
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Toggle individual sections
+    document.querySelectorAll('.toc-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.classList.toggle('collapsed');
+          target.classList.toggle('expanded');
+          btn.textContent = btn.textContent.includes('▸')
+            ? btn.textContent.replace('▸', '▾')
+            : btn.textContent.replace('▾', '▸');
+        }
+      });
+    });
+
+    // Collapse/Expand All button
+    const collapseBtn = document.getElementById('collapse-all');
+    let collapsed = true;
+    collapseBtn.addEventListener('click', () => {
+      document.querySelectorAll('#toc ul').forEach(ul => {
+        if (ul.id) { // only toggle nested lists with IDs
+          if (collapsed) {
+            ul.classList.remove('collapsed');
+            ul.classList.add('expanded');
+          } else {
+            ul.classList.remove('expanded');
+            ul.classList.add('collapsed');
+          }
+        }
+      });
+
+      document.querySelectorAll('.toc-toggle').forEach(btn => {
+        btn.textContent = collapsed
+          ? btn.textContent.replace('▸', '▾')
+          : btn.textContent.replace('▾', '▸');
+      });
+
+      collapseBtn.textContent = collapsed ?  "Collapse All" : "Expand All";
+      collapsed = !collapsed;
+    });
+  });
+</script>
+
+</head>
+<body>
+
+ <!-- Collapsible Table of Contents -->
+<nav id="toc">
+  <h2>Table of Contents</h2>
+  <button id="collapse-all">Expand All</button>
+  <ul>
+    <li>
+      <button class="toc-toggle" data-target="toc-tiles">▸ Tiles and Grout</button>
+      <ul id="toc-tiles" class="collapsed">
+        <li>
+          <button class="toc-toggle" data-target="toc-tiles-sub">▸ Tiles</button>
+          <ul id="toc-tiles-sub" class="collapsed">
+            <li><a href="#tile-size">Tile Size</a></li>
+            <li>
+              <button class="toc-toggle" data-target="toc-pattern">▸ Tiling Pattern/Layout</button>
+              <ul id="toc-pattern" class="collapsed">
+                <li><a href="#half-brick-pattern">Half-brick pattern</a></li>
+                <li><a href="#full-brick-pattern">Full-brick pattern</a></li>
+              </ul>
+            </li>
+            <li><a href="#tile-shape">Tile Shape</a></li>
+            <li><a href="#tiling-height">Tiling Height</a></li>
+            <li><a href="#tile-edge-corner-types">Tile Edge Corner Types</a></li>
+            <li><a href="#tile-surface-finish">Tile Surface Finish</a></li>
+            <li><a href="#tile-type">Tile Type</a></li>
+            <li><a href="#exterior-corner-finish">Exterior Corner Finish</a></li>
+            <li><a href="#bathroom-toilet-door-threshold">Bathroom / Toilet Door Threshold</a></li>
+            <li><a href="#natural-stone">Natural Stone</a></li>
+          </ul>
+        </li>
+        <li>
+          <button class="toc-toggle" data-target="toc-grout">▸ Grout</button>
+          <ul id="toc-grout" class="collapsed">
+            <li><a href="#grout-width">Grout width</a></li>
+            <li><a href="#grout-type">Grout Type</a></li>
+            <li><a href="#grout-and-sealant-color">Grout and Sealant Color</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <button class="toc-toggle" data-target="toc-heights">▸ Standard Heights (Wet Areas)</button>
+      <ul id="toc-heights" class="collapsed">
+        <li><a href="#seniors-limited-mobility-wheelchair-users">Seniors, Limited Mobility, Wheelchair Users</a></li>
+      </ul>
+    </li>
+
+    <li>
+      <button class="toc-toggle" data-target="toc-sizes">▸ Standard Sizes (Wet Rooms)</button>
+      <ul id="toc-sizes" class="collapsed">
+        <li><a href="#shower">Shower</a></li>
+        <li><a href="#bath">Bath</a></li>
+        <li><a href="#sink-vanity">Sink / Vanity</a></li>
+      </ul>
+    </li>
+
+    <li>
+      <button class="toc-toggle" data-target="toc-finishing">▸ Bathroom Finishing Options</button>
+      <ul id="toc-finishing" class="collapsed">
+        <li><a href="#sink-or-vanity">1. Sink or Vanity</a></li>
+        <li>
+          <button class="toc-toggle" data-target="toc-shower">▸ 2. Shower</button>
+          <ul id="toc-shower" class="collapsed">
+            <li><a href="#shower-faucet">Shower Faucet</a></li>
+            <li><a href="#shower-floor">Shower Floor</a></li>
+            <li><a href="#shower-drain">Shower Drain</a></li>
+          </ul>
+        </li>
+        <li><a href="#toilet-section">3. Toilet</a></li>
+        <li><a href="#bath-section">4. Bath</a></li>
+        <li><a href="#wash-basin">5. Wash Basin/Sink</a></li>
+        <li><a href="#mirror-section">6. Mirror</a></li>
+        <li><a href="#power-outlets">7. Power Outlets Near Sink</a></li>
+        <li><a href="#lighting-section">8. Lighting</a></li>
+        <li><a href="#fountain">9. Fountain (Small Washbasin)</a></li>
+        <li><a href="#heating">11. Heating</a></li>
+        <li><a href="#accessories">12. Accessories</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<!-- Part 1: Tiles and Grout -->
+<h1>Tiles and Grout</h1>
+<h2>Tiles</h2>
+<h3>Tile Size</h3>
+<ul>
+<li><strong>Smaller tiles</strong> → more grout lines; more difficult to clean (especially cement based grout).</li>
+<li><strong>Larger tiles</strong> → more modern look, fewer grout lines, easier maintenance; especially recommended for floors because they get dirty more quickly, and grout lines are difficult to clean (e.g., 60x60 cm or larger).</li>
+<li><strong>Wall tiles</strong>: Large tiles require smooth walls; small tiles can more easily follow curved/uneven walls. In new bathrooms, smoothing is often desirable. Smooth walls also allow for neater placement of furniture, shower screens, and the general finish.</li>
+<li>In small spaces, extreme wall correction can lead to loss of space; sometimes, it is chosen to (partially) maintain the existing curvature and follow it with smaller tiles.</li>
+</ul>
+
+<h3>Tiling Pattern/Layout</h3>
+<ul>
+<li>Common: <strong>half-brick</strong> (brick) and <strong>full-brick</strong> (cross bond).</li>
+
+<li>Diagonal patterns (e.g., herringbone) require more cutting and are more expensive.</li>
+</ul>
+
+<h4>Half-brick pattern</h4>
+<pre>
+███ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ███  
+██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████   
+███ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ███      
+██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████   
+███ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ███   
+██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████   
+███ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ███  
+██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████   
+███ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ███      
+██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████   
+</pre>
+
+<h4>Full-brick pattern</h4>
+<pre>
+  ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████  
+  ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████  
+  ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████  
+  ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████  
+  ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████  
+  ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████  
+  ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████  
+  ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████  
+  ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████  
+  ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████ ██████  
+</pre>
+
+<h4>Other patterns</h4>
+
+<h3>Tile Shape</h3>
+<ul>
+<li>Most popular: rectangular or square.</li>
+<li>Other shapes (e.g., hexagonal) require more cutting at edges → higher costs.</li>
+</ul>
+
+<h3>Tiling Height</h3>
+<ul>
+<li>Bathrooms with low ceilings (±210 cm): usually tiled to the ceiling, especially in shower area.</li>
+<li>Bathrooms with high ceilings: Tile height determined in consultation; usually finish with full-brick tiles.</li>
+<li>Toilets: often up to ±120 cm (top of built-in cistern), higher possible but not needed.</li>
+<li>Tiles above kitchen countertops: finish with full tiles, especially if no upper cabinets. Height in consultation.</li>
+</ul>
+
+<h3>Tile Edge Corner Types</h3>
+<p>The "corner" refers to transition between side and main surface (top) of tile; type of corner varies by tile choice and affects finish.</p>
+<ul>
+<li><strong>Square, straight & Sharp:</strong> tighter grout line, less variation in joint width.</li>
+<li><strong>Rounded / Not Square:</strong> more variation in grout width, less tight grout line; always with 'zellige' tiles, also some rectified/unrectified straight-edge tiles.</li>
+<li><strong>Beveled Edge:</strong> Not recommended for floor tiles; grout recessed, harder to clean.</li>
+  Zellige tiles example:
+<img src="https://baldosastegels.nl/cache/images/artikel/383/roze-600x599.png" alt="zellige tiles" >
+</ul>
+
+<h3>Rectified or NON-rectified Tiles:</h3>
+  <b>Note:</b> If not explicitly mentioned that a chosen tile is rectified on the product page/in the specs, these tiles are NON-rectified tiles.
+  <ul>
+    <h4>Rectified Tiles:</h4>
+    <u>Less size variation in the tiles (more size accurate)</u> which results in tighter grout lines (especially noticable when Full-brick tiling pattern is chosen) and better alignment of the tile edges relative to each other.
+      Even rectified tiles have some size variation, albeit usually significantly less than non-rectified tiles. The smaller the grout width the more noticable this difference in size is. The more contrasting the grout color is with the tile color, the more noticable this will be.
+    <h4>Unrectified Tiles:</h4>
+Greater variation in tile size; usually wider grout. Not recommended for straight-edge non-'zellige' tiles.
+<br><br>
+<b>PS:</b> Not only the tile size (width x height) can differ but also tile thickness can vary between different tiles and the thickness can even differ from one spot on the tile to another spot on the same tile. Some lower quality tiles can be 'bowed' which can partially be compensated for with tiling techniques. Choosing the cheapest tiles usually gives more chance of above defects being present in the tiles, which can result in a lower quality finish.
+  </ul>
+  
+
+</h3>
+
+<h3>Tile Surface Finish</h3>
+<ul>  <h4>Glazed tiles (available in matte or high gloss finish):</h4>
+
+<li>Floor: matte recommended (high gloss = slippery).</li>
+<li>Wall: matte or high gloss; high gloss easier to clean.</li>
+<h4>Unglazed tiles:</h4>
+<li>Unglazed OR 'cement' tiles: not recommended due to fragility, maintenance, water absorption, easy to stain.</li>
+
+</ul>
+
+<h3>Tile Type (wall or floor)</h3>
+<ul>
+<li><strong>Floor tiles/double-fired:</strong> harder, more scratch-resistant, also suitable for walls.</li>
+<li><strong>Wall tiles/single-fired:</strong> softer, brittle, only for walls.</li>
+</ul>
+
+<h3>Exterior Corner Finish</h3>
+
+Usually with <strong>finishing profile</strong> (aluminum, white, brushed/polished stainless steel).
+
+<h4>Finishing Outside Corner with End Profile</h4>
+<img src="https://media.s-bol.com/Y5xko7XwZrg9/1200x970.jpg" alt="tiling corner profile" height="470">
+Side View:
+<img src="https://www.saniweb.nl/media/catalog/product/attachment/attachments/000914/BW125300-lijntekening.jpg" alt="tiling corner profile">
+
+<p>Other colors/profiles available upon request.</p>
+
+<h3>Bathroom / Toilet Door Threshold</h3>
+<ul>
+<li>Wet rooms: recommend composite stone sills (moisture resistant), available in anthracite/gray, other colors on request.</li>
+<li>Less expensive than natural stone, more chemical resistant and scratch resistant.</li>
+<li>Wooden door sills/tresholds not recommended for wet areas.</li>
+</ul>
+
+<h3>Natural Stone</h3>
+<ul>
+<li>Depending on type: can be soft/brittle, may require sealing and maintenance (e.g., travertine).</li>
+<li>Pay attention to chemical resistance.</li>
+</ul>
+
+<h2>Grout</h2>
+<h3>Grout width</h3>
+<ul>
+<li><strong>Rectified:</strong> 2–3 mm. <em>Note:</em> If not explicitly rectified, tiles are NOT rectified.</li>
+<li><strong>Unrectified:</strong> greater variation; usually wider grout. Not recommended for straight-edge non-'zellige' tiles.</li>
+<li><strong>Very narrow (±1.5 mm):</strong> only if dimensional stability is high.</li>
+</ul>
+<p><em>Note:</em> Tile thickness/squareness may vary; cheaper tiles more likely to have variations.</p>
+
+<h3>Grout Type</h3>
+<ul>
+<li><strong>Cement based:</strong> common, cheaper, harder to clean, risk of discoloration, less chemically resistant.</li>
+<li><strong>Composite:</strong> more expensive, chemically resistant, easier to clean, less discoloration (recommended for light-colored floors).</li>
+</ul>
+<div style="page-break-after: always;"></div>
+
+<h3>Grout and Sealant Color</h3>
+<ul>
+<li>Most efficient: one color for entire room (walls and floor).</li>
+<li>Different grout/sealant color for wall and floor is possible (eg wall white and floor antracite grey), requires more work, more expensive.</li>
+<li>Usually small contrast between grout and tile color is chosen; more contrast possible but variations in grout width/alignment more visible with contrasting grout color (especially with with non-rectified tiles)</li>
+
+<br>
+<li>Darker grout colors show dirt/grime less easily</li>
+<li>If light color (eg white) chosen for floor grout, consider choosing composite type grout (more costly but easier to clean/less prone to staining and discoloration)</li>
+</ul>
+Example of high color contrast between tiles and grout:
+<img src="https://mbtile.ca/wp-content/uploads/2022/02/contrast-grout.webp" alt="high contrast grout" >  
+Example of low color contrast between tiles and grout:
+<img src="https://i.pinimg.com/736x/5f/38/99/5f389930fcf1310eb816069a1961725f.jpg" alt="low contrast grout" >  
+
+<!-- Part 2: Floor Heights Table -->
+<h1>Standard Heights (Wet Areas)</h1>
+<p>Heights relative to finished floor. Guidelines; deviations possible.</p>
+
+<table>
+<tr>
+<th>Element</th>
+<th>Standard Guideline</th>
+<th>Comment / Adjustment</th>
+</tr>
+<tr>
+<td><strong>Toilet</strong></td>
+<td>±40 cm top of bowl to floor</td>
+<td>For elderly, higher bowl; ±45–50cm top of bowl to floor for easier use.</td>
+</tr>
+<tr>
+<td><strong>Sink / Vanity</strong></td>
+<td>±90 cm top of sink to floor</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Mirror</strong></td>
+<td>Centerline ±170 cm above floor</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Shower faucet</strong></td>
+<td>±110 cm above floor/shower tray</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Bathtub</strong></td>
+<td>±60 cm height of bath rim to floor level</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Bath faucet</strong></td>
+<td>center of bath faucet at 15–20 cm above bath rim</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Electrical outlet(s) above sink</strong></td>
+<td>outlet center 30 cm above the top of the sink</td>
+<td>Aligned (approximately) with edge of sink/vanity</td>
+</tr>
+</table>
+
+<h2>Seniors, Limited Mobility, Wheelchair Users</h2>
+<p>Heights may differ; determined in consultation.</p>
+<table>
+<tr>
+<th>Element</th>
+<th>Standard Guideline</th>
+<th>Comment / Adjustment</th>
+</tr>
+<tr>
+<td><strong>Folding chair / folding seat</strong></td>
+<td>45–50 cm seat height to floor</td>
+<td>Can be added in shower or near sink for limited mobility</td>
+</tr>
+<tr>
+<td><strong>Handles / supports</strong></td>
+<td>Upon consultation</td>
+<td>Installed near toilet, shower, bath for safety</td>
+</tr>
+</table>
+
+<hr>
+<!-- Part 3: Standard Sizes (Wet Rooms) -->
+<h1>Standard Sizes (Wet Rooms)</h1>
+
+<h2>Shower</h2>
+<ul>
+<li><strong>Walk-in shower:</strong> 90–100 cm wide, minimum depth 120 cm</li>
+<li><strong>Shower enclosure with glass wall:</strong></li>
+<ul>
+<li>Standard: 90×90 cm</li>
+<li>More spacious: 100×100 cm</li>
+<li>Narrow: 80×80 cm if limited space</li>
+</ul>
+<li><strong>Shower enclosure / Glass wall height:</strong> 200 cm</li>
+<li><em>Note:</em> If users taller than 200 cm, taller version advisable.</li>
+</ul>
+
+<h2>Bath</h2>
+<ul>
+<li><strong>Built-in bathtub:</strong> 180×80 cm</li>
+<li><strong>Freestanding bathtub:</strong> Dimensions vary by model</li>
+</ul>
+
+<h2>Sink / Vanity</h2>
+<ul>
+<li>Standard depth: 45–50 cm</li>
+<li>Shallow models: available, more expensive, fewer options</li>
+<li><em>Note:</em> Only choose shallower version if necessary due to space</li>
+</ul>
+
+<hr>
+
+<!-- Part 4: Bathroom Finishing Options – Explanation -->
+<h1>Bathroom Finishing Options – Explanation</h1>
+
+<h2>1. Sink or Vanity</h2>
+<ul>
+<li><strong>Sink (without base cabinet):</strong></li>
+<ul>
+<li>Simple, usually cheaper.</li>
+<li>Less sleek/modern; siphon and plumbing partially visible.</li>
+<img src="https://media.hornbach.nl/hb/packshot/as.46702457.jpg?dvid=8" alt="freestanding sink">
+</ul>
+<li><strong>Vanity:</strong></li>
+<ul>
+<li>Extra storage for towels, toiletries, cleaning supplies.</li>
+<li>Sleeker, more aesthetically pleasing.</li>
+<li>More expensive.</li>
+<img src="https://www.sanidirect.nl/cdn-cgi/image/fit=pad,format=auto,width=700,height=700/media/catalog/product/A/2/A205112600900SET_P1.jpg" alt="vanity unit">
+</ul>
+<li><strong>Vanity with top-mounted sink (e.g., bowl):</strong></li>
+<ul>
+<li>Can combine with standard (sink-mounted) taps; wall-mounted optional.</li>
+<li><em>Note:</em> Closed-top vanity cabinet needed.</li>
+<img src="https://static.rorix.nl/image/content/Wastafelmeubel.jpg" alt="top mounted sink">
+</ul>
+
+<h2>2. Shower</h2>
+<ul>
+<li><strong>Type:</strong> Walk-in, shower enclosure, corner shower with glass door, or double glass doors if space limited.</li>
+<li><strong>Walk-in shower:</strong> modern, open, accessible, ideal for seniors.</li>
+<img src="https://badkamertopper.nl/wp-content/uploads/2024/03/8720605740539_1.jpg" alt="walk-in shower">
+<li><strong>Shower enclosure:</strong> compact, suitable for smaller bathrooms.</li>
+<img src="https://cdn.webshopapp.com/shops/329045/files/389387031/image.jpg" alt="shower enclosure">
+<li><strong>Shower enclosure with double doors:</strong> for limited space; otherwise, not recommended due to cost.</li>
+<img src="https://data.sanitino.eu/PRODUCT-90832/d32b9d94ec28288cde1b6d66?v=1f31a75b" alt="shower enclosure double doors">
+</ul>
+
+<h3>Shower Faucet</h3>
+<ul>
+<li>Built-in or surface-mounted, standard or rain showerhead, with/without hand shower.</li>
+<li><strong>Surface-mounted:</strong> common, easier to install, more visible, cheaper.</li>
+<img src="https://aduwlvajep.cloudimg.io/v7/https://s3.eu-central-1.amazonaws.com/akeneo.x2o.assets.prod/assets/b/7/c/7/b7c7dae68b47ef817b278bd95f08fa09f15020df_200953_sfeer_01.png?w=552&p=ProductCard&force-format=webp%2Cjpeg" alt="surface-mounted shower">
+<li><strong>Built-in:</strong> sleek, minimalist, easier to clean, more expensive.</li>
+<img src="https://media.saniweb.nl/cdn-cgi/image/fit=pad,format=auto,width=700,height=700/media/catalog/product/3/4/34705000_C12_1.jpg" alt="built-in shower">
+<li>Rain shower: luxurious, uses more water, pressure and boiler type important.</li>
+<li>Hand shower: flexible, practical, usually included.</li>
+</ul>
+
+<h3>Shower Floor</h3>
+<ul>
+<li><strong>Shower tray (non-tiled):</strong> cost-efficient, easy to clean, modern look. Options: color, drain shape, flush installation possible.</li>
+<img src="https://www.geberit.be/_assetsmaster/global-media/pictures/badezimmersysteme/duschen/2021-bathroom-with-geberit-olona-shower-surface-16-9.jpg" alt="shower tray">
+<li>Recommend composite material tray: grippy surface, scratches less visible.</li>
+<li><strong>Tiled shower floor:</strong> same tiles as rest of floor, flush, more costly.</li>
+<img src="https://badkamertopper.nl/wp-content/uploads/2024/03/8720605740539_1.jpg" alt="tiled shower floor">
+</ul>
+<!-- Part 5: Shower Drain Options -->
+<h3>Shower Drain</h3>
+<p>Multiple types/looks available. Aesthetic choice mostly; linear drain more labor-intensive and slightly more expensive. All types below except round drain are available for both shower tray and tiled floor.</p>
+<ul>
+<li><strong>Linear drain:</strong></li>
+<img src="https://m.media-amazon.com/images/I/81KHF5MLQcL.jpg" alt="linear shower drain">
+<img src="https://www.sanixl.be/wp-content/uploads/2024/03/stone-smart.jpg" alt="linear shower drain tray">
+<li><strong>Square drain:</strong></li>
+<img src="https://s.brugman.nl/user_upload/easy-drain-douche-putje.jpg" alt="square drain tiled">
+<img src="https://media.s-bol.com/xNrxDmKjzDO9/qNgjrR/550x259.jpg" alt="square drain">
+<li><strong>Round drain:</strong></li>
+<img src="https://livios-images.imgix.net/livios/umbracomedia/128072/newforce%20doucheplaat.jpg?w=460&auto=format&ar=4%3A3&fit=crop&crop=faces%2Cfocalpoint&corner-radius=10&mask=corners&lossless=true&s=a5ad6a7c1db21e9f8ca18f2394d3f745" alt="round drain">
+</ul>
+
+<!-- Part 6: Toilet -->
+<h2>3. Toilet</h2>
+<ul>
+<li><strong>Type:</strong></li>
+<ul>
+<li><strong>Rimless:</strong> easier to clean, more hygienic.</li>
+<img src="https://s.brugman.nl/user_upload/03-randloos-toilet.jpg" alt="toilet rimless" width="30%">
+<li><strong>Non-rimless:</strong> cheaper, harder to clean.</li>
+<img src="https://s.brugman.nl/user_upload/01-randloos-toilet.jpg" alt="toilet rim" width="30%">
+<li><strong>Toilet Seat:</strong> Soft-close recommended.</li>
+<li><strong>Flush buttons:</strong> Horizontal or Vertical. Vertical preferred by Grohe; multiple colors/designs available.</li>
+<img src="https://cdn.cloud.grohe.com/Web/4_3/ZZH_FLUSHPLATEDESIGNE01_000_01_4_3/4_3/960/ZZH_FLUSHPLATEDESIGNE01_000_01_4_3_4_3.jpg" alt="Grohe flush button colors">
+<li><strong>Smart toilet / bidet:</strong> Heated seat, bidet, dryer, auto-flush, varies by model. Requires extra connections (plumbing/electric).</li>
+<img src="https://cdn.cloud.grohe.com/Web/4_3/ZZH_T39354B14_001_01_4_3/4_3/960/ZZH_T39354B14_001_01_4_3_4_3.jpg" alt="Grohe smart toilet">
+</ul>
+</ul>
+<!-- Part 7: Bath -->
+<h2>4. Bath</h2>
+<ul>
+  <li><strong>Type:</strong> Built-in or freestanding.</li>
+  <ul>
+    <li><strong>Built-in:</strong> flush against wall(s), saves space.</li>
+    <img src="https://cdn.webshopapp.com/shops/351941/files/449278010/inbouwbad-plaatsen-heb-je-hier-aan-gedacht.jpg" alt="built-in bath">
+    <li><strong>Freestanding (corner):</strong> luxurious, more space needed.</li>
+    <img src="https://www.tegeldepot.nl/media/catalog/product/cache/1/image/3a4997032687f7efd319b4303c850616/v/r/vrijstaand_hoekbad_boss_wessing_aloni_links_180x80_wit-shop_1.jpg" alt="freestanding corner bath">
+    <li><strong>Fully freestanding:</strong> requires space around entire bath.</li>
+    <img src="https://static.rorix.nl/image/product/overig/480x480/ed2c7ea93f65683186ec582ee45d6a94.webp/zeza-eloise-freestanding-bath-170x80cm-acryl-sifon-glans-wit-sw1186424.webp" alt="completely freestanding bath">
+    <li><strong>Bath Water Tap:</strong> with/without hand-shower attachment.</li>
+    Bath water tap with hand-shower attachment:</br>
+    <img src="https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTNqhsa1qqaY8e7j3GGJUq_ov8aOkbho9J6LemWavcaI3TNdx0HlHI_ZJieM7woKmLoBAI36vV5Z5sI0zTl2LKCEEym0Z9s1ZZq2dPFXZLhlCx-Oj9DQuF1" alt="bath tap with hand-shower">
+    </br>Bath splash screen:</br>
+    <img src="https://royal-douche.com/wp-content/uploads/2019/08/badwanden-van-glas.jpg" alt="bath splash screen">
+  </ul>
+</ul>
+<!-- Material choices for bathtub -->
+<li><strong>Material choices:</strong></li>
+<ul>
+  <li><strong>Acrylic:</strong> Lightweight, many shapes and colors, warm to the touch.  
+    <ul>
+      <li><em>Pros:</em> Affordable, easy to install, warm feel.</li>
+      <li><em>Cons:</em> Scratch-prone, may dull or discolor over time.</li>
+      <li><em>Finish:</em> Mostly glossy; some textured anti-slip bases available.</li>
+      <li><em>Scratches:</em> Fairly visible but can be polished out.</li>
+    </ul>
+  </li>
+
+  <li><strong>Enameled steel:</strong> Thinner and lighter than cast iron.  
+    <ul>
+      <li><em>Pros:</em> Durable, smooth finish, resists discoloration, relatively affordable.</li>
+      <li><em>Cons:</em> Can be noisy when filling, enamel may chip under impact load, cold feel (when not yet warmed up by water).</li>
+      <li><em>Finish:</em> Glossy enamel.</li>
+      <li><em>Scratches:</em> Highly resistant; chips, if they occur, are obvious.</li>
+    </ul>
+  </li>
+
+<!--   <li><strong>Cast iron (enameled):</strong> Classic, very long-lasting.  
+    <ul>
+      <li><em>Pros:</em> Extremely robust, excellent heat retention, very scratch/wear resistant.</li>
+      <li><em>Cons:</em> Very heavy, needs strong floor support, harder to install, higher cost.</li>
+      <li><em>Finish:</em> Glossy enamel.</li>
+      <li><em>Scratches:</em> Highly resistant; chips, if they occur, are obvious.</li>
+    </ul>
+  </li> -->
+
+  <li><strong>Composite materials:</strong> Collective term for baths made of minerals + resin or acrylic. Different brands use different names.  
+    <br><em>Examples:</em> Quaryl®, Solid Surface, Cast Marble, Engineered Stone.  
+    <ul>
+      <li><em>Pros:</em> Luxurious look, durable, good heat retention, sleek modern shapes.</li>
+      <li><em>Cons:</em> Heavier, more expensive, scratch resistance varies by brand/type.</li>
+      <li><em>Finish:</em> Glossy or matte depending on type; textured options possible.</li>
+      <li><em>Scratches:</em> 
+        <ul>
+          <li>Quaryl® – scratches less frequent and less visible (compared to standard acrylic).</li>
+          <li>Solid Surface – scratches least visible, repairable.</li>
+          <li>Cast Marble – glossy surface shows micro-scratches.</li>
+          <li>Engineered Stone – scratches less visible, but may chip.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+<!--   <li><strong>Porcelain:</strong> Glazed ceramic.  
+    <ul>
+      <li><em>Pros:</em> Very hard, scratch-resistant, excellent heat retention, classic look.</li>
+      <li><em>Cons:</em> Heavy, expensive, not always easy to source or install.</li>
+      <li><em>Finish:</em> Almost always glossy.</li>
+      <li><em>Scratches:</em> Rare; glaze is highly resistant. Chips stand out.</li>
+    </ul>
+  </li> -->
+
+  Alternative materials such as porcelain, cast iron, copper etc. possible on request, significantly more expensive.
+
+</ul>
+
+
+
+<!-- Part 8: Wash Basin/Sink -->
+<h2>5. Wash Basin/Sink</h2>
+<ul>
+<li><strong>Faucet(s):</strong> on vanity (standard) or wall-mounted.</li>
+<ul>
+<li><strong>On vanity:</strong> standard, easy, suitable for most vanities.</li>
+<img src="https://cdn.cloud.grohe.com/Web/4_3/ZZH_T33190Z01_000_01_4_3/4_3/960/ZZH_T33190Z01_000_01_4_3_4_3.jpg" alt="standard basin tap">
+<li><strong>Wall-mounted:</strong> luxurious, more free space, planning important.</li>
+<img src="https://m.media-amazon.com/images/I/51JWy4DdwpL.jpg" alt="wall-mounted tap">
+</ul>
+<li><strong>Waste/Drain:</strong> Click-waste or Pull-waste.</li>
+<ul>
+<li><strong>Click-waste:</strong> push to open/close, easy install, cheaper.</li>
+<img src="https://cdn.shopify.com/s/files/1/0047/5686/5094/files/3_0be6af17-8a07-4324-a332-490f02447dce.jpg?v=1663558092" alt="click waste">
+<li><strong>Pull-waste:</strong> pull rod to open/close, more expensive.</li>
+<img src="https://media.s-bol.com/m9pL73okjNg9/kROoR6K/550x550.jpg" alt="pull waste">
+</ul>
+</ul>
+
+<h2>6. Mirror</h2>
+<ul>
+<li><strong>Type:</strong> standard, with lighting, heated, cabinet, or just mirror.</li>
+<li><strong>Shape:</strong> rectangular or round most common, others on request.</li>
+<li>Mirror cabinet: extra storage, ideal for small bathrooms.</li>
+<li>Illuminated mirror: handy for makeup/shaving.</li>
+<li>Heated mirror: prevents fogging.</li>
+<img src="https://www.glasbestellen.nl/wp-content/uploads/2020/07/led-spiegel-badkamer-met-brede-rand.png" alt="square mirror with lighting">
+</ul>
+
+<h2>7. Power Outlets Near Sink</h2>
+<ul>
+<li>Double semi-surface mounted or fully built-in.</li>
+<li>Double Semi-Surface-Mounted: slightly protrudes, easy, cheaper.</li>
+<img src="https://media.hornbach.nl/hb/packshot/as.70478189.jpg?dvid=8" alt="double semi-surface mounted socket">
+<li>Double Recessed: sleeker, more expensive.</li>
+<li>Single Recessed: sleeker, only 1 device connection.</li>
+</ul>
+
+<h2>8. Lighting</h2>
+<ul>
+<li>Spotlights: modern, directional, ceiling must be opened if replaced, more expensive.</li>
+<li>Central Light Point: classic, cheaper, existing connection usable.</li>
+<li>Dimmable: Optional, more expensive, not all lamps are dimmable (need to buy specific dimmabel versions for it to work). *Not easily combinable with bathroom fan switched on light with timer (recommended type)/*</li>
+</ul>
+
+<h2>9. Fountain (Small Washbasin for Toilet)</h2>
+<ul>
+<li>Corner or standard model.</li>
+<li>Corner: saves space, ideal for small toilet areas.</li>
+<img src="https://static.rorix.nl/image/product/overig/2000x2000/ba25a791ca655a1b2f2e46b7b96d4c7b.jpg/villeroy-boch-subway-3.0-corner-fountain-32cm-1-tap-hole-without-overflow-white-sw641579.jpg" alt="corner fountain">
+<li>Standard: classic, slightly less suitable for small corners.</li>
+<img src="https://www.toilet-direct.nl/wp-content/uploads/2023/10/toilet-direct-fontein-toilet-header-1920x1080.jpg" alt="standard fountain">
+<li>Water connection: cold only or cold + warm.</li>
+<li>Cold only: sufficient, inexpensive.</li>
+<li>Cold + warm: more comfortable, requires extra cost/connections.</li>
+</ul>
+
+<h2>10. Trap / Siphon</h2>
+<section>
+  <h3>What is a Trap / Siphon?</h3>
+  <p>
+    A trap is a section of plumbing that connects a fixture to the sewer system. It prevents sewer gases from entering the room while allowing wastewater to flow away.
+  </p>
+  <p>
+    Traps come in different designs, including the traditional <strong>P-trap (U-shaped)</strong> and the <strong>bottle trap</strong> (cup-shaped), commonly used under washbasins and small sinks.
+  </p>
+  <p>
+    The sewer gases are blocked by a small amount of water retained in the trap, creating a seal.
+  </p>
+</section>
+
+<section>
+  <h2>Two types/shapes: Bottle Trap vs. P-Trap</h2>
+
+  <u>P-trap / S-trap:</u><br>  
+    <img src="https://cdn.toolstation.nl/images/140211-NL/800/12122.jpg" alt=""><br><br>
+  <u>Bottle trap:</u><br>
+    <img src="https://media.wildkamp.nl/productimages/default/870px/256224.jpg" alt="">
+  Mostly an aesthetics choice.
+  <h3>Material Options (available for both types)</h3>
+Plastic, chrome plates steel, stainless steel. Mostly an aesthetics choice.
+</section>
+
+<h2>11. Heating</h2>
+<ul>
+<li><strong>Underfloor heating (electric):</strong> even heat, modern, no radiator, easy to clean, comfortable, ideal for bathrooms; higher installation cost.</li>
+<img src="https://cdn.prod.website-files.com/646dfefb55d07edff8a5f566/668fe30ab658dce4c35a0720_868.jpg" alt="">
+<li><strong>Radiator:</strong> towel radiator, dries/warm towels, modern, occupies wall, less even heating.</li>
+<img src="https://media.s-bol.com/jw1Er8G86Agl/QWRng25/550x550.jpg" alt="towel radiator">
+<li>Recommend electric radiators for separate control.</li>
+</ul>
+
+<h2>12. Accessories</h2>
+<ul>
+<li>Towel racks/hangers, toilet roll holders, finishing touch. Variants available.</li>
+<li>Grohe brand: accessories in same color scheme as taps. Cheaper options from other brands available.</li>
+<img src="https://cdn.cloud.grohe.com/prod/40/40/40344001/1280/40344001_1_1.jpg" alt="Grohe accessory set">
+</ul>
+
+<h2>13. Washing machine / Dryer:</h2>
+<section>
+  If you plan to install or use a washing machine and/or dryer in the bathroom, the necessary connections must be present. The required connections vary depending on the type of appliance, as shown in the table below:
+  <h3>Connections Required per Machine</h3>
+  <p>✅ = required, ✖ = not required, ◐ = optional / depends (see notes below)</p>
+
+  <table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Appliance Type</th>
+        <th>Cold Water Inlet</th>
+        <th>Hot Water Inlet</th>
+        <th>Drain connection</th>
+        <th>Power (230V)</th>
+        <th>Ventilation / Exhaust</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Washing Machine</td>
+        <td>✅</td>
+        <td>◐ <br>Usually not. Most washing machines can heat water internally, so only a cold water connection is needed.</td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>✖</td>
+      </tr>
+      <tr>
+        <td>Clothes Dryer (Condenser / Heat Pump)</td>
+        <td>◐ <br>Usually not. Some dryers with steam-function may require cold water inlet.</td>
+        <td>✖</td>
+        <td>◐ <br>Some models store water extracted from the clothes internally in a reservoir for manual emptying,no drain connection needed. Dryers which pump this water directly into the drain (no internal reservoir), do require a drain connection. </td>
+        <td>✅</td>
+        <td>✖</td>
+      </tr>
+      <tr>
+        <td>Vented Clothes Dryer</td>
+        <td>✖</td>
+        <td>✖</td>
+        <td>✖</td>
+        <td>✅</td>
+        <td>✅</td>
+      </tr>
+      <tr>
+        <td>Washer-Dryer Combo</td>
+        <td>✅</td>
+        <td>◐ <br>Usually not. Most washing machines can heat water internally, so only a cold water connection is needed.</td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>✖</td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+</section>
+
+</body>
+</html>
+
+
+
+
+
