@@ -353,6 +353,11 @@ section[id] { scroll-margin-top: 76px; }
 .review-card-trigger { background: transparent; border: 0; inset: 0; position: absolute; z-index: 3; }
 .review-card-trigger:focus-visible { border-radius: 26px; box-shadow: inset 0 0 0 3px var(--blue); outline: 0; }
 .review-card > :not(.review-card-trigger) { position: relative; z-index: 1; }
+.review-photo-hint { align-items: center; background: var(--ink); border-radius: 999px; color: white; display: flex; font-size: .62rem; font-weight: 700; gap: 10px; opacity: 0; padding: 9px 12px; pointer-events: none; position: absolute !important; right: 20px; top: 54px; transform: translateY(7px); transition: opacity .22s,transform .22s; z-index: 2 !important; }
+.review-photo-hint i { color: #ffb079; font-size: .8rem; font-style: normal; }
+.review-card:hover .review-photo-hint,
+.review-card:focus-within .review-photo-hint { opacity: 1; transform: translateY(0); }
+.review-card.selected .review-photo-hint { opacity: 0; transform: translateY(7px); }
 .review-meta { align-items: center; color: var(--muted); display: flex; font-size: .63rem; font-weight: 600; justify-content: space-between; }
 .stars { color: var(--orange); letter-spacing: .1em; }
 .review-card blockquote { font-size: clamp(1.45rem, 2.2vw, 2.2rem); font-weight: 600; letter-spacing: -.04em; line-height: 1.18; margin: 60px 0 35px; }

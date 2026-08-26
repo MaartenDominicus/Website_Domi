@@ -1065,6 +1065,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
                       }}
                     />
                     <div className="review-meta"><span>0{index + 1}</span><span>{t.reviews.label}</span></div>
+                    <span className="review-photo-hint" aria-hidden="true">{language === "nl" ? "Klik voor projectfoto" : "Click for project photo"}<i>↗</i></span>
                     <blockquote><HighlightedReview quote={quote} terms={reviewHighlights[language][index]} /></blockquote><p>{attribution}</p><small>{t.reviews.label}</small>
                   </article>
                 )))}
