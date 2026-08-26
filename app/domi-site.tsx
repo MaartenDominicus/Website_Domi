@@ -111,12 +111,12 @@ const content = {
       resultTitle: "Zorgvuldig opgeleverd",
       result: "Details, aansluitingen en afwerking zijn gezamenlijk nagelopen. Het resultaat is gebruiksklaar, praktisch in dagelijks gebruik en voorbereid op de toekomst.",
       items: [
-        { title: "Badkamer en toilet vernieuwd", type: "Badkamerrenovatie · Amsterdam", text: "Een compacte badkamer en toiletruimte opnieuw opgebouwd en afgewerkt met contrasterend tegelwerk, sanitair en maatwerkmeubilair.", tags: ["Sanitair", "Tegelwerk", "Afwerking"], image: images.bathroom, source: projectArchive, alt: "Gerealiseerde badkamer met blauw en wit tegelwerk in Amsterdam" },
-        { title: "Wonen met meer licht en ruimte", type: "Complete renovatie · Amsterdam", text: "Een volledige woningrenovatie waarin indeling, glas, afwerking en technische werkzaamheden als één geheel zijn aangepakt.", tags: ["Renovatie", "Glas", "Afwerking"], image: images.kitchen, source: projectArchive, alt: "Lichte uitbouw na een complete renovatie in Amsterdam" },
-        { title: "Van woning naar compleet thuis", type: "Complete renovatie · Rotterdam", text: "Een complete renovatie met een strak afgewerkte trap, maatwerkdetails en vernieuwde woonruimtes.", tags: ["Renovatie", "Timmerwerk", "Schilderwerk"], image: images.electric, source: projectArchive, alt: "Afgewerkte trap na een complete woningrenovatie in Rotterdam" },
-        { title: "Een extra woonkamer in de tuin", type: "Tuinhuis · Amsterdam", text: "Een tuinhuis met beschutte lounge, elektra en praktische bergruimte, ontworpen voor gebruik in meerdere seizoenen.", tags: ["Tuinhuis", "Elektra", "Maatwerk"], image: images.craft, source: projectArchive, alt: "Gerealiseerd tuinhuis met overdekte lounge in Amsterdam" },
-        { title: "Nieuwe aansluiting door bosgrond", type: "Riolering · Apeldoorn", text: "Een nieuwe rioolaansluiting aangelegd door bosrijke grond, inclusief graafwerk en leidingtracé.", tags: ["Riolering", "Grondwerk", "Installatie"], image: images.plumbing, source: projectArchive, alt: "Aanleg van een rioolaansluiting in Apeldoorn" },
-        { title: "Comfort vanaf de vloer", type: "Vloerverwarming · Kampen", text: "Een vloerverwarmingsverdeler en leidingnet aangelegd als basis voor gelijkmatige verwarming van de ruimte.", tags: ["Verwarming", "Leidingwerk", "Installatie"], image: images.tiling, source: projectArchive, alt: "Vloerverwarmingsverdeler en leidingwerk in Kampen" },
+        { slug: "badkamer-toilet-amsterdam", title: "Badkamer en toilet vernieuwd", type: "Badkamerrenovatie · Amsterdam", text: "Een compacte badkamer en toiletruimte opnieuw opgebouwd en afgewerkt met contrasterend tegelwerk, sanitair en maatwerkmeubilair.", tags: ["Sanitair", "Tegelwerk", "Afwerking"], image: images.bathroom, source: projectArchive, alt: "Gerealiseerde badkamer met blauw en wit tegelwerk in Amsterdam" },
+        { slug: "complete-renovatie-amsterdam", title: "Wonen met meer licht en ruimte", type: "Complete renovatie · Amsterdam", text: "Een volledige woningrenovatie waarin indeling, glas, afwerking en technische werkzaamheden als één geheel zijn aangepakt.", tags: ["Renovatie", "Glas", "Afwerking"], image: images.kitchen, source: projectArchive, alt: "Lichte uitbouw na een complete renovatie in Amsterdam" },
+        { slug: "complete-renovatie-rotterdam", title: "Van woning naar compleet thuis", type: "Complete renovatie · Rotterdam", text: "Een complete renovatie met een strak afgewerkte trap, maatwerkdetails en vernieuwde woonruimtes.", tags: ["Renovatie", "Timmerwerk", "Schilderwerk"], image: images.electric, source: projectArchive, alt: "Afgewerkte trap na een complete woningrenovatie in Rotterdam" },
+        { slug: "tuinhuis-amsterdam", title: "Een extra woonkamer in de tuin", type: "Tuinhuis · Amsterdam", text: "Een tuinhuis met beschutte lounge, elektra en praktische bergruimte, ontworpen voor gebruik in meerdere seizoenen.", tags: ["Tuinhuis", "Elektra", "Maatwerk"], image: images.craft, source: projectArchive, alt: "Gerealiseerd tuinhuis met overdekte lounge in Amsterdam" },
+        { slug: "riolering-apeldoorn", title: "Nieuwe aansluiting door bosgrond", type: "Riolering · Apeldoorn", text: "Een nieuwe rioolaansluiting aangelegd door bosrijke grond, inclusief graafwerk en leidingtracé.", tags: ["Riolering", "Grondwerk", "Installatie"], image: images.plumbing, source: projectArchive, alt: "Aanleg van een rioolaansluiting in Apeldoorn" },
+        { slug: "vloerverwarming-kampen", title: "Comfort vanaf de vloer", type: "Vloerverwarming · Kampen", text: "Een vloerverwarmingsverdeler en leidingnet aangelegd als basis voor gelijkmatige verwarming van de ruimte.", tags: ["Verwarming", "Leidingwerk", "Installatie"], image: images.tiling, source: projectArchive, alt: "Vloerverwarmingsverdeler en leidingwerk in Kampen" },
       ],
     },
     reviews: {
@@ -231,12 +231,12 @@ const content = {
       resultTitle: "Carefully completed",
       result: "Details, connections and finishes were reviewed together. The result is ready to use, practical in everyday life and prepared for future needs.",
       items: [
-        { title: "Bathroom and toilet renewed", type: "Bathroom renovation · Amsterdam", text: "A compact bathroom and toilet rebuilt and finished with contrasting tiles, sanitary fittings and bespoke furniture.", tags: ["Plumbing", "Tiling", "Finishing"], image: images.bathroom, source: projectArchive, alt: "Completed blue and white tiled bathroom in Amsterdam" },
-        { title: "More light and living space", type: "Full renovation · Amsterdam", text: "A complete home renovation bringing layout, glazing, finishing and technical work together.", tags: ["Renovation", "Glazing", "Finishing"], image: images.kitchen, source: projectArchive, alt: "Bright extension after a complete renovation in Amsterdam" },
-        { title: "A complete home transformation", type: "Full renovation · Rotterdam", text: "A full renovation with a carefully finished staircase, bespoke details and renewed living spaces.", tags: ["Renovation", "Carpentry", "Painting"], image: images.electric, source: projectArchive, alt: "Finished staircase after a complete home renovation in Rotterdam" },
-        { title: "A second living room in the garden", type: "Garden room · Amsterdam", text: "A garden room with a sheltered lounge, electrics and practical storage, designed for use across several seasons.", tags: ["Garden room", "Electrical", "Bespoke"], image: images.craft, source: projectArchive, alt: "Completed garden room with covered lounge in Amsterdam" },
-        { title: "A new drainage connection", type: "Drainage · Apeldoorn", text: "A new sewer connection installed through woodland, including excavation and the full pipe route.", tags: ["Drainage", "Groundwork", "Installation"], image: images.plumbing, source: projectArchive, alt: "Installation of a sewer connection in Apeldoorn" },
-        { title: "Comfort from the floor up", type: "Underfloor heating · Kampen", text: "An underfloor heating manifold and pipe network installed as the basis for evenly distributed heat.", tags: ["Heating", "Pipework", "Installation"], image: images.tiling, source: projectArchive, alt: "Underfloor heating manifold and pipework in Kampen" },
+        { slug: "badkamer-toilet-amsterdam", title: "Bathroom and toilet renewed", type: "Bathroom renovation · Amsterdam", text: "A compact bathroom and toilet rebuilt and finished with contrasting tiles, sanitary fittings and bespoke furniture.", tags: ["Plumbing", "Tiling", "Finishing"], image: images.bathroom, source: projectArchive, alt: "Completed blue and white tiled bathroom in Amsterdam" },
+        { slug: "complete-renovatie-amsterdam", title: "More light and living space", type: "Full renovation · Amsterdam", text: "A complete home renovation bringing layout, glazing, finishing and technical work together.", tags: ["Renovation", "Glazing", "Finishing"], image: images.kitchen, source: projectArchive, alt: "Bright extension after a complete renovation in Amsterdam" },
+        { slug: "complete-renovatie-rotterdam", title: "A complete home transformation", type: "Full renovation · Rotterdam", text: "A full renovation with a carefully finished staircase, bespoke details and renewed living spaces.", tags: ["Renovation", "Carpentry", "Painting"], image: images.electric, source: projectArchive, alt: "Finished staircase after a complete home renovation in Rotterdam" },
+        { slug: "tuinhuis-amsterdam", title: "A second living room in the garden", type: "Garden room · Amsterdam", text: "A garden room with a sheltered lounge, electrics and practical storage, designed for use across several seasons.", tags: ["Garden room", "Electrical", "Bespoke"], image: images.craft, source: projectArchive, alt: "Completed garden room with covered lounge in Amsterdam" },
+        { slug: "riolering-apeldoorn", title: "A new drainage connection", type: "Drainage · Apeldoorn", text: "A new sewer connection installed through woodland, including excavation and the full pipe route.", tags: ["Drainage", "Groundwork", "Installation"], image: images.plumbing, source: projectArchive, alt: "Installation of a sewer connection in Apeldoorn" },
+        { slug: "vloerverwarming-kampen", title: "Comfort from the floor up", type: "Underfloor heating · Kampen", text: "An underfloor heating manifold and pipe network installed as the basis for evenly distributed heat.", tags: ["Heating", "Pipework", "Installation"], image: images.tiling, source: projectArchive, alt: "Underfloor heating manifold and pipework in Kampen" },
       ],
     },
     reviews: {
@@ -298,7 +298,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const [typedServiceDetail, setTypedServiceDetail] = useState("");
   const [closingServiceIndex, setClosingServiceIndex] = useState<number | null>(null);
   const [activeServiceDetailIndex, setActiveServiceDetailIndex] = useState<number | null>(null);
-  const [activeProjectIndex, setActiveProjectIndex] = useState<number | null>(null);
   const [activeSection, setActiveSection] = useState("");
   const [activeArticleIndex, setActiveArticleIndex] = useState<number | null>(null);
   const [articleExitVisible, setArticleExitVisible] = useState(false);
@@ -319,18 +318,12 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const serviceOriginScrollY = useRef(0);
   const serviceClosing = useRef(false);
   const serviceTileCloseTimer = useRef<number | null>(null);
-  const projectReaderRef = useRef<HTMLDivElement>(null);
-  const projectCloseRef = useRef<HTMLButtonElement>(null);
-  const projectTriggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const projectOriginScrollY = useRef(0);
-  const projectClosing = useRef(false);
   const t = content[language];
   const knowledgeItems = language === "nl" ? knowledgeArticlesNl : knowledgeArticlesEn;
   const reviewCount = t.reviews.items.length;
   const reviewIndex = ((reviewCursor % reviewCount) + reviewCount) % reviewCount;
   const activeArticle = activeArticleIndex === null ? null : knowledgeItems[activeArticleIndex];
   const activeServiceDetail = activeServiceDetailIndex === null ? null : t.services.items[activeServiceDetailIndex];
-  const activeProject = activeProjectIndex === null ? null : t.projects.items[activeProjectIndex];
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -554,46 +547,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   }, [activeServiceDetailIndex]);
 
   useEffect(() => {
-    if (activeProjectIndex === null) return;
-
-    const trigger = projectTriggerRefs.current[activeProjectIndex];
-    const reader = projectReaderRef.current;
-    document.body.classList.add("article-is-open");
-    projectClosing.current = false;
-    reader?.scrollTo({ top: 0 });
-    const focusFrame = window.requestAnimationFrame(() => projectCloseRef.current?.focus());
-
-    function handleProjectKeydown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        projectCloseRef.current?.click();
-        return;
-      }
-      if (event.key !== "Tab" || !reader) return;
-
-      const focusable = Array.from(reader.querySelectorAll<HTMLElement>("button, a[href]"));
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-
-    document.addEventListener("keydown", handleProjectKeydown);
-    return () => {
-      window.cancelAnimationFrame(focusFrame);
-      document.body.classList.remove("article-is-open");
-      document.removeEventListener("keydown", handleProjectKeydown);
-      window.requestAnimationFrame(() => trigger?.focus({ preventScroll: true }));
-    };
-  }, [activeProjectIndex]);
-
-  useEffect(() => {
     const heroImage = document.querySelector<HTMLElement>(".hero-image");
     const processList = document.querySelector<HTMLElement>(".process-list");
     const scrollDepthStory = document.querySelector<HTMLElement>(".scroll-depth-story");
@@ -710,39 +663,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
     serviceOriginScrollY.current = window.scrollY;
     serviceClosing.current = false;
     setActiveServiceDetailIndex(index);
-  }
-
-  function openProject(index: number) {
-    projectOriginScrollY.current = window.scrollY;
-    projectClosing.current = false;
-    setActiveProjectIndex(index);
-  }
-
-  function closeProject() {
-    if (projectClosing.current) return;
-    projectClosing.current = true;
-
-    const reader = projectReaderRef.current;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    function finishClose() {
-      flushSync(() => setActiveProjectIndex(null));
-      window.requestAnimationFrame(() => window.scrollTo({ top: projectOriginScrollY.current, behavior: "auto" }));
-    }
-
-    if (!reader || reduceMotion) {
-      finishClose();
-      return;
-    }
-
-    const fade = reader.animate(
-      [
-        { opacity: 1, backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" },
-        { opacity: 0, backdropFilter: "blur(0px)", WebkitBackdropFilter: "blur(0px)" },
-      ],
-      { duration: 520, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" },
-    );
-    fade.finished.then(finishClose, finishClose);
   }
 
   function closeServiceDetails() {
@@ -968,13 +888,10 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           <div className="project-grid">
             {t.projects.items.map((project, index) => (
               <article className="project-card" key={project.title}>
-                <button
+                <Link
                   className="project-card-trigger"
-                  type="button"
-                  ref={(element) => { projectTriggerRefs.current[index] = element; }}
+                  href={language === "nl" ? `/projecten/${project.slug}` : `/en/projects/${project.slug}`}
                   aria-label={`${t.projects.open}: ${project.title}`}
-                  aria-haspopup="dialog"
-                  onClick={() => openProject(index)}
                 />
                 <figure>
                   <img src={project.image} alt={project.alt} width="640" height="530" loading="lazy" decoding="async" />
@@ -1160,33 +1077,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
                 <p><span>03</span><span><strong>{t.services.contactTitle}</strong>{t.services.contact}</span></p>
               </div>
               <button className="button button-primary article-inline-close" type="button" onClick={closeServiceDetails}>{t.services.close}<span>×</span></button>
-            </div>
-          </article>
-        </div>
-      )}
-
-      {activeProject && activeProjectIndex !== null && (
-        <div className="article-reader project-reader" ref={projectReaderRef} role="dialog" aria-modal="true" aria-labelledby="active-project-title">
-          <button className="article-close" ref={projectCloseRef} type="button" onClick={closeProject}>
-            <span>{t.projects.close}</span><i aria-hidden="true">×</i>
-          </button>
-          <article className="article-sheet">
-            <figure className="article-cover project-cover">
-              <img src={activeProject.image} alt={activeProject.alt} />
-              <div className="article-cover-shade" />
-              <span className="placeholder-badge">{t.projects.placeholder}</span>
-            </figure>
-            <div className="article-reader-content">
-              <p className="article-meta">{t.projects.overlayLabel} · 0{activeProjectIndex + 1} · {activeProject.type}</p>
-              <h2 id="active-project-title">{activeProject.title}</h2>
-              <p className="article-reader-lead">{activeProject.text}</p>
-              <ul className="project-overlay-tags">{activeProject.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
-              <div className="article-body service-body project-body">
-                <p><span>01</span><span><strong>{activeProject.type}</strong>{activeProject.text}</span></p>
-                <p><span>02</span><span><strong>{t.projects.coordinationTitle}</strong>{t.projects.coordination}</span></p>
-                <p><span>03</span><span><strong>{t.projects.resultTitle}</strong>{t.projects.result}</span></p>
-              </div>
-              <button className="button button-primary article-inline-close" type="button" onClick={closeProject}>{t.projects.close}<span>×</span></button>
             </div>
           </article>
         </div>
