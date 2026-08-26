@@ -694,14 +694,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
     setActiveServiceIndex(index);
   }
 
-  function openArticle(index: number) {
-    articleOriginScrollY.current = window.scrollY;
-    lastArticleScrollTop.current = 0;
-    articleClosing.current = false;
-    setArticleExitVisible(false);
-    setActiveArticleIndex(index);
-  }
-
   function openServiceDetails(index: number) {
     serviceOriginScrollY.current = window.scrollY;
     serviceClosing.current = false;
@@ -1014,7 +1006,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
                 <Link
                   className="knowledge-card-trigger"
                   ref={(element) => { articleTriggerRefs.current[index] = element; }}
-                  onClick={() => openArticle(index)}
                   href={language === "nl" ? `/kennis/${article.slug}` : `/en/insights/${article.slug}`}
                   aria-label={`${t.knowledge.read}: ${article.title}`}
                 />

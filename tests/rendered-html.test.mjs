@@ -63,6 +63,8 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.match(html, /Hang- en sluitwerk in oudere woningen/);
   assert.match(html, /Tegels en voegen kiezen voor de badkamer/);
   assert.match(html, /href="\/kennis\/veilige-elektrische-installatie"/);
+  assert.match(html, /href="\/kennis\/binnendeuren-hang-en-sluitwerk"/);
+  assert.match(html, /href="\/kennis\/tegels-en-voegen-kiezen"/);
 });
 
 test("server-renders an indexable English route", async () => {
@@ -78,31 +80,38 @@ test("server-renders an indexable English route", async () => {
 
 test("publishes source-based knowledge articles with metadata and references", async () => {
   const routes = [
-    ["/kennis/veilige-elektrische-installatie", "Electriciteit", "electriciteit.html", "Ook dit kan dmv domotica", 8],
-    ["/kennis/binnendeuren-hang-en-sluitwerk", "Hang- en sluitwerk: Deursloten, scharnieren en beslag", "Binnendeuren_hang_en_sluitwerk.html", "een definitieve prijsopgave pas mogelijk na inspectie op locatie", 3],
-    ["/kennis/tegels-en-voegen-kiezen", "Bathroom & Tiles Guide", "tilesandgrout.html", "Washer-Dryer Combo", 42],
+    ["/kennis/veilige-elektrische-installatie", "Electriciteit", "Ook dit kan dmv domotica", 8, "/blog/hoofdschakelaar.jpg"],
+    ["/kennis/binnendeuren-hang-en-sluitwerk", "Hang- en sluitwerk: Deursloten, scharnieren en beslag", "een definitieve prijsopgave pas mogelijk na inspectie op locatie", 3, "/blog/doorhangende-deurhendel.jpg"],
+    ["/kennis/tegels-en-voegen-kiezen", "Bathroom & Tiles Guide", "Washer-Dryer Combo", 42, "/blog/badkamer-tegels.jpg"],
   ];
 
-  for (const [path, title, source, finalText, imageCount] of routes) {
+  for (const [path, title, finalText, imageCount, cover] of routes) {
     const response = await request(path);
     assert.equal(response.status, 200);
     const html = await response.text();
     assert.match(html, new RegExp(title.replace("&", "(?:&|&amp;)")));
-    assert.match(html, new RegExp(source.replaceAll(".", "\\.")));
     assert.match(html, new RegExp(finalText));
-    assert.match(html, /letterlijk en volledig overgenomen/);
+    assert.match(html, new RegExp(`<figure class="original-blog-cover"><img src="${cover.replaceAll(".", "\\.")}"`));
+    assert.doesNotMatch(html, /Over deze publicatie|About this publication/);
+    assert.doesNotMatch(html, /class="original-blog-note"/);
     assert.match(html, /<a class="brand" href="\/"/);
     assert.match(html, /<a class="blog-back" href="\/#kennis"/);
     const articleStart = html.indexOf('<div class="original-article">');
     const articleEnd = html.indexOf('<section class="blog-cta">', articleStart);
     const visibleArticle = html.slice(articleStart, articleEnd).replace(/<!--[\s\S]*?-->/g, "");
     assert.equal((visibleArticle.match(/<img\b/g) ?? []).length, imageCount);
+    assert.match(visibleArticle, /<nav id="toc"/);
+    const tocHtml = visibleArticle.slice(visibleArticle.indexOf('<nav id="toc"'), visibleArticle.indexOf("</nav>") + 6);
+    const tocTargets = [...tocHtml.matchAll(/<a href="#([^"]+)"/g)].map((match) => match[1]);
+    assert.ok(tocTargets.length > 0);
+    for (const target of tocTargets) assert.match(visibleArticle, new RegExp(`id="${target}"`));
 
     if (path.endsWith("tegels-en-voegen-kiezen")) {
       assert.match(visibleArticle, /<button id="collapse-all">Expand All<\/button>/);
       assert.doesNotMatch(visibleArticle, /<button[^>]*disabled/);
-      const tocTargets = [...visibleArticle.matchAll(/<a href="#([^"]+)"/g)].map((match) => match[1]);
-      for (const target of tocTargets) assert.match(visibleArticle, new RegExp(`id="${target}"`));
+      assert.match(visibleArticle, /class="bond-diagram half-bond"/);
+      assert.match(visibleArticle, /class="bond-diagram full-bond"/);
+      assert.equal((visibleArticle.match(/class="visually-hidden pattern-source"/g) ?? []).length, 2);
     }
   }
 

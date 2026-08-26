@@ -8,10 +8,6 @@ export default function KnowledgeArticlePage({ article, locale }: { article: Ori
         back: "Alle artikelen",
         archive: "Origineel kennisarchief",
         complete: "Volledige oorspronkelijke blogpost",
-        sourceTitle: "Over deze publicatie",
-        sourceText: "De tekst, tabellen, maatvoeringen, voorbeelden en beeldselectie hieronder zijn letterlijk en volledig overgenomen uit het oorspronkelijke openbare Troos Bouw-blog. Alleen de vormgeving en navigatie zijn vernieuwd.",
-        caution: "Technische normen en productinformatie kunnen veranderen. Laat actuele eisen altijd voor uw eigen situatie controleren.",
-        sourceLink: "Bekijk het originele bronbestand",
         ctaEyebrow: "Van kennis naar uitvoering",
         ctaTitle: "Een vraag over uw eigen woning?",
         ctaText: "Vertel ons wat u wilt aanpassen. We bekijken techniek, planning en afwerking in samenhang.",
@@ -21,10 +17,6 @@ export default function KnowledgeArticlePage({ article, locale }: { article: Ori
         back: "All articles",
         archive: "Original knowledge archive",
         complete: "Complete original blog post",
-        sourceTitle: "About this publication",
-        sourceText: "The text, tables, dimensions, examples and image selection below have been reproduced literally and in full from the original public Troos Bouw blog. Only the presentation and navigation have been redesigned.",
-        caution: "Technical standards and product information may change. Always have the current requirements checked for your own situation.",
-        sourceLink: "View the original source file",
         ctaEyebrow: "From advice to execution",
         ctaTitle: "A question about your own home?",
         ctaText: "Tell us what you want to change. We review technical work, planning and finishing as one project.",
@@ -42,6 +34,10 @@ export default function KnowledgeArticlePage({ article, locale }: { article: Ori
       </header>
 
       <article>
+        <figure className="original-blog-cover">
+          <img src={article.image} alt={article.imageAlt} width="1600" height="980" />
+        </figure>
+
         <header className="original-blog-masthead">
           <p className="eyebrow"><span />{labels.archive}</p>
           <h1>{article.title}</h1>
@@ -52,12 +48,6 @@ export default function KnowledgeArticlePage({ article, locale }: { article: Ori
         </header>
 
         <div className="original-blog-layout">
-          <aside className="original-blog-note">
-            <p>{labels.sourceTitle}</p>
-            <p>{labels.sourceText}</p>
-            <small>{labels.caution}</small>
-            <a href={article.source} target="_blank" rel="noreferrer">{labels.sourceLink} ↗</a>
-          </aside>
           <OriginalArticleBody html={article.html} />
         </div>
       </article>

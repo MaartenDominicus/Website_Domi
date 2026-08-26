@@ -9,6 +9,8 @@ export type OriginalArticle = {
   language: "nl" | "en";
   html: string;
   source: string;
+  image: string;
+  imageAlt: string;
 };
 
 const repository = "https://github.com/MaartenDominicus/TroosCom/blob/main";
@@ -27,7 +29,9 @@ function prepareOriginalHtml(raw: string, moveFirstHeading = false) {
   const bodyOpen = raw.match(/<body[^>]*>/i);
   const afterOpen = bodyOpen?.index === undefined ? raw : raw.slice(bodyOpen.index + bodyOpen[0].length);
   const body = afterOpen.split(/<\/body>/i)[0].replace(/<\/html>\s*$/i, "");
-  let html = body.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+  let html = body
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<!--[\s\S]*?-->/g, "");
   if (moveFirstHeading) html = html.replace(/<h1\b[^>]*>[\s\S]*?<\/h1>/i, "");
 
   for (const [source, destination] of Object.entries(localImages)) {
@@ -80,30 +84,85 @@ function addTileHeadingAnchors(html: string) {
   );
 }
 
+function addGeneratedToc(html: string, title = "Inhoudsopgave") {
+  const usedIds = new Set<string>();
+  const headings: Array<{ id: string; label: string }> = [];
+  const withAnchors = html.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (heading, attributes: string, content: string) => {
+    const label = content.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").trim();
+    const existingId = attributes.match(/\bid=["']([^"']+)["']/i)?.[1];
+    let id = existingId ?? label
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+
+    const base = id || "onderdeel";
+    id = base;
+    let suffix = 2;
+    while (usedIds.has(id)) id = `${base}-${suffix++}`;
+    usedIds.add(id);
+    headings.push({ id, label });
+
+    const cleanAttributes = attributes.replace(/\s+id=["'][^"']+["']/i, "");
+    return `<h2${cleanAttributes} id="${id}">${content}</h2>`;
+  });
+
+  if (!headings.length) return withAnchors;
+  const links = headings.map(({ id, label }) => `<li><a href="#${id}">${label}</a></li>`).join("");
+  return `<nav id="toc" aria-label="${title}"><h2>${title}</h2><ul>${links}</ul></nav>${withAnchors}`;
+}
+
+function improveBrickPatterns(html: string) {
+  const diagram = (type: "half" | "full", label: string) => {
+    const rows = Array.from({ length: 6 }, (_, row) => {
+      const offset = type === "half" && row % 2 === 1 ? " offset" : "";
+      return `<div class="brick-row${offset}">${"<i></i>".repeat(8)}</div>`;
+    }).join("");
+    return `<figure class="bond-diagram ${type}-bond" role="img" aria-label="${label}"><div class="brick-wall">${rows}</div><figcaption>${label}</figcaption></figure>`;
+  };
+
+  return html
+    .replace(
+      /(<h4 id="half-brick-pattern">Half-brick pattern<\/h4>)\s*<pre>([\s\S]*?)<\/pre>/i,
+      `$1${diagram("half", "Half-brick pattern: iedere rij verspringt een halve tegel")}<pre class="visually-hidden pattern-source">$2</pre>`,
+    )
+    .replace(
+      /(<h4 id="full-brick-pattern">Full-brick pattern<\/h4>)\s*<pre>([\s\S]*?)<\/pre>/i,
+      `$1${diagram("full", "Full-brick pattern: alle voegen liggen boven elkaar")}<pre class="visually-hidden pattern-source">$2</pre>`,
+    );
+}
+
 export const originalArticles = [
   {
     slug: "veilige-elektrische-installatie",
     title: "Electriciteit",
     category: "Electriciteit",
     language: "nl",
-    html: prepareOriginalHtml(electricityRaw, true),
+    html: addGeneratedToc(prepareOriginalHtml(electricityRaw, true)),
     source: `${repository}/electriciteit.html`,
+    image: "/blog/hoofdschakelaar.jpg",
+    imageAlt: "Hoofdschakelaar in een bestaande groepenkast",
   },
   {
     slug: "binnendeuren-hang-en-sluitwerk",
     title: "Hang- en sluitwerk: Deursloten, scharnieren en beslag",
     category: "Binnendeuren Renovatie & Hang- en sluitwerk",
     language: "nl",
-    html: prepareOriginalHtml(doorsRaw, true),
+    html: addGeneratedToc(prepareOriginalHtml(doorsRaw, true)),
     source: `${repository}/Binnendeuren_hang_en_sluitwerk.html`,
+    image: "/blog/doorhangende-deurhendel.jpg",
+    imageAlt: "Doorhangende deurhendel op een oudere binnendeur",
   },
   {
     slug: "tegels-en-voegen-kiezen",
     title: "Bathroom & Tiles Guide",
     category: "Tiles, grout, standard heights and sizes, design choices and more...",
     language: "en",
-    html: addTileHeadingAnchors(prepareOriginalHtml(tilesRaw)),
+    html: improveBrickPatterns(addTileHeadingAnchors(prepareOriginalHtml(tilesRaw))),
     source: `${repository}/tilesandgrout.html`,
+    image: "/blog/badkamer-tegels.jpg",
+    imageAlt: "Badkamer met tegelwerk uit het eigen projectarchief",
   },
 ] as const satisfies readonly OriginalArticle[];
 
