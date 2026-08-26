@@ -212,7 +212,7 @@ section[id] { scroll-margin-top: 76px; }
   .process-list [data-process-text]::after {
     -webkit-background-clip: text;
     -webkit-mask-image: radial-gradient(circle 128px at var(--process-spot-x,-999px) var(--process-spot-y,-999px),#000 0 48%,rgba(0,0,0,.8) 64%,transparent 100%);
-    background: linear-gradient(110deg,var(--orange) 8%,var(--blue) 86%);
+    background: linear-gradient(110deg,var(--orange) 8%,#006eff 86%);
     background-clip: text;
     color: transparent;
     content: attr(data-process-text);
@@ -221,7 +221,7 @@ section[id] { scroll-margin-top: 76px; }
     opacity: 0;
     pointer-events: none;
     position: absolute;
-    text-shadow: 0 0 16px rgba(7,107,156,.12);
+    text-shadow: 0 0 18px rgba(0,110,255,.2);
     transition: opacity .16s ease;
   }
   .process-list li:hover [data-process-text]::after { opacity: 1; }
