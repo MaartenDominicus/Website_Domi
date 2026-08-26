@@ -816,6 +816,11 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
     lastArticleScrollTop.current = currentTop;
   }
 
+  function stepReview(direction: -1 | 1) {
+    setReviewCursor((cursor) => cursor + direction);
+    setSelectedReviewIndex((index) => index === null ? null : (index + direction + reviewCount) % reviewCount);
+  }
+
   return (
     <div lang={language}>
       <a className="skip-link" href="#main">{t.skip}</a>
@@ -1049,6 +1054,9 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
             <p className="placeholder-note">{t.reviews.note} <span>{language === "nl" ? "Klik op een review voor de projectfoto." : "Select a review to see the project photo."}</span></p>
           </div>
           <div className={`review-showcase${selectedReviewPhoto ? " has-selection" : ""}`}>
+            {reviewSelectionPaused && (
+              <button type="button" className="review-side-previous" aria-label={t.reviews.previous} onClick={() => stepReview(-1)}>←</button>
+            )}
             <div
               className="review-viewport"
               ref={reviewViewportRef}
@@ -1092,9 +1100,9 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           </div>
           <div className="review-navigation">
             <div className="review-controls">
-              <button type="button" aria-label={t.reviews.previous} onClick={() => { setReviewCursor((cursor) => cursor - 1); setSelectedReviewIndex((index) => index === null ? null : (index - 1 + reviewCount) % reviewCount); }}>←</button>
+              <button type="button" aria-label={t.reviews.previous} onClick={() => stepReview(-1)}>←</button>
               <button type="button" className="review-pause" aria-label={reviewSelectionPaused ? (language === "nl" ? "Automatische carrousel gepauzeerd zolang een review is geselecteerd" : "Automatic carousel paused while a review is selected") : reviewsPaused ? t.reviews.play : t.reviews.pause} aria-pressed={reviewsPaused || reviewSelectionPaused} disabled={reviewSelectionPaused} onClick={() => setReviewsPaused((paused) => !paused)}>{reviewsPaused ? "▶" : "Ⅱ"}</button>
-              <button type="button" aria-label={t.reviews.next} onClick={() => { setReviewCursor((cursor) => cursor + 1); setSelectedReviewIndex((index) => index === null ? null : (index + 1) % reviewCount); }}>→</button>
+              <button type="button" aria-label={t.reviews.next} onClick={() => stepReview(1)}>→</button>
             </div>
             <div className="review-position" aria-hidden="true">{t.reviews.items.map((_, index) => <i className={index === reviewIndex ? "active" : ""} key={index} />)}</div>
           </div>
