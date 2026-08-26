@@ -330,7 +330,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const [reviewTrackPosition, setReviewTrackPosition] = useState(0);
   const [reviewTrackOffset, setReviewTrackOffset] = useState(0);
   const [reviewTrackTransition, setReviewTrackTransition] = useState(true);
-  const [reviewTransitioning, setReviewTransitioning] = useState(false);
   const [reviewHovered, setReviewHovered] = useState(false);
   const [reviewFocused, setReviewFocused] = useState(false);
   const [reviewPhotoFading, setReviewPhotoFading] = useState(false);
@@ -394,7 +393,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
   const moveReview = useCallback((direction: -1 | 1) => {
     const nextIndex = (activeReviewIndex + direction + reviewCount) % reviewCount;
-    setReviewTransitioning(true);
     setActiveReviewIndex(nextIndex);
     changeSelectedReview(nextIndex);
 
@@ -422,7 +420,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
     else changeSelectedReview(index);
 
     if (position === reviewTrackPosition) return;
-    setReviewTransitioning(true);
     setReviewPosition(position);
   }
 
@@ -433,7 +430,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
       flushSync(() => setReviewPosition(normalizedPosition, false));
       window.requestAnimationFrame(() => setReviewTrackTransition(true));
     }
-    setReviewTransitioning(false);
   }
 
   useEffect(() => {
@@ -979,7 +975,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
             <div className="review-viewport">
               <div
                 ref={reviewGridRef}
-                className={`review-grid${reviewTransitioning ? " is-transitioning" : ""}${reviewTrackTransition ? "" : " without-transition"}`}
+                className={`review-grid${reviewTrackTransition ? "" : " without-transition"}`}
                 style={{ transform: `translate3d(-${reviewTrackOffset}px,0,0)` }}
                 onTransitionEnd={finishReviewTransition}
               >
