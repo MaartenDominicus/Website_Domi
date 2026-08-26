@@ -53,6 +53,7 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.match(html, /Robin · Tiny House Amsterdam/);
   assert.match(html, /class="scroll-depth-story"/);
   assert.match(html, /class="scroll-depth-foreground"/);
+  assert.equal((html.match(/data-process-text=/g) ?? []).length, 12);
   assert.match(html, /Techniek verdwijnt/);
   assert.match(html, /action="https:\/\/formsubmit\.co\/e2a3109e56f2b784903eb6ae24352c31"/);
   assert.match(html, /mailto:troosbouw@gmail\.com/);

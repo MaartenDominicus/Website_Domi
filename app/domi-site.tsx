@@ -922,7 +922,20 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           <SectionIntro eyebrow={t.process.eyebrow} title={t.process.title} />
           <ol className="process-list">
             {t.process.items.map(([title, text], index) => (
-              <li key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></li>
+              <li
+                key={title}
+                onPointerMove={(event) => {
+                  event.currentTarget.querySelectorAll<HTMLElement>("[data-process-text]").forEach((element) => {
+                    const bounds = element.getBoundingClientRect();
+                    element.style.setProperty("--process-spot-x", `${event.clientX - bounds.left}px`);
+                    element.style.setProperty("--process-spot-y", `${event.clientY - bounds.top}px`);
+                  });
+                }}
+              >
+                <span data-process-text={`0${index + 1}`}>0{index + 1}</span>
+                <h3 data-process-text={title}>{title}</h3>
+                <p data-process-text={text}>{text}</p>
+              </li>
             ))}
           </ol>
         </section>

@@ -207,6 +207,25 @@ section[id] { scroll-margin-top: 76px; }
 .process-list li > span { color: var(--blue); font-size: .66rem; font-weight: 600; }
 .process-list h3 { font-size: clamp(1.55rem, 2.4vw, 2.55rem); letter-spacing: -.05em; margin: 0; }
 .process-list p { color: var(--ink); font-size: .92rem; line-height: 1.55; margin: 0; max-width: 580px; }
+@media (hover: hover) and (pointer: fine) {
+  .process-list [data-process-text] { position: relative; }
+  .process-list [data-process-text]::after {
+    -webkit-background-clip: text;
+    -webkit-mask-image: radial-gradient(circle 128px at var(--process-spot-x,-999px) var(--process-spot-y,-999px),#000 0 48%,rgba(0,0,0,.8) 64%,transparent 100%);
+    background: linear-gradient(110deg,var(--orange) 8%,var(--blue) 86%);
+    background-clip: text;
+    color: transparent;
+    content: attr(data-process-text);
+    inset: 0;
+    mask-image: radial-gradient(circle 128px at var(--process-spot-x,-999px) var(--process-spot-y,-999px),#000 0 48%,rgba(0,0,0,.8) 64%,transparent 100%);
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    text-shadow: 0 0 16px rgba(7,107,156,.12);
+    transition: opacity .16s ease;
+  }
+  .process-list li:hover [data-process-text]::after { opacity: 1; }
+}
 .process-list li:nth-child(1) { --water-delay: 0ms; }
 .process-list li:nth-child(2) { --water-delay: 120ms; }
 .process-list li:nth-child(3) { --water-delay: 240ms; }
