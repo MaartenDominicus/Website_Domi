@@ -152,14 +152,14 @@ section[id] { scroll-margin-top: 76px; }
 .about-image figcaption { align-items: center; color: var(--muted); display: flex; font-size: .62rem; font-weight: 600; justify-content: space-between; letter-spacing: .04em; padding: 14px 18px; }
 .about-image figcaption a:hover { color: var(--blue); }
 
-.services { --service-gap: 14px; --service-surround: var(--soft); background: radial-gradient(circle at 0 0,rgba(185,75,11,.12),transparent 34%),radial-gradient(circle at 100% 100%,rgba(7,107,156,.14),transparent 38%),var(--service-surround); border-radius: 36px; margin-inline: 12px; max-width: none; padding-bottom: clamp(74px,8vw,118px); padding-left: max(24px, calc((100vw - var(--max))/2 + 88px)); padding-right: max(24px, calc((100vw - var(--max))/2 + 88px)); padding-top: clamp(74px,8vw,118px); }
+.services { --service-gap: 14px; background: radial-gradient(circle at 0 0,rgba(185,75,11,.12),transparent 34%),radial-gradient(circle at 100% 100%,rgba(7,107,156,.14),transparent 38%),var(--soft); border-radius: 36px; margin-inline: 12px; max-width: none; padding-bottom: clamp(74px,8vw,118px); padding-left: max(24px, calc((100vw - var(--max))/2 + 88px)); padding-right: max(24px, calc((100vw - var(--max))/2 + 88px)); padding-top: clamp(74px,8vw,118px); }
 .services .section-intro h2 { color: var(--ink); }
 .services .section-intro > p { color: var(--muted); }
 .services .eyebrow { color: var(--orange); }
 .services .section-intro { margin-bottom: clamp(42px,5vw,68px); }
 .service-grid { display: grid; gap: var(--service-gap); grid-auto-flow: dense; grid-template-columns: repeat(4, 1fr); }
-.service-card-shell { container-type: inline-size; min-height: 224px; position: relative; z-index: 1; }
-.service-card-shell.active { z-index: 40; }
+.service-card-shell { align-self: start; container-type: inline-size; height: 224px; min-height: 224px; position: relative; transition: height .48s cubic-bezier(.22,.8,.24,1) .22s,min-height .48s cubic-bezier(.22,.8,.24,1) .22s; z-index: 1; }
+.service-card-shell.active { height: 310px; min-height: 310px; z-index: 40; }
 .service-card-shell.closing { z-index: 30; }
 .service-card { appearance: none; background: white; border: 0; border-radius: 22px; box-shadow: 0 4px 18px rgba(0,0,0,.035); color: var(--ink); height: 100%; isolation: isolate; left: 0; min-height: 224px; overflow: hidden; padding: 22px; position: absolute; text-align: left; top: 0; transition: background .35s, color .35s, transform .35s, box-shadow .35s, width .48s cubic-bezier(.22,.8,.24,1) .22s, height .48s cubic-bezier(.22,.8,.24,1) .22s; width: 100%; }
 .service-card > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { position: relative; transition: margin-left .48s cubic-bezier(.22,.8,.24,1) .22s, transform .48s cubic-bezier(.22,.8,.24,1) .22s, width .48s cubic-bezier(.22,.8,.24,1) .22s; z-index: 2; }
@@ -176,7 +176,7 @@ section[id] { scroll-margin-top: 76px; }
 .service-card:hover, .service-card:focus-within { box-shadow: 0 20px 46px rgba(0,0,0,.09); }
 .service-card-shell.active .service-card,
 .service-card-shell.active .service-card:hover,
-.service-card-shell.active .service-card:focus-within { box-shadow: 0 0 0 var(--service-gap) var(--service-surround),0 26px 58px rgba(0,0,0,.14); }
+.service-card-shell.active .service-card:focus-within { box-shadow: 0 26px 58px rgba(0,0,0,.14); }
 .service-card.active { background: var(--ink); color: white; }
 .service-top { align-items: center; display: flex; justify-content: space-between; }
 .service-top span { color: var(--blue); font-size: .65rem; font-weight: 600; }
@@ -645,8 +645,9 @@ section[id] { scroll-margin-top: 76px; }
   .section-intro h2, .about h2, .contact-intro h2 { font-size: clamp(3rem,13vw,4.35rem); }
   .services, .reviews, .contact { border-radius: 26px; margin-inline: 8px; }
   .service-grid { grid-template-columns: 1fr; }
-  .service-card-shell { min-height: 210px; }
+  .service-card-shell { height: 210px; min-height: 210px; }
   .service-card { min-height: 210px; }
+  .service-card-shell.active { height: 420px; min-height: 420px; }
   .service-card-shell.active .service-card { height: 420px; left: 0; right: auto; width: 100%; }
   .service-card.active .service-image { border-radius: 22px 22px 0 0; bottom: auto; height: 160px; left: 0; top: 0; width: 100%; }
   .service-card.active > :not(.service-image):not(.service-expand-trigger):not(.service-more-button) { margin-left: 0; transform: translateY(164px); width: auto; }
