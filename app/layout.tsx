@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const title = "Domi Installatie | Bouw, installatie & renovatie";
-const description = "Domi Installatie verzorgt renovatie, installatiewerk, onderhoud en complete afwerking door heel Nederland — met één vakkundig team.";
+const title = "Domi Installatie | Complete woningverbouwingen";
+const description = "Complete verbouwingen voor particuliere woningen, binnen en buiten. Bouw, installatie en afwerking door heel Nederland, met één aanspreekpunt.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://troosbouw.com"),
   title,
   description,
   icons: { icon: "/domi-logo.jpg", shortcut: "/domi-logo.jpg" },
-  keywords: ["Domi Installatie", "bouwbedrijf", "installatie", "renovatie", "elektra", "sanitair", "verbouwing", "Nederland"],
+  keywords: ["Domi Installatie", "woningverbouwing", "renovatie", "elektra", "sanitair", "timmerwerk", "afbouw", "Nederland"],
   alternates: { canonical: "/", languages: { nl: "/", en: "/en" } },
   openGraph: {
     title,
@@ -29,15 +29,9 @@ const localBusiness = {
   name: "Domi Installatie",
   url: "https://troosbouw.com",
   image: "https://troosbouw.com/og.png",
-  email: "troosbouw@gmail.com",
   telephone: "+31610983085",
   areaServed: { "@type": "Country", name: "Nederland" },
   openingHours: "Mo-Fr 09:00-18:00",
-  sameAs: [
-    "https://instagram.com/troosbouw",
-    "https://www.facebook.com/people/Troos-Bouw/pfbid02mzgVYbe8DtqCVUW8Gu2NAk5bhdB7QAfE8g1fA43yLXcMGoFjUs2U2zWom1eVh2DUl/",
-    "https://nl.pinterest.com/troosbouw/",
-  ],
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -19,9 +19,9 @@ export default function PrivacyPage() {
       <h2>Doel en bewaartermijn</h2>
       <p>We gebruiken deze gegevens uitsluitend voor contact over uw aanvraag. We bewaren ze niet langer dan nodig voor de behandeling en eventuele opvolging daarvan, tenzij een wettelijke bewaarplicht geldt.</p>
       <h2>Verzending van het formulier</h2>
-      <p>De website gebruikt FormSubmit om formulierberichten door te sturen naar <a href="mailto:troosbouw@gmail.com">troosbouw@gmail.com</a>. Verstuur geen gevoelige persoonsgegevens via het vrije tekstveld.</p>
+      <p>De website gebruikt FormSubmit om formulierberichten veilig aan Domi Installatie door te sturen. Verstuur geen gevoelige persoonsgegevens via het vrije tekstveld.</p>
       <h2>Uw rechten</h2>
-      <p>U kunt vragen om inzage, correctie of verwijdering van uw persoonsgegevens. Neem hiervoor contact op via <a href="mailto:troosbouw@gmail.com">troosbouw@gmail.com</a>.</p>
+      <p>U kunt vragen om inzage, correctie of verwijdering van uw persoonsgegevens. Neem hiervoor contact op via het formulier op de homepage of bel <a href="tel:+31610983085">06 10 98 30 85</a>.</p>
       <p><Link href="/">Terug naar de website</Link></p>
     </main>
   );

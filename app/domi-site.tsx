@@ -1,20 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { knowledgeArticlesEn, knowledgeArticlesNl } from "./knowledge-data";
 
 type Language = "nl" | "en";
 
-const socials = [
-  ["Instagram", "https://instagram.com/troosbouw"],
-  ["Facebook", "https://www.facebook.com/people/Troos-Bouw/pfbid02mzgVYbe8DtqCVUW8Gu2NAk5bhdB7QAfE8g1fA43yLXcMGoFjUs2U2zWom1eVh2DUl/"],
-  ["Pinterest", "https://nl.pinterest.com/troosbouw/"],
-] as const;
-
 const images = {
-  hero: "/projects/apeldoorn-hideaway.webp",
+  hero: "/projects/renovatie-amsterdam.webp",
   craft: "/projects/tuinhuis-amsterdam.webp",
   bathroom: "/projects/badkamer-amsterdam.webp",
   kitchen: "/projects/renovatie-amsterdam.webp",
@@ -34,57 +28,41 @@ const serviceImages = [
   images.tiling,
 ] as const;
 
-const cabinVideos = [
-  { id: "VQybpgshfIs", title: "Gingerbread Huis", start: 0, end: 18 },
-  { id: "Z7VTo5eOYlU", title: "Luka's Hut", start: 8, end: 28 },
-  { id: "xUzktAPs1ho", title: "Maja's Hideaway", start: 10, end: 30 },
-] as const;
-
 const reviewHighlights = {
   nl: [
-    ["2e living room", "het is gelukt"],
-    ["hard gewerkt", "meegedacht", "blij en tevreden"],
-    ["goede materialen", "praktischer en onderhoudsarm", "Precies wat we wensten"],
-    ["mooi resultaat", "binnen de afgesproken tijd", "creatieve oplossingen"],
     ["vakkundig werk", "allround"],
     ["denken mee", "flexibel", "vakwerk"],
+    ["2e living room", "het is gelukt"],
+    ["goede materialen", "praktischer en onderhoudsarm", "Precies wat we wensten"],
   ],
   en: [
-    ["fantastic work ethic", "straightforward in communication"],
-    ["honest and trustworthy"],
-    ["great work", "respectful and tidy", "well organised"],
-    ["work hard", "useful ideas", "happy and satisfied"],
+    ["skilled work", "all-round"],
+    ["think along with you", "flexible", "skilled work"],
+    ["second living room", "we made it happen"],
     ["good materials", "practical, low-maintenance solutions", "Exactly what we wanted"],
-    ["flexible", "think along with you", "skilled work"],
   ],
 } as const;
 
 const reviewPhotos = {
   nl: [
-    { src: images.craft, alt: "Gerealiseerd tuinhuis met overdekte lounge in Amsterdam", label: "Tuinhuis · Amsterdam" },
-    { src: images.craft, alt: "Gerealiseerd tiny house met houten buitenruimte", label: "Tiny House · Amsterdam" },
-    { src: images.craft, alt: "Onderhoudsarm uitgevoerd tuinhuis", label: "Tuinhuis · Amsterdam" },
-    { src: images.hero, alt: "Afgewerkte recreatiewoning tussen de bomen", label: "Recreatiewoning · IJsselmuiden" },
     { src: images.electric, alt: "Afgewerkte woning na een complete renovatie", label: "Complete verbouwing" },
     { src: images.kitchen, alt: "Maatwerk en afwerking in een gerenoveerde woning", label: "Maatwerk bed & kast" },
+    { src: images.craft, alt: "Gerealiseerd tuinhuis met overdekte lounge in Amsterdam", label: "Tuinhuis · Amsterdam" },
+    { src: images.craft, alt: "Onderhoudsarm uitgevoerd tuinhuis", label: "Tuinhuis · Amsterdam" },
   ],
   en: [
-    { src: images.hero, alt: "Completed recreational home among the trees", label: "Recreational home" },
-    { src: images.hero, alt: "Completed recreational home in woodland", label: "Recreational home · Maarn" },
-    { src: images.craft, alt: "Completed timber decking and garden room", label: "Decking · Amsterdam" },
-    { src: images.craft, alt: "Completed tiny house with timber exterior", label: "Tiny House · Amsterdam" },
-    { src: images.craft, alt: "Low-maintenance completed garden room", label: "Garden room · Amsterdam" },
+    { src: images.electric, alt: "Completed home after a full renovation", label: "Full home renovation" },
     { src: images.kitchen, alt: "Bespoke joinery in a renovated home", label: "Bespoke bed & wardrobe" },
+    { src: images.craft, alt: "Completed garden room with covered lounge in Amsterdam", label: "Garden room · Amsterdam" },
+    { src: images.craft, alt: "Low-maintenance completed garden room", label: "Garden room · Amsterdam" },
   ],
 } as const;
 
 const reviewProjectSlugs = [
-  "tuinhuis-amsterdam",
-  "tuinhuis-amsterdam",
-  "tuinhuis-amsterdam",
-  "tuinhuis-amsterdam",
   "complete-renovatie-rotterdam",
   "complete-renovatie-amsterdam",
+  "tuinhuis-amsterdam",
+  "tuinhuis-amsterdam",
 ] as const;
 
 const projectArchive = "https://github.com/MaartenDominicus/TroosCom";
@@ -106,25 +84,25 @@ const content = {
     menuClose: "Menu sluiten",
     language: "Selecteer taal",
     nav: [
-      ["Over ons", "#over"], ["Diensten", "#diensten"], ["Projecten", "#projecten"],
-      ["Reviews", "#reviews"], ["Kennis", "#kennis"], ["Contact", "#contact"],
+      ["Diensten", "#diensten"], ["Projecten", "#projecten"], ["Werkwijze", "#werkwijze"],
+      ["Over Domi", "#over"], ["Kennis", "#kennis"], ["Contact", "#contact"],
     ],
-    quote: "Offerte aanvragen",
+    quote: "Bespreek uw project",
     hero: {
-      eyebrow: "Heel Nederland · Bouwen · Installeren · Afwerken",
-      titleTop: "Eén vakteam.", titleAccent: "Uw hele project.",
-      text: "Van elektra, water en verwarming tot badkamers, verbouwingen en de laatste afwerking. Domi Installatie brengt alle werkzaamheden samen in één helder plan.",
+      eyebrow: "Particuliere woningen · Heel Nederland",
+      titleTop: "Complete verbouwingen.", titleAccent: "Binnen én buiten.",
+      text: "Domi Installatie verbouwt en renoveert particuliere woningen. Van elektra en leidingwerk tot timmerwerk en afwerking, met één aanspreekpunt voor het hele project.",
       primary: "Bespreek uw project", secondary: "Bekijk ons werk",
-      proofTitle: "Alles in één lijn.", proofText: "Eigen projecten, heldere afspraken en één aanspreekpunt.",
-      alt: "Door het team gerealiseerde recreatiewoning in de Veluwe",
+      proofTitle: "Eén samenhangend plan.", proofText: "Bouw, installatie en afwerking door één vakteam.",
+      alt: "Lichte woonruimte na een complete woningrenovatie in Amsterdam",
     },
-    ticker: ["Breed inzetbaar", "Korte lijnen", "Heldere afspraken", "Netjes opgeleverd"],
+    ticker: ["Voor particuliere woningen", "Binnen én buiten", "Door heel Nederland", "Eén aanspreekpunt"],
     about: {
-      eyebrow: "Over Domi", title: "Alles komt samen bij Domi.",
-      lead: "Bouwkundige kennis, installatietechniek en een scherp oog voor afwerking — bij Domi vindt u het onder één dak.",
-      body: "Daardoor hoeft u niet voor iedere stap een andere partij te regelen. We denken praktisch mee, stemmen werkzaamheden goed op elkaar af en houden u tijdens het project op de hoogte. Van Amsterdam en Rotterdam tot Apeldoorn, Kampen en de Veluwe: het projectarchief laat uiteenlopende verbouwingen, installaties en maatwerk zien.",
+      eyebrow: "Over Domi", title: "Eén vakteam voor uw woning.",
+      lead: "Domi brengt bouwkundige kennis, installatietechniek en verzorgde afwerking samen voor particuliere verbouwingen.",
+      body: "U hoeft niet voor iedere fase een andere partij te regelen. We denken praktisch mee, stemmen werkzaamheden op elkaar af en houden u tijdens het project op de hoogte. Vanuit één team werken we aan woningen door heel Nederland, van complete binnenrenovaties tot badkamers, installaties en verbouwingen buiten.",
       detail: "Eén aanspreekpunt. Minder losse schakels. Meer grip op het resultaat.",
-      imageAlt: "Gerealiseerd tuinhuis met overdekte lounge in Amsterdam",
+      imageAlt: "Gerealiseerde badkamer na een complete renovatie in Amsterdam",
     },
     services: {
       eyebrow: "Onze vakgebieden", title: "Vakwerk voor iedere fase.",
@@ -134,6 +112,8 @@ const content = {
       approach: "We beginnen met een heldere opname van de situatie, stemmen techniek en afwerking op elkaar af en spreken vooraf af wat er gebeurt. Zo blijft de uitvoering overzichtelijk en voorkomt u verrassingen tussen verschillende werkzaamheden.",
       contactTitle: "Uw situatie bespreken",
       contact: "Geen woning, ruimte of installatie is hetzelfde. Vertel ons wat u wilt verbeteren; dan bekijken we welke aanpak logisch is en welke werkzaamheden slim gecombineerd kunnen worden.",
+      ctaText: "Niet zeker welke vakgebieden nodig zijn? We bekijken uw woning en brengen de werkzaamheden samen in één logisch plan.",
+      ctaButton: "Bespreek welke werkzaamheden nodig zijn",
       items: [
         ["Elektra & verlichting", "Veilige, praktische aansluitingen en verlichting.", "Van extra groepen en stopcontacten tot binnen- en buitenverlichting. We bekijken belasting, kabelroutes en toekomstig gebruik als één geheel."],
         ["Water & sanitair", "Leidingwerk en sanitair, zorgvuldig aangesloten.", "We plaatsen en verleggen leidingen, kranen, toiletten en aansluitingen en zoeken lekkages gericht op voordat herstelwerk begint."],
@@ -142,7 +122,7 @@ const content = {
         ["Renovatie & verbouwing", "Van nieuwe indeling tot gebruiksklare oplevering.", "We combineren bouwkundige aanpassingen met installatiewerk en afwerking, zodat de verschillende fases goed op elkaar aansluiten."],
         ["Tegel-, stuc- & schilderwerk", "Strakke ondergronden en een verzorgde finish.", "We beoordelen de ondergrond, herstellen waar nodig en werken wanden, vloeren en plafonds netjes en passend bij het gebruik af."],
         ["Timmerwerk & montage", "Maatwerk en montage tot in het detail.", "Van aftimmering en ombouwen tot deuren, plinten en praktische interieuroplossingen die precies op de beschikbare ruimte aansluiten."],
-        ["Onderhoud & reparaties", "Gericht herstel voor woning en bedrijfspand.", "We pakken kleine én grotere gebreken aan, combineren werkzaamheden waar dat slim is en laten de plek veilig en verzorgd achter."],
+        ["Onderhoud & reparaties", "Gericht herstel voor uw woning.", "We pakken kleine én grotere gebreken aan, combineren werkzaamheden waar dat slim is en laten de plek veilig en verzorgd achter."],
       ],
     },
     process: {
@@ -174,21 +154,21 @@ const content = {
     },
     reviews: {
       eyebrow: "Reviews", title: "Goed werk merkt u aan het resultaat én aan de samenwerking.",
-      note: "Klantreacties uit het openbare Troos Bouw-projectarchief.",
+      note: "Klantreacties bij woningverbouwingen en allround werkzaamheden van Domi Installatie.",
       label: "Klantreactie", pause: "Pauzeer", play: "Afspelen", previous: "Vorige review", next: "Volgende review",
+      ctaText: "Een vergelijkbaar project in gedachten?",
+      ctaButton: "Bespreek uw project",
       items: [
+        ["“Domi levert goed en vakkundig werk voor een goede prijs. Ik vond het erg fijn dat ze allround zijn: elektra, stucwerk, tegelzetten, schilderen, timmer- en loodgieterswerk.”", "Mona · Volledige verbouwing"],
+        ["“Domi heeft van een inimini washok een prachtige kinderkamer ontworpen en gebouwd. Ze denken mee, zijn flexibel en leveren vakwerk in een snelle tijd.”", "Maria · Maatwerk bed en kast"],
         ["“Eindelijk een 2e living room. De plaatjes spreken voor zich; heel leuk om gezamenlijk tijdens een bouwproject alles zo te krijgen hoe je het wilt. En ja, nadat het klaar is kan ik volmondig zeggen: het is gelukt!”", "Christiaan · Tuinhuis Amsterdam"],
-        ["“Er wordt hard gewerkt en heel fijn dat er inhoudelijk wordt meegedacht over het bouwproject. We zijn ontzettend blij en tevreden met het tuinhuisje!”", "Robin · Tiny House Amsterdam"],
         ["“Ze gebruiken goede materialen en komen met prima oplossingen om de constructie praktischer en onderhoudsarm te maken. Precies wat we wensten. Dank!”", "Hans · Tuinhuis"],
-        ["“De bouw van onze prachtige cabin heeft onder leiding van Troos tot een mooi resultaat geleid, binnen de afgesproken tijd. Troos dacht goed mee en kwam met creatieve oplossingen.”", "Mirjam · Recreatiewoning IJsselmuiden"],
-        ["“Troos levert goed en vakkundig werk voor een goede prijs. Ik vond het erg fijn dat ze allround zijn: elektra, stucwerk, tegelzetten, schilderen, timmer- en loodgieterswerk.”", "Mona · Volledige verbouwing"],
-        ["“Troos heeft van een inimini washok een prachtige kinderkamer ontworpen en gebouwd. Ze denken mee, zijn flexibel en leveren vakwerk in een snelle tijd.”", "Maria · Maatwerk bed en kast"],
       ],
     },
     featured: {
-      eyebrow: "Werkgebied", title: "Actief door heel Nederland",
-      note: "Projecten in onder meer Amsterdam, Apeldoorn, de Veluwe, Kampen, Rotterdam en IJsselmuiden.",
-      items: ["Amsterdam", "Apeldoorn", "Veluwe", "Kampen", "Rotterdam", "IJsselmuiden"],
+      eyebrow: "Werkgebied", title: "Woningverbouwingen door heel Nederland",
+      note: "Domi werkt landelijk. Het projectarchief bevat onder meer woningen in Amsterdam, Apeldoorn, Kampen en Rotterdam.",
+      items: ["Amsterdam", "Apeldoorn", "Kampen", "Rotterdam", "Heel Nederland"],
       placeholder: "Projectlocatie",
     },
     knowledge: {
@@ -202,20 +182,20 @@ const content = {
       ],
     },
     contact: {
-      eyebrow: "Contact", title: "Een plan, klus of verbouwing in gedachten?",
-      text: "Vertel ons kort wat u wilt laten uitvoeren. We bekijken de mogelijkheden en nemen contact met u op over een passende vervolgstap.",
+      eyebrow: "Contact", title: "Bespreek uw woningproject.",
+      text: "Vertel kort wat u binnen of buiten wilt verbouwen. We bekijken welke bouw-, installatie- en afbouwwerkzaamheden nodig zijn en nemen contact met u op over de volgende stap.",
       benefits: ["Actief door heel Nederland", "Maandag–vrijdag van 9:00–18:00", "Eén aanspreekpunt voor meerdere vakgebieden"],
       formTitle: "Vertel ons over uw project",
       name: "Naam", email: "E-mailadres", phone: "Telefoonnummer (optioneel)", location: "Postcode en plaats",
       type: "Type project", typePrompt: "Maak een keuze", typeOptions: ["Renovatie of verbouwing", "Elektra", "Water of sanitair", "Badkamer of toilet", "Timmer- of afbouwwerk", "Onderhoud of reparatie", "Anders"],
       timing: "Gewenste startperiode", message: "Uw vraag of plan", messagePlaceholder: "Vertel kort wat er moet gebeuren, waar en wanneer.",
       consent: "Ik ga akkoord met het verwerken van mijn gegevens voor deze aanvraag.", submit: "Verstuur aanvraag",
-      demo: "Uw aanvraag wordt veilig doorgestuurd naar troosbouw@gmail.com.",
+      demo: "Na verzending ontvangt u binnen één werkdag een reactie.",
       success: "Bedankt voor uw aanvraag.",
     },
     footer: {
       line: "Bouw, techniek en afwerking onder één dak.", navigation: "Navigatie", contact: "Contact",
-      contactLine: "troosbouw@gmail.com · 06 10 98 30 85 · ma–vr 9:00–18:00", closing: "Met aandacht gemaakt. Netjes opgeleverd.",
+      contactLine: "06 10 98 30 85 · WhatsApp · ma–vr 9:00–18:00", closing: "Met aandacht gemaakt. Netjes opgeleverd.",
       imageCredit: "Eigen projectarchief", social: "Volg ons", socialNote: "Bekijk actuele projecten en werk in uitvoering.",
     },
   },
@@ -226,25 +206,25 @@ const content = {
     menuClose: "Close menu",
     language: "Select language",
     nav: [
-      ["About", "#over"], ["Services", "#diensten"], ["Projects", "#projecten"],
-      ["Reviews", "#reviews"], ["Insights", "#kennis"], ["Contact", "#contact"],
+      ["Services", "#diensten"], ["Projects", "#projecten"], ["Process", "#werkwijze"],
+      ["About Domi", "#over"], ["Insights", "#kennis"], ["Contact", "#contact"],
     ],
-    quote: "Request a quote",
+    quote: "Discuss your project",
     hero: {
-      eyebrow: "Throughout the Netherlands · Build · Install · Finish",
-      titleTop: "One skilled team.", titleAccent: "Your entire project.",
-      text: "From electrical, plumbing and heating work to bathrooms, renovations and the finishing touches. Domi Installatie brings every part of the job together in one clear plan.",
+      eyebrow: "Private homes · Throughout the Netherlands",
+      titleTop: "Complete renovations.", titleAccent: "Inside and out.",
+      text: "Domi Installatie renovates and remodels private homes. From electrical and plumbing work to carpentry and finishing, with one point of contact for the entire project.",
       primary: "Discuss your project", secondary: "View our work",
-      proofTitle: "Everything aligned.", proofText: "Real projects, clear agreements and one point of contact.",
-      alt: "Recreational home completed by the team in the Veluwe",
+      proofTitle: "One coordinated plan.", proofText: "Construction, installation and finishing by one skilled team.",
+      alt: "Bright living space after a complete home renovation in Amsterdam",
     },
-    ticker: ["Versatile expertise", "Direct communication", "Clear agreements", "Careful completion"],
+    ticker: ["For private homes", "Inside and out", "Throughout the Netherlands", "One point of contact"],
     about: {
-      eyebrow: "About Domi", title: "Everything comes together at Domi.",
-      lead: "Construction expertise, technical installations and a sharp eye for finishing — all available from one team.",
-      body: "You do not need to coordinate a different contractor for every stage. We think practically, align the work carefully and keep you informed. The project archive covers renovation, installation and bespoke work in Amsterdam, Rotterdam, Apeldoorn, Kampen and the Veluwe.",
+      eyebrow: "About Domi", title: "One skilled team for your home.",
+      lead: "Domi combines construction expertise, technical installations and careful finishing for private home renovations.",
+      body: "You do not need to coordinate a different contractor for every stage. We think practically, align the work and keep you informed throughout the project. One team works on homes across the Netherlands, from complete interior renovations to bathrooms, installations and outdoor remodelling.",
       detail: "One point of contact. Fewer loose ends. More control over the result.",
-      imageAlt: "Completed garden room with covered lounge in Amsterdam",
+      imageAlt: "Completed bathroom after a full renovation in Amsterdam",
     },
     services: {
       eyebrow: "Our expertise", title: "Skilled work at every stage.",
@@ -254,6 +234,8 @@ const content = {
       approach: "We begin with a clear assessment of the situation, coordinate technical work and finishing, and agree on the scope before work starts. This keeps the project manageable and prevents surprises between different stages.",
       contactTitle: "Discuss your situation",
       contact: "No home, room or installation is identical. Tell us what you would like to improve and we will assess the most logical approach and which activities can be combined efficiently.",
+      ctaText: "Not sure which trades are needed? We assess your home and combine the work into one logical plan.",
+      ctaButton: "Discuss the work your home needs",
       items: [
         ["Electrical & lighting", "Safe, practical connections and lighting.", "From additional circuits and outlets to indoor and outdoor lighting. We consider load, cable routes and future use as one complete system."],
         ["Plumbing & sanitary systems", "Pipework and fittings, carefully connected.", "We install and relocate pipework, taps, toilets and connections, and trace leaks accurately before repair work begins."],
@@ -262,7 +244,7 @@ const content = {
         ["Renovation & remodelling", "From a new layout to ready-to-use completion.", "We combine construction changes with installation work and finishing so every phase connects properly to the next."],
         ["Tiling, plastering & painting", "Clean substrates and a polished finish.", "We assess and repair the substrate where necessary, then finish walls, floors and ceilings to suit how the space will be used."],
         ["Carpentry & installation", "Bespoke work and installation down to the detail.", "From boxing and finish carpentry to doors, skirting and practical interior solutions made to fit the available space."],
-        ["Maintenance & repairs", "Focused repairs for homes and commercial property.", "We handle both small and larger defects, combine tasks where practical and leave the area safe, tidy and ready to use."],
+        ["Maintenance & repairs", "Focused repairs for your home.", "We handle both small and larger defects, combine tasks where practical and leave the area safe, tidy and ready to use."],
       ],
     },
     process: {
@@ -294,21 +276,21 @@ const content = {
     },
     reviews: {
       eyebrow: "Reviews", title: "Good work shows in both the result and the experience.",
-      note: "Customer feedback from the public Troos Bouw project archive.",
+      note: "Customer feedback on home renovations and all-round work by Domi Installatie.",
       label: "Customer review", pause: "Pause", play: "Play", previous: "Previous review", next: "Next review",
+      ctaText: "Planning a similar project?",
+      ctaButton: "Discuss your project",
       items: [
-        ["“Troos has worked with me on multiple projects over the last decade. They have a fantastic work ethic and are straightforward in communication.”", "Lucinda · Recreational home"],
-        ["“We felt really lucky to have found Troos. Someone honest and trustworthy is so rare.”", "Tijmen · Recreational home Maarn"],
-        ["“I wanted to thank you for the great work. The ladies said you were very respectful and tidy. I really appreciate that you were so well organised and made it all happen.”", "Lizette · Decking Amsterdam"],
-        ["“They work hard and offer very useful ideas about the project. We are incredibly happy and satisfied with the garden room.”", "Robin · Tiny House Amsterdam · translated"],
+        ["“Domi delivers good, skilled work at a fair price. I really appreciated how all-round they are: electrical work, plastering, tiling, painting, carpentry and plumbing.”", "Mona · Full renovation · translated"],
+        ["“Domi transformed a tiny utility room into a beautiful child’s room. They think along with you, are flexible and deliver skilled work quickly.”", "Maria · Bespoke bed and wardrobe · translated"],
+        ["“At last, a second living room. The pictures speak for themselves; it was great to shape everything together during the project. Now that it is finished, I can wholeheartedly say: we made it happen.”", "Christiaan · Garden room Amsterdam · translated"],
         ["“They use good materials and offer practical, low-maintenance solutions. Exactly what we wanted.”", "Hans · Garden room · translated"],
-        ["“They are flexible, think along with you and deliver skilled work quickly.”", "Maria · Bespoke bed and wardrobe · translated"],
       ],
     },
     featured: {
-      eyebrow: "Service area", title: "Working throughout the Netherlands",
-      note: "Projects in Amsterdam, Apeldoorn, the Veluwe, Kampen, Rotterdam and IJsselmuiden, among other locations.",
-      items: ["Amsterdam", "Apeldoorn", "Veluwe", "Kampen", "Rotterdam", "IJsselmuiden"],
+      eyebrow: "Service area", title: "Home renovations throughout the Netherlands",
+      note: "Domi works nationwide. The project archive includes homes in Amsterdam, Apeldoorn, Kampen and Rotterdam.",
+      items: ["Amsterdam", "Apeldoorn", "Kampen", "Rotterdam", "The Netherlands"],
       placeholder: "Project location",
     },
     knowledge: {
@@ -322,20 +304,20 @@ const content = {
       ],
     },
     contact: {
-      eyebrow: "Contact", title: "Have a project, repair or renovation in mind?",
-      text: "Tell us briefly what you would like to have done. We will review the possibilities and contact you to discuss a suitable next step.",
+      eyebrow: "Contact", title: "Discuss your home project.",
+      text: "Tell us briefly what you want to remodel inside or outside. We will review the construction, installation and finishing work involved and contact you about the next step.",
       benefits: ["Working throughout the Netherlands", "Monday–Friday, 9:00–18:00", "One point of contact across multiple trades"],
       formTitle: "Tell us about your project",
       name: "Name", email: "Email address", phone: "Phone number (optional)", location: "Postcode and city",
       type: "Project type", typePrompt: "Select an option", typeOptions: ["Renovation or remodelling", "Electrical", "Plumbing or sanitary", "Bathroom or toilet", "Carpentry or finishing", "Maintenance or repair", "Other"],
       timing: "Preferred start period", message: "Your question or plan", messagePlaceholder: "Briefly describe what needs doing, where and when.",
       consent: "I agree to my details being processed for this enquiry.", submit: "Submit enquiry",
-      demo: "Your enquiry is securely forwarded to troosbouw@gmail.com.",
+      demo: "After submitting, you will receive a response within one working day.",
       success: "Thank you for your enquiry.",
     },
     footer: {
       line: "Construction, technical work and finishing under one roof.", navigation: "Navigation", contact: "Contact",
-      contactLine: "troosbouw@gmail.com · +31 6 10 98 30 85 · Mon–Fri 9:00–18:00", closing: "Built with care. Finished properly.",
+      contactLine: "+31 6 10 98 30 85 · WhatsApp · Mon–Fri 9:00–18:00", closing: "Built with care. Finished properly.",
       imageCredit: "Company project archive", social: "Follow us", socialNote: "See current projects and work in progress.",
     },
   },
@@ -344,9 +326,14 @@ const content = {
 export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?: Language }) {
   const [language, setLanguage] = useState<Language>(initialLanguage);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [reviewCursor, setReviewCursor] = useState(content.nl.reviews.items.length);
-  const [reviewsPaused, setReviewsPaused] = useState(false);
-  const [reviewsHovered, setReviewsHovered] = useState(false);
+  const [activeReviewIndex, setActiveReviewIndex] = useState(0);
+  const [reviewTrackPosition, setReviewTrackPosition] = useState(0);
+  const [reviewTrackOffset, setReviewTrackOffset] = useState(0);
+  const [reviewTrackTransition, setReviewTrackTransition] = useState(true);
+  const [reviewTransitioning, setReviewTransitioning] = useState(false);
+  const [reviewHovered, setReviewHovered] = useState(false);
+  const [reviewFocused, setReviewFocused] = useState(false);
+  const [reviewPhotoFading, setReviewPhotoFading] = useState(false);
   const [selectedReviewIndex, setSelectedReviewIndex] = useState<number | null>(null);
   const [activeServiceIndex, setActiveServiceIndex] = useState<number | null>(null);
   const [typedServiceDetail, setTypedServiceDetail] = useState("");
@@ -355,13 +342,13 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const [activeSection, setActiveSection] = useState("");
   const [activeArticleIndex, setActiveArticleIndex] = useState<number | null>(null);
   const [articleExitVisible, setArticleExitVisible] = useState(false);
-  const [activeCabinVideoIndex, setActiveCabinVideoIndex] = useState(0);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLElement>(null);
+  const reviewSectionRef = useRef<HTMLElement>(null);
   const reviewShowcaseRef = useRef<HTMLDivElement>(null);
   const reviewNavigationRef = useRef<HTMLDivElement>(null);
-  const reviewViewportRef = useRef<HTMLDivElement>(null);
-  const reviewCarouselReady = useRef(false);
+  const reviewGridRef = useRef<HTMLDivElement>(null);
+  const reviewPhotoFadeTimer = useRef<number | null>(null);
   const articleReaderRef = useRef<HTMLDivElement>(null);
   const articleExitRef = useRef<HTMLDivElement>(null);
   const articleCloseRef = useRef<HTMLButtonElement>(null);
@@ -377,37 +364,112 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const serviceTileCloseTimer = useRef<number | null>(null);
   const t = content[language];
   const knowledgeItems = language === "nl" ? knowledgeArticlesNl : knowledgeArticlesEn;
-  const reviewCount = t.reviews.items.length;
-  const reviewIndex = ((reviewCursor % reviewCount) + reviewCount) % reviewCount;
   const activeArticle = activeArticleIndex === null ? null : knowledgeItems[activeArticleIndex];
   const activeServiceDetail = activeServiceDetailIndex === null ? null : t.services.items[activeServiceDetailIndex];
-  const activeCabinVideo = cabinVideos[activeCabinVideoIndex];
   const selectedReviewPhoto = selectedReviewIndex === null ? null : reviewPhotos[language][selectedReviewIndex];
-  const reviewSelectionPaused = selectedReviewIndex !== null;
+  const reviewCount = t.reviews.items.length;
+
+  const getReviewOffset = useCallback((position: number) => {
+    const card = reviewGridRef.current?.querySelector<HTMLElement>(`[data-review-position="${position}"]`);
+    const grid = reviewGridRef.current;
+    if (!card || !grid) return 0;
+    return card.getBoundingClientRect().left - grid.getBoundingClientRect().left;
+  }, []);
+
+  const setReviewPosition = useCallback((position: number, transition = true) => {
+    setReviewTrackTransition(transition);
+    setReviewTrackPosition(position);
+    setReviewTrackOffset(getReviewOffset(position));
+  }, [getReviewOffset]);
+
+  const changeSelectedReview = useCallback((index: number) => {
+    if (selectedReviewIndex === null) return;
+    if (reviewPhotoFadeTimer.current !== null) window.clearTimeout(reviewPhotoFadeTimer.current);
+    setReviewPhotoFading(true);
+    reviewPhotoFadeTimer.current = window.setTimeout(() => {
+      setSelectedReviewIndex(index);
+      window.requestAnimationFrame(() => setReviewPhotoFading(false));
+    }, 180);
+  }, [selectedReviewIndex]);
+
+  const moveReview = useCallback((direction: -1 | 1) => {
+    const nextIndex = (activeReviewIndex + direction + reviewCount) % reviewCount;
+    setReviewTransitioning(true);
+    setActiveReviewIndex(nextIndex);
+    changeSelectedReview(nextIndex);
+
+    if (direction === -1 && activeReviewIndex === 0) {
+      flushSync(() => setReviewPosition(reviewCount, false));
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => setReviewPosition(reviewCount - 1));
+      });
+      return;
+    }
+
+    setReviewPosition(reviewTrackPosition + direction);
+  }, [activeReviewIndex, changeSelectedReview, reviewCount, reviewTrackPosition, setReviewPosition]);
+
+  function deselectReview() {
+    if (reviewPhotoFadeTimer.current !== null) window.clearTimeout(reviewPhotoFadeTimer.current);
+    reviewPhotoFadeTimer.current = null;
+    setReviewPhotoFading(false);
+    setSelectedReviewIndex(null);
+  }
+
+  function selectReview(index: number, position: number) {
+    setActiveReviewIndex(index);
+    if (selectedReviewIndex === null) setSelectedReviewIndex(index);
+    else changeSelectedReview(index);
+
+    if (position === reviewTrackPosition) return;
+    setReviewTransitioning(true);
+    setReviewPosition(position);
+  }
+
+  function finishReviewTransition(event: React.TransitionEvent<HTMLDivElement>) {
+    if (event.target !== event.currentTarget || event.propertyName !== "transform") return;
+    if (reviewTrackPosition >= reviewCount) {
+      const normalizedPosition = reviewTrackPosition % reviewCount;
+      flushSync(() => setReviewPosition(normalizedPosition, false));
+      window.requestAnimationFrame(() => setReviewTrackTransition(true));
+    }
+    setReviewTransitioning(false);
+  }
 
   useEffect(() => {
     document.documentElement.lang = language;
     const title = language === "nl"
-      ? "Domi Installatie | Bouw, installatie & renovatie"
-      : "Domi Installatie | Construction, installation & renovation";
+      ? "Domi Installatie | Complete woningverbouwingen"
+      : "Domi Installatie | Complete home renovations";
     const description = language === "nl"
-      ? "Domi Installatie helpt met renovatie, installatiewerk, onderhoud en complete afwerking — helder geregeld door één vakkundig team."
-      : "Domi Installatie handles renovation, technical installations, maintenance and complete finishing through one skilled team.";
+      ? "Complete verbouwingen voor particuliere woningen, binnen en buiten. Bouw, installatie en afwerking door heel Nederland, met één aanspreekpunt."
+      : "Complete renovations for private homes, inside and out. Construction, installation and finishing throughout the Netherlands, with one point of contact.";
     document.title = title;
     document.querySelector('meta[name="description"]')?.setAttribute("content", description);
   }, [language]);
 
   useEffect(() => () => {
     if (serviceTileCloseTimer.current !== null) window.clearTimeout(serviceTileCloseTimer.current);
+    if (reviewPhotoFadeTimer.current !== null) window.clearTimeout(reviewPhotoFadeTimer.current);
   }, []);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const interval = window.setInterval(() => {
-      setActiveCabinVideoIndex((current) => (current + 1) % cabinVideos.length);
-    }, 10000);
+    const grid = reviewGridRef.current;
+    const viewport = reviewShowcaseRef.current?.querySelector<HTMLElement>(".review-viewport");
+    if (!grid || !viewport) return;
+
+    const updateOffset = () => setReviewTrackOffset(getReviewOffset(reviewTrackPosition));
+    updateOffset();
+    const resizeObserver = new ResizeObserver(updateOffset);
+    resizeObserver.observe(viewport);
+    return () => resizeObserver.disconnect();
+  }, [reviewTrackPosition, selectedReviewIndex]);
+
+  useEffect(() => {
+    if (reviewHovered || reviewFocused) return;
+    const interval = window.setInterval(() => moveReview(1), 5000);
     return () => window.clearInterval(interval);
-  }, []);
+  }, [moveReview, reviewFocused, reviewHovered]);
 
   useEffect(() => {
     if (activeServiceIndex === null) return;
@@ -475,7 +537,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
   useEffect(() => {
     const revealTargets = Array.from(document.querySelectorAll<HTMLElement>(
-      ".section-intro, .about-copy, .about-image, .service-card, .process-list li, .scroll-depth-story-copy, .project-card, .featured-title, .featured-marquee, .placeholder-note, .review-card, .knowledge-card, .contact-intro, .contact-form, .footer-top",
+      ".section-intro, .about-copy, .about-image, .service-card, .section-cta, .process-list li, .project-card, .featured-title, .featured-marquee, .placeholder-note, .review-card, .knowledge-card, .contact-intro, .contact-form, .footer-top",
     ));
 
     document.documentElement.classList.add("animations-ready");
@@ -504,67 +566,21 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   }, []);
 
   useEffect(() => {
-    if (selectedReviewIndex !== null || reviewsPaused || reviewsHovered || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const timer = window.setTimeout(() => {
-      setReviewCursor((cursor) => cursor + 1);
-    }, 5200);
-    return () => window.clearTimeout(timer);
-  }, [reviewCursor, reviewsHovered, reviewsPaused, selectedReviewIndex]);
-
-  useEffect(() => {
     if (selectedReviewIndex === null) return;
 
     function closeReviewOnOutsidePointer(event: PointerEvent) {
       const target = event.target;
       if (!(target instanceof Node)) return;
-      if (reviewShowcaseRef.current?.contains(target) || reviewNavigationRef.current?.contains(target)) return;
+      if (reviewSectionRef.current?.contains(target)) return;
+      if (reviewPhotoFadeTimer.current !== null) window.clearTimeout(reviewPhotoFadeTimer.current);
+      reviewPhotoFadeTimer.current = null;
+      setReviewPhotoFading(false);
       setSelectedReviewIndex(null);
     }
 
     document.addEventListener("pointerdown", closeReviewOnOutsidePointer);
     return () => document.removeEventListener("pointerdown", closeReviewOnOutsidePointer);
   }, [selectedReviewIndex]);
-
-  useEffect(() => {
-    const viewport = reviewViewportRef.current;
-    const cards = viewport?.querySelectorAll<HTMLElement>(".review-card");
-    const card = cards?.[reviewCursor];
-    if (!viewport || !card) return;
-
-    function alignCard(target: HTMLElement, behavior: ScrollBehavior) {
-      const targetLeft = target.getBoundingClientRect().left - viewport.getBoundingClientRect().left + viewport.scrollLeft;
-      viewport.scrollTo({ left: targetLeft, behavior });
-    }
-
-    alignCard(card, reviewCarouselReady.current ? "smooth" : "auto");
-    reviewCarouselReady.current = true;
-    const viewportResizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => {
-      const activeCard = cards[reviewCursor];
-      if (activeCard) alignCard(activeCard, "auto");
-    });
-    viewportResizeObserver?.observe(viewport);
-    const realignTimer = selectedReviewIndex === null ? null : window.setTimeout(() => {
-      const selectedCard = cards[reviewCursor];
-      if (selectedCard) alignCard(selectedCard, "smooth");
-    }, 500);
-
-    let resetTimer: number | null = null;
-    if (reviewCursor >= reviewCount * 2 || reviewCursor < reviewCount) {
-      const resetCursor = reviewCount + reviewIndex;
-      resetTimer = window.setTimeout(() => {
-        const resetCard = cards[resetCursor];
-        if (!resetCard) return;
-        alignCard(resetCard, "auto");
-        setReviewCursor(resetCursor);
-      }, 720);
-    }
-
-    return () => {
-      viewportResizeObserver?.disconnect();
-      if (realignTimer !== null) window.clearTimeout(realignTimer);
-      if (resetTimer !== null) window.clearTimeout(resetTimer);
-    };
-  }, [language, reviewCount, reviewCursor, reviewIndex, selectedReviewIndex]);
 
   useEffect(() => {
     if (activeArticleIndex === null) return;
@@ -650,7 +666,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   useEffect(() => {
     const heroMedia = document.querySelector<HTMLElement>(".hero-media");
     const processList = document.querySelector<HTMLElement>(".process-list");
-    const scrollDepthStory = document.querySelector<HTMLElement>(".scroll-depth-story");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let ticking = false;
 
@@ -669,14 +684,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
         const processProgress = Math.max(0, Math.min(1, (travelled / distance) * 1.45));
         processList.style.setProperty("--process-progress", `${processProgress * 100}%`);
       }
-      if (scrollDepthStory && !reduceMotion.matches) {
-        const rect = scrollDepthStory.getBoundingClientRect();
-        const storyProgress = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / (window.innerHeight + rect.height)));
-        const centered = storyProgress - .5;
-        scrollDepthStory.style.setProperty("--depth-bg-y", `${centered * -150}px`);
-        scrollDepthStory.style.setProperty("--depth-fg-y", `${centered * 220}px`);
-        scrollDepthStory.style.setProperty("--depth-glow-x", `${centered * 180}px`);
-      }
       ticking = false;
     }
 
@@ -693,9 +700,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
       document.documentElement.style.removeProperty("--scroll-progress");
       heroMedia?.style.removeProperty("transform");
       processList?.style.removeProperty("--process-progress");
-      scrollDepthStory?.style.removeProperty("--depth-bg-y");
-      scrollDepthStory?.style.removeProperty("--depth-fg-y");
-      scrollDepthStory?.style.removeProperty("--depth-glow-x");
     };
   }, []);
 
@@ -729,7 +733,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   }, []);
 
   function changeLanguage(next: Language) {
-    setReviewCursor(content[next].reviews.items.length);
     setSelectedReviewIndex(null);
     setTypedServiceDetail("");
     setLanguage(next);
@@ -838,11 +841,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
     lastArticleScrollTop.current = currentTop;
   }
 
-  function stepReview(direction: -1 | 1) {
-    setReviewCursor((cursor) => cursor + direction);
-    setSelectedReviewIndex((index) => index === null ? null : (index + direction + reviewCount) % reviewCount);
-  }
-
   return (
     <div lang={language}>
       <a className="skip-link" href="#main">{t.skip}</a>
@@ -881,14 +879,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
         <section className="hero" id="home">
           <div className="hero-media" aria-hidden="true">
             <img className="hero-image" src={images.hero} alt="" width="640" height="530" fetchPriority="high" />
-            <iframe
-              key={`hero-${activeCabinVideo.id}`}
-              className="hero-video-background"
-              src={`https://www.youtube-nocookie.com/embed/${activeCabinVideo.id}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&cc_load_policy=0&modestbranding=1&loop=1&playlist=${activeCabinVideo.id}&playsinline=1&rel=0&start=${activeCabinVideo.start}&end=${activeCabinVideo.end}`}
-              title={`${activeCabinVideo.title} — Fairytale Cabins`}
-              allow="autoplay; encrypted-media"
-              tabIndex={-1}
-            />
           </div>
           <div className="hero-overlay" />
           <div className="hero-content">
@@ -909,20 +899,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
         <div className="promise-bar" aria-label={t.ticker.join(", ")}>
           {t.ticker.map((item) => <span key={item}>{item}<i /></span>)}
         </div>
-
-        <section className="about section-pad" id="over">
-          <div className="about-copy">
-            <p className="eyebrow dark"><span />{t.about.eyebrow}</p>
-            <h2>{t.about.title}</h2>
-            <p className="lead-copy">{t.about.lead}</p>
-            <p className="body-copy">{t.about.body}</p>
-            <p className="about-detail"><span>01</span>{t.about.detail}</p>
-          </div>
-          <figure className="about-image">
-            <img src={images.craft} alt={t.about.imageAlt} width="640" height="530" loading="lazy" decoding="async" />
-            <figcaption><span>{language === "nl" ? "Eigen project" : "Completed project"}</span><span>Amsterdam</span></figcaption>
-          </figure>
-        </section>
 
         <section className="services section-pad" id="diensten">
           <SectionIntro eyebrow={t.services.eyebrow} title={t.services.title} text={t.services.intro} light />
@@ -955,77 +931,13 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           </div>
         </section>
 
-        <section className="process section-pad" id="werkwijze">
-          <SectionIntro eyebrow={t.process.eyebrow} title={t.process.title} />
-          <ol className="process-list">
-            {t.process.items.map(([title, text], index) => (
-              <li
-                key={title}
-                onPointerMove={(event) => {
-                  event.currentTarget.querySelectorAll<HTMLElement>("[data-process-text]").forEach((element) => {
-                    const bounds = element.getBoundingClientRect();
-                    element.style.setProperty("--process-spot-x", `${event.clientX - bounds.left}px`);
-                    element.style.setProperty("--process-spot-y", `${event.clientY - bounds.top}px`);
-                  });
-                }}
-              >
-                <span data-process-text={`0${index + 1}`}>0{index + 1}</span>
-                <h3 data-process-text={title}>{title}</h3>
-                <p data-process-text={text}>{text}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <section
-          className="scroll-depth-story"
-          aria-label={language === "nl" ? "Cabinbouw van ruwbouw tot eindresultaat" : "Cabin construction from first fix to final finish"}
-        >
-          <span className="scroll-depth-glow" aria-hidden="true" />
-          <div className="scroll-depth-video-stage" id="cabin-video-stage">
-            <div className="cabin-video-frame" aria-hidden="true">
-              <iframe
-                key={activeCabinVideo.id}
-                src={`https://www.youtube-nocookie.com/embed/${activeCabinVideo.id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${activeCabinVideo.id}&playsinline=1&rel=0&start=${activeCabinVideo.start}&end=${activeCabinVideo.end}`}
-                title={`${activeCabinVideo.title} — Fairytale Cabins`}
-                loading="lazy"
-                allow="autoplay; encrypted-media; picture-in-picture"
-                tabIndex={-1}
-              />
-            </div>
-            <div className="cabin-video-caption" aria-live="polite">
-              <span>0{activeCabinVideoIndex + 1} / 03</span>
-              <strong>{activeCabinVideo.title}</strong>
-              <a href={`https://www.youtube.com/watch?v=${activeCabinVideo.id}`} target="_blank" rel="noreferrer">
-                {language === "nl" ? "Bekijk video" : "Watch video"}<i>↗</i>
-              </a>
-            </div>
-          </div>
-          <div className="scroll-depth-story-copy">
-            <p className="eyebrow"><span />{language === "nl" ? "Van ruwbouw tot eindresultaat" : "From first fix to final finish"}</p>
-            <h2>{language === "nl" ? <>Cabins die stap voor stap<br /><em>tot leven komen.</em></> : <>Cabins brought to life,<br /><em>step by step.</em></>}</h2>
-            <p>{language === "nl" ? "Van houten casco en maatwerkdetails tot een volledig afgewerkt verblijf. Bekijk drie korte bouwverhalen uit het Fairytale Cabins-projectarchief." : "From timber shell and bespoke details to a fully finished retreat. Watch three short build stories from the Fairytale Cabins project archive."}</p>
-            <div className="cabin-video-tabs" role="group" aria-label={language === "nl" ? "Kies een cabinvideo" : "Choose a cabin video"}>
-              {cabinVideos.map((video, index) => (
-                <button
-                  type="button"
-                  key={video.id}
-                  className={activeCabinVideoIndex === index ? "active" : ""}
-                  aria-pressed={activeCabinVideoIndex === index}
-                  aria-controls="cabin-video-stage"
-                  onClick={() => setActiveCabinVideoIndex(index)}
-                ><span>0{index + 1}</span>{video.title}</button>
-              ))}
-            </div>
-            <div className="scroll-depth-actions">
-              <a className="button button-light" href="#projecten">{language === "nl" ? "Bekijk onze projecten" : "View our projects"}<span>↓</span></a>
-              <a className="cabin-channel-link" href="https://www.youtube.com/@FairytaleCabins/videos" target="_blank" rel="noreferrer">{language === "nl" ? "Alle video’s op YouTube" : "All videos on YouTube"}<span>↗</span></a>
-            </div>
-          </div>
-        </section>
+        <aside className="section-cta section-cta-light" aria-label={t.services.ctaButton}>
+          <p>{t.services.ctaText}</p>
+          <a className="button button-primary" href="#contact">{t.services.ctaButton}<span>↗</span></a>
+        </aside>
 
         <section className="projects section-pad" id="projecten">
-          <h2 className="visually-hidden">{t.projects.eyebrow}</h2>
+          <SectionIntro eyebrow={t.projects.eyebrow} title={t.projects.title} text={t.projects.intro} />
           <div className="project-grid">
             {t.projects.items.map((project, index) => (
               <article className="project-card" key={project.title}>
@@ -1049,8 +961,116 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           </div>
         </section>
 
+        <section ref={reviewSectionRef} className="reviews section-pad" id="reviews">
+          <SectionIntro eyebrow={t.reviews.eyebrow} title={t.reviews.title} />
+          <div className="review-heading-row">
+            <p className="placeholder-note">{t.reviews.note} <span>{language === "nl" ? "Klik op een review voor de projectfoto." : "Select a review to see the project photo."}</span></p>
+          </div>
+          <div
+            ref={reviewShowcaseRef}
+            className={`review-showcase${selectedReviewPhoto ? " has-selection" : ""}`}
+            onMouseEnter={() => setReviewHovered(true)}
+            onMouseLeave={() => setReviewHovered(false)}
+            onFocusCapture={() => setReviewFocused(true)}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) setReviewFocused(false);
+            }}
+          >
+            <div className="review-viewport">
+              <div
+                ref={reviewGridRef}
+                className={`review-grid${reviewTransitioning ? " is-transitioning" : ""}${reviewTrackTransition ? "" : " without-transition"}`}
+                style={{ transform: `translate3d(-${reviewTrackOffset}px,0,0)` }}
+                onTransitionEnd={finishReviewTransition}
+              >
+                {[0, 1].map((group) => (
+                  <div className="review-group" aria-hidden={group === 1 || undefined} key={group}>
+                    {t.reviews.items.map(([quote, attribution], index) => (
+                  <article
+                    className={`review-card${selectedReviewIndex === index ? " selected" : ""}`}
+                    data-review-position={(group * reviewCount) + index}
+                    key={`${group}-${attribution}`}
+                  >
+                    <button
+                      className="review-card-trigger"
+                      type="button"
+                      tabIndex={group === 0 ? 0 : -1}
+                      aria-expanded={selectedReviewIndex === index}
+                      aria-controls="selected-review-photo"
+                      aria-label={language === "nl" ? `Bekijk projectfoto bij review van ${attribution}` : `View project photo for review by ${attribution}`}
+                      onClick={() => selectReview(index, (group * reviewCount) + index)}
+                    />
+                    <div className="review-meta"><span>0{index + 1}</span><span>{t.reviews.label}</span></div>
+                    <span className="review-photo-hint" aria-hidden="true">{language === "nl" ? "Klik voor projectfoto" : "Click for project photo"}<i>↗</i></span>
+                    <blockquote><HighlightedReview quote={quote} terms={reviewHighlights[language][index]} /></blockquote><p>{attribution}</p><small>{t.reviews.label}</small>
+                    <a className="review-project-link" tabIndex={group === 0 ? undefined : -1} href={language === "nl" ? `/projecten/${reviewProjectSlugs[index]}` : `/en/projects/${reviewProjectSlugs[index]}`}>{language === "nl" ? "Bekijk project" : "View project"}<span>↗</span></a>
+                  </article>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+            {selectedReviewPhoto && selectedReviewIndex !== null && (
+              <aside className={`review-photo-panel${reviewPhotoFading ? " is-changing" : ""}`} id="selected-review-photo" aria-live="polite">
+                <img src={selectedReviewPhoto.src} alt={selectedReviewPhoto.alt} width="640" height="530" />
+                <button type="button" className="review-photo-close" aria-label={language === "nl" ? "Projectfoto sluiten" : "Close project photo"} onClick={deselectReview}>×</button>
+                <div className="review-photo-caption"><span>{language === "nl" ? "Bij deze review" : "Featured review"}</span><strong>{selectedReviewPhoto.label}</strong><small>{t.reviews.items[selectedReviewIndex][1]}</small></div>
+              </aside>
+            )}
+          </div>
+          <div ref={reviewNavigationRef} className="review-navigation">
+            <div className="review-controls">
+              <button type="button" className="review-previous" aria-label={t.reviews.previous} onClick={() => moveReview(-1)}><span aria-hidden="true">←</span></button>
+              <span className="review-position" aria-live="polite">0{activeReviewIndex + 1} / 0{reviewCount}</span>
+              <button type="button" className="review-next" aria-label={t.reviews.next} onClick={() => moveReview(1)}><span aria-hidden="true">→</span></button>
+            </div>
+          </div>
+        </section>
+
+        <aside className="section-cta section-cta-dark" aria-label={t.reviews.ctaText}>
+          <p>{t.reviews.ctaText}</p>
+          <a className="button button-light" href="#contact">{t.reviews.ctaButton}<span>↗</span></a>
+        </aside>
+
+        <section className="process section-pad" id="werkwijze">
+          <SectionIntro eyebrow={t.process.eyebrow} title={t.process.title} />
+          <ol className="process-list">
+            {t.process.items.map(([title, text], index) => (
+              <li
+                key={title}
+                onPointerMove={(event) => {
+                  event.currentTarget.querySelectorAll<HTMLElement>("[data-process-text]").forEach((element) => {
+                    const bounds = element.getBoundingClientRect();
+                    element.style.setProperty("--process-spot-x", `${event.clientX - bounds.left}px`);
+                    element.style.setProperty("--process-spot-y", `${event.clientY - bounds.top}px`);
+                  });
+                }}
+              >
+                <span data-process-text={`0${index + 1}`}>0{index + 1}</span>
+                <h3 data-process-text={title}>{title}</h3>
+                <p data-process-text={text}>{text}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section className="about section-pad" id="over">
+          <div className="about-copy">
+            <p className="eyebrow dark"><span />{t.about.eyebrow}</p>
+            <h2>{t.about.title}</h2>
+            <p className="lead-copy">{t.about.lead}</p>
+            <p className="body-copy">{t.about.body}</p>
+            <p className="about-detail"><span>01</span>{t.about.detail}</p>
+          </div>
+          <figure className="about-image">
+            <img src={images.bathroom} alt={t.about.imageAlt} width="640" height="530" loading="lazy" decoding="async" />
+            <figcaption><span>{language === "nl" ? "Eigen woningproject" : "Completed home project"}</span><span>Amsterdam</span></figcaption>
+          </figure>
+        </section>
+
         <section className="featured" aria-labelledby="featured-title">
           <div className="featured-title">
+            <p className="eyebrow dark"><span />{t.featured.eyebrow}</p>
             <h2 id="featured-title">{t.featured.title}</h2>
           </div>
           <p className="featured-note">{t.featured.note}</p>
@@ -1070,64 +1090,32 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           </div>
         </section>
 
-        <section className="reviews section-pad" id="reviews">
-          <SectionIntro eyebrow={t.reviews.eyebrow} title={t.reviews.title} />
-          <div className="review-heading-row">
-            <p className="placeholder-note">{t.reviews.note} <span>{language === "nl" ? "Klik op een review voor de projectfoto." : "Select a review to see the project photo."}</span></p>
-          </div>
-          <div ref={reviewShowcaseRef} className={`review-showcase${selectedReviewPhoto ? " has-selection" : ""}`}>
-            {reviewSelectionPaused && (
-              <button type="button" className="review-side-previous" aria-label={t.reviews.previous} onClick={() => stepReview(-1)}>←</button>
-            )}
-            <div
-              className="review-viewport"
-              ref={reviewViewportRef}
-              onMouseEnter={() => setReviewsHovered(true)}
-              onMouseLeave={() => setReviewsHovered(false)}
-              onFocusCapture={() => setReviewsHovered(true)}
-              onBlurCapture={(event) => {
-                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setReviewsHovered(false);
-              }}
-            >
-              <div className="review-grid">
-                {[0, 1, 2].map((group) => t.reviews.items.map(([quote, attribution], index) => (
-                  <article className={`review-card${selectedReviewIndex === index ? " selected" : ""}`} aria-hidden={group !== 1} key={`${group}-${attribution}`}>
-                    <button
-                      className="review-card-trigger"
-                      type="button"
-                      tabIndex={group === 1 ? 0 : -1}
-                      aria-expanded={selectedReviewIndex === index}
-                      aria-controls="selected-review-photo"
-                      aria-label={language === "nl" ? `Bekijk projectfoto bij review van ${attribution}` : `View project photo for review by ${attribution}`}
-                      onClick={() => {
-                        setSelectedReviewIndex(index);
-                        setReviewCursor(group * reviewCount + index);
-                      }}
-                    />
-                    <div className="review-meta"><span>0{index + 1}</span><span>{t.reviews.label}</span></div>
-                    <span className="review-photo-hint" aria-hidden="true">{language === "nl" ? "Klik voor projectfoto" : "Click for project photo"}<i>↗</i></span>
-                    <blockquote><HighlightedReview quote={quote} terms={reviewHighlights[language][index]} /></blockquote><p>{attribution}</p><small>{t.reviews.label}</small>
-                    <a className="review-project-link" href={language === "nl" ? `/projecten/${reviewProjectSlugs[index]}` : `/en/projects/${reviewProjectSlugs[index]}`}>{language === "nl" ? "Bekijk project" : "View project"}<span>↗</span></a>
-                  </article>
-                )))}
-              </div>
+        <section className="contact" id="contact">
+          <div className="contact-intro">
+            <p className="eyebrow"><span />{t.contact.eyebrow}</p><h2>{t.contact.title}</h2><p>{t.contact.text}</p>
+            <div className="contact-direct">
+              <a href="tel:+31610983085">{language === "nl" ? "Bel 06 10 98 30 85" : "Call +31 6 10 98 30 85"}</a>
+              <a href="https://wa.me/31610983085" target="_blank" rel="noreferrer">WhatsApp ↗</a>
             </div>
-            {selectedReviewPhoto && selectedReviewIndex !== null && (
-              <aside className="review-photo-panel" id="selected-review-photo" aria-live="polite">
-                <img src={selectedReviewPhoto.src} alt={selectedReviewPhoto.alt} width="640" height="530" />
-                <button type="button" className="review-photo-close" aria-label={language === "nl" ? "Projectfoto sluiten" : "Close project photo"} onClick={() => setSelectedReviewIndex(null)}>×</button>
-                <div className="review-photo-caption"><span>{language === "nl" ? "Bij deze review" : "Featured review"}</span><strong>{selectedReviewPhoto.label}</strong><small>{t.reviews.items[selectedReviewIndex][1]}</small></div>
-              </aside>
-            )}
+            <ul>{t.contact.benefits.map((benefit) => <li key={benefit}><span>✓</span>{benefit}</li>)}</ul>
           </div>
-          <div ref={reviewNavigationRef} className="review-navigation">
-            <div className="review-controls">
-              <button type="button" aria-label={t.reviews.previous} onClick={() => stepReview(-1)}>←</button>
-              <button type="button" className="review-pause" aria-label={reviewSelectionPaused ? (language === "nl" ? "Automatische carrousel gepauzeerd zolang een review is geselecteerd" : "Automatic carousel paused while a review is selected") : reviewsPaused ? t.reviews.play : t.reviews.pause} aria-pressed={reviewsPaused || reviewSelectionPaused} disabled={reviewSelectionPaused} onClick={() => setReviewsPaused((paused) => !paused)}>{reviewsPaused ? "▶" : "Ⅱ"}</button>
-              <button type="button" aria-label={t.reviews.next} onClick={() => stepReview(1)}>→</button>
+          <form className="contact-form" action="https://formsubmit.co/e2a3109e56f2b784903eb6ae24352c31" method="POST">
+            <input type="hidden" name="_subject" value="Nieuwe aanvraag via Domi Installatie" />
+            <input type="hidden" name="_template" value="table" />
+            <div className="form-heading"><span>01</span><h3>{t.contact.formTitle}</h3></div>
+            <div className="form-grid">
+              <Field label={t.contact.name}><input name="name" autoComplete="name" required /></Field>
+              <Field label={t.contact.email}><input name="email" type="email" autoComplete="email" required /></Field>
+              <Field label={t.contact.phone}><input name="phone" type="tel" autoComplete="tel" /></Field>
+              <Field label={t.contact.location}><input name="location" autoComplete="postal-code" required /></Field>
+              <Field label={t.contact.type}>
+                <select name="projectType" required defaultValue=""><option value="" disabled>{t.contact.typePrompt}</option>{t.contact.typeOptions.map((option) => <option key={option}>{option}</option>)}</select>
+              </Field>
             </div>
-            <div className="review-position" aria-hidden="true">{t.reviews.items.map((_, index) => <i className={index === reviewIndex ? "active" : ""} key={index} />)}</div>
-          </div>
+            <Field label={t.contact.message}><textarea name="message" rows={4} required placeholder={t.contact.messagePlaceholder} /></Field>
+            <label className="consent"><input type="checkbox" name="privacyConsent" value="Akkoord" required /><span>{t.contact.consent} <Link href="/privacy">{language === "nl" ? "Lees de privacyverklaring." : "Read the privacy notice."}</Link></span></label>
+            <div className="form-submit"><button className="button button-primary" type="submit">{t.contact.submit}<span>↗</span></button><p>{t.contact.demo}</p></div>
+          </form>
         </section>
 
         <section className="knowledge section-pad" id="kennis">
@@ -1153,35 +1141,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           </div>
         </section>
 
-        <section className="contact" id="contact">
-          <div className="contact-intro">
-            <p className="eyebrow"><span />{t.contact.eyebrow}</p><h2>{t.contact.title}</h2><p>{t.contact.text}</p>
-            <ul>{t.contact.benefits.map((benefit) => <li key={benefit}><span>✓</span>{benefit}</li>)}</ul>
-            <div className="contact-direct">
-              <a href="mailto:troosbouw@gmail.com">troosbouw@gmail.com</a>
-              <a href="tel:+31610983085">{language === "nl" ? "06 10 98 30 85" : "+31 6 10 98 30 85"}</a>
-              <a href="https://wa.me/31610983085" target="_blank" rel="noreferrer">WhatsApp ↗</a>
-            </div>
-          </div>
-          <form className="contact-form" action="https://formsubmit.co/e2a3109e56f2b784903eb6ae24352c31" method="POST">
-            <input type="hidden" name="_subject" value="Nieuwe aanvraag via Domi Installatie" />
-            <input type="hidden" name="_template" value="table" />
-            <div className="form-heading"><span>01</span><h3>{t.contact.formTitle}</h3></div>
-            <div className="form-grid">
-              <Field label={t.contact.name}><input name="name" autoComplete="name" required /></Field>
-              <Field label={t.contact.email}><input name="email" type="email" autoComplete="email" required /></Field>
-              <Field label={t.contact.phone}><input name="phone" type="tel" autoComplete="tel" /></Field>
-              <Field label={t.contact.location}><input name="location" autoComplete="postal-code" required /></Field>
-              <Field label={t.contact.type}>
-                <select name="projectType" required defaultValue=""><option value="" disabled>{t.contact.typePrompt}</option>{t.contact.typeOptions.map((option) => <option key={option}>{option}</option>)}</select>
-              </Field>
-              <Field label={t.contact.timing}><input name="timing" placeholder={language === "nl" ? "Bijv. najaar 2026" : "E.g. autumn 2026"} /></Field>
-            </div>
-            <Field label={t.contact.message}><textarea name="message" rows={5} required placeholder={t.contact.messagePlaceholder} /></Field>
-            <label className="consent"><input type="checkbox" name="privacyConsent" value="Akkoord" required /><span>{t.contact.consent} <Link href="/privacy">{language === "nl" ? "Lees de privacyverklaring." : "Read the privacy notice."}</Link></span></label>
-            <div className="form-submit"><button className="button button-primary" type="submit">{t.contact.submit}<span>↗</span></button><p>{t.contact.demo}</p></div>
-          </form>
-        </section>
       </main>
 
       <a className="whatsapp-float" href="https://wa.me/31610983085" target="_blank" rel="noreferrer" aria-label={language === "nl" ? "Stuur een WhatsApp-bericht" : "Send a WhatsApp message"}>WhatsApp <span>↗</span></a>
@@ -1243,7 +1202,10 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
                 <p><span>02</span><span><strong>{t.services.approachTitle}</strong>{t.services.approach}</span></p>
                 <p><span>03</span><span><strong>{t.services.contactTitle}</strong>{t.services.contact}</span></p>
               </div>
-              <button className="button button-primary article-inline-close" type="button" onClick={closeServiceDetails}>{t.services.close}<span>×</span></button>
+              <div className="service-reader-actions">
+                <a className="button button-primary" href="#contact" onClick={() => setActiveServiceDetailIndex(null)}>{t.quote}<span>↗</span></a>
+                <button className="button article-inline-close" type="button" onClick={closeServiceDetails}>{t.services.close}<span>×</span></button>
+              </div>
             </div>
           </article>
         </div>
@@ -1253,12 +1215,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
         <div className="footer-top">
           <div className="footer-brand"><span className="brand-mark"><img src="/domi-logo-intro.gif" alt="" /></span><div><p>DOMI INSTALLATIE</p><h2>{t.footer.line}</h2></div></div>
           <nav aria-label={t.footer.navigation}>{t.nav.map(([label, href]) => <a href={href} key={href}>{label}</a>)}</nav>
-          <div><p className="footer-label">{t.footer.contact}</p><p>{t.footer.contactLine}</p><a className="footer-contact-link" href="mailto:troosbouw@gmail.com">troosbouw@gmail.com ↗</a></div>
-          <div className="social-block">
-            <p className="footer-label">{t.footer.social}</p>
-            <div className="social-links">{socials.map(([name, href]) => <a href={href} target="_blank" rel="noreferrer" key={name}>{name}<span>↗</span></a>)}</div>
-            <small>{t.footer.socialNote}</small>
-          </div>
+          <div><p className="footer-label">{t.footer.contact}</p><p>{t.footer.contactLine}</p><a className="footer-contact-link" href="tel:+31610983085">{language === "nl" ? "Bel Domi" : "Call Domi"} ↗</a></div>
         </div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} Domi Installatie</span><span>{t.footer.closing}</span><span><Link href="/privacy">Privacy</Link> · <Link href="/voorwaarden">{language === "nl" ? "Voorwaarden" : "Terms"}</Link></span></div>
       </footer>

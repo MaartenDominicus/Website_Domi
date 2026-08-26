@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import DomiSite from "../domi-site";
 
-const title = "Domi Installatie | Construction, installation & renovation";
-const description = "Domi Installatie delivers renovation, installation work, maintenance and complete finishing throughout the Netherlands through one skilled team.";
+const title = "Domi Installatie | Complete home renovations";
+const description = "Complete renovations for private homes, inside and out. Construction, installation and finishing throughout the Netherlands, with one point of contact.";
 
 export const metadata: Metadata = {
   title,

@@ -32,7 +32,7 @@ export const knowledgeArticlesNl = [
     image: "/blog/hoofdschakelaar.jpg",
     alt: "Hoofdschakelaar in een bestaande groepenkast",
     source: `${repository}/blob/main/electriciteit.html`,
-    sourceLabel: "Bronartikel Elektra in het TroosCom-archief",
+    sourceLabel: "Bronartikel Elektra uit het openbare projectarchief",
     updated: "Inhoud gecontroleerd aan de hand van NEN-informatie over NEN 1010.",
   },
   {
@@ -51,7 +51,7 @@ export const knowledgeArticlesNl = [
     image: "/blog/doorhangende-deurhendel.jpg",
     alt: "Doorhangende deurhendel op een oudere binnendeur",
     source: `${repository}/blob/main/Binnendeuren_hang_en_sluitwerk.html`,
-    sourceLabel: "Bronartikel Binnendeuren en hang- en sluitwerk in het TroosCom-archief",
+    sourceLabel: "Bronartikel Binnendeuren en hang- en sluitwerk uit het openbare projectarchief",
   },
   {
     slug: "tegels-en-voegen-kiezen",
@@ -70,7 +70,7 @@ export const knowledgeArticlesNl = [
     image: "/blog/badkamer-tegels.jpg",
     alt: "Badkamer met tegelwerk uit het eigen projectarchief",
     source: `${repository}/blob/main/tilesandgrout.html`,
-    sourceLabel: "Bronartikel Tiles and Grout in het TroosCom-archief",
+    sourceLabel: "Bronartikel Tiles and Grout uit het openbare projectarchief",
   },
   {
     slug: "verborgen-waterlek-opsporen",
@@ -88,7 +88,7 @@ export const knowledgeArticlesNl = [
     image: "/projects/riolering-apeldoorn.webp",
     alt: "Leidingwerk tijdens installatiewerk in Apeldoorn",
     source: suggestions,
-    sourceLabel: "Onderwerp gebaseerd op de blogpostsuggesties in het TroosCom-archief",
+    sourceLabel: "Onderwerp gebaseerd op suggesties uit het openbare projectarchief",
     updated: "Praktische gids van Domi Installatie.",
   },
   {
@@ -107,7 +107,7 @@ export const knowledgeArticlesNl = [
     image: "/projects/vloerverwarming-kampen.webp",
     alt: "Verwarmingsinstallatie en leidingwerk in Kampen",
     source: suggestions,
-    sourceLabel: "Onderwerp gebaseerd op de blogpostsuggesties in het TroosCom-archief",
+    sourceLabel: "Onderwerp gebaseerd op suggesties uit het openbare projectarchief",
     updated: "Keuzehulp van Domi Installatie.",
   },
   {
@@ -126,7 +126,7 @@ export const knowledgeArticlesNl = [
     image: "/projects/renovatie-rotterdam.webp",
     alt: "Afwerking en installatiewerk tijdens een renovatie in Rotterdam",
     source: suggestions,
-    sourceLabel: "Onderwerp gebaseerd op de blogpostsuggesties in het TroosCom-archief",
+    sourceLabel: "Onderwerp gebaseerd op suggesties uit het openbare projectarchief",
     updated: "Veiligheidsinformatie van Domi Installatie.",
   },
   {
@@ -145,7 +145,7 @@ export const knowledgeArticlesNl = [
     image: "/projects/badkamer-amsterdam.webp",
     alt: "Afgewerkte badkamer in Amsterdam",
     source: suggestions,
-    sourceLabel: "Onderwerp gebaseerd op de blogpostsuggesties in het TroosCom-archief",
+    sourceLabel: "Onderwerp gebaseerd op suggesties uit het openbare projectarchief",
     updated: "Praktische ventilatiegids van Domi Installatie.",
   },
   {
@@ -164,7 +164,7 @@ export const knowledgeArticlesNl = [
     image: "/projects/riolering-apeldoorn.webp",
     alt: "Installatiewerk aan leidingen in Apeldoorn",
     source: suggestions,
-    sourceLabel: "Onderwerp gebaseerd op de blogpostsuggesties in het TroosCom-archief",
+    sourceLabel: "Onderwerp gebaseerd op suggesties uit het openbare projectarchief",
     updated: "Noodstappenplan van Domi Installatie.",
   },
 ] as const satisfies readonly KnowledgeArticle[];
@@ -227,7 +227,7 @@ export const knowledgeArticlesEn = [
     ],
     headings: ["Recognise the early signs", "Use the water meter as a first check", "Do not search only at the damp patch", "Limit further damage", "Repair the cause as well"],
     alt: "Pipework during installation work in Apeldoorn",
-    sourceLabel: "Topic based on the blog post suggestions in the TroosCom archive",
+    sourceLabel: "Topic based on suggestions from the public project archive",
     updated: "A practical guide from Domi Installation.",
   },
   {
@@ -244,7 +244,7 @@ export const knowledgeArticlesEn = [
     ],
     headings: ["Map your peak demand", "Compare the three main types", "Check technical constraints", "Calculate total cost", "Plan for the home and its future"],
     alt: "Heating installation and pipework in Kampen",
-    sourceLabel: "Topic based on the blog post suggestions in the TroosCom archive",
+    sourceLabel: "Topic based on suggestions from the public project archive",
     updated: "A selection guide from Domi Installation.",
   },
   {
@@ -261,7 +261,7 @@ export const knowledgeArticlesEn = [
     ],
     headings: ["Flickering or dimming lights", "Heat, discolouration or a scorched smell", "Protection that trips repeatedly", "Loose points and too many power strips", "Assess the system as a whole"],
     alt: "Finishing and installation work during a renovation in Rotterdam",
-    sourceLabel: "Topic based on the blog post suggestions in the TroosCom archive",
+    sourceLabel: "Topic based on suggestions from the public project archive",
     updated: "Safety guidance from Domi Installation.",
   },
   {
@@ -278,7 +278,7 @@ export const knowledgeArticlesEn = [
     ],
     headings: ["Remove the full moisture peak", "Calculate more than room volume", "Control noise at its source", "Choose a suitable control method", "Complete the extract route"],
     alt: "Finished bathroom in Amsterdam",
-    sourceLabel: "Topic based on the blog post suggestions in the TroosCom archive",
+    sourceLabel: "Topic based on suggestions from the public project archive",
     updated: "A practical ventilation guide from Domi Installation.",
   },
   {
@@ -295,7 +295,7 @@ export const knowledgeArticlesEn = [
     ],
     headings: ["Check for immediate danger", "Isolate the water supply", "Limit spread without adding risk", "Document the situation", "Plan drying and permanent repair"],
     alt: "Installation work on pipework in Apeldoorn",
-    sourceLabel: "Topic based on the blog post suggestions in the TroosCom archive",
+    sourceLabel: "Topic based on suggestions from the public project archive",
     updated: "An emergency checklist from Domi Installation.",
   },
 ] as const satisfies readonly KnowledgeArticle[];

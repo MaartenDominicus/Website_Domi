@@ -19,7 +19,7 @@ export default function TermsPage() {
       <h2>Planning en wijzigingen</h2>
       <p>De planning wordt per opdracht afgestemd. Wijzigingen of aanvullend werk worden besproken voordat ze worden uitgevoerd en kunnen gevolgen hebben voor prijs en doorlooptijd.</p>
       <h2>Contact</h2>
-      <p>Vragen over een aanvraag of offerte kunt u sturen naar <a href="mailto:troosbouw@gmail.com">troosbouw@gmail.com</a> of bespreken via <a href="tel:+31610983085">06 10 98 30 85</a>.</p>
+      <p>Vragen over een aanvraag of offerte kunt u stellen via het formulier op de homepage of bespreken via <a href="tel:+31610983085">06 10 98 30 85</a>.</p>
       <p><Link href="/">Terug naar de website</Link></p>
     </main>
   );
