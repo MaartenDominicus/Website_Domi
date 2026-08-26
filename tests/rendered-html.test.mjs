@@ -97,8 +97,9 @@ test("publishes source-based knowledge articles with metadata and references", a
     assert.match(html, new RegExp(`<figure class="original-blog-cover"><img src="${cover.replaceAll(".", "\\.")}"`));
     assert.doesNotMatch(html, /Over deze publicatie|About this publication/);
     assert.doesNotMatch(html, /class="original-blog-note"/);
-    assert.match(html, /<a class="brand" href="\/"/);
-    assert.match(html, /<a class="blog-back" href="\/#kennis"/);
+    assert.match(html, /<a href="\/" class="brand"/);
+    assert.match(html, /<a href="\/#kennis" class="blog-back"/);
+    assert.match(html, new RegExp(`href="/en/insights/${path.split("/").at(-1)}"`));
     const articleStart = html.indexOf('<div class="original-article">');
     const articleEnd = html.indexOf('<section class="blog-cta">', articleStart);
     const visibleArticle = html.slice(articleStart, articleEnd).replace(/<!--[\s\S]*?-->/g, "");
@@ -120,7 +121,33 @@ test("publishes source-based knowledge articles with metadata and references", a
 
   const english = await request("/en/insights/veilige-elektrische-installatie");
   assert.equal(english.status, 200);
-  assert.match(await english.text(), /Complete original blog post/);
+  assert.match(await english.text(), /Complete information from the existing blog post/);
+});
+
+test("publishes every new suggestion-based article in Dutch and English", async () => {
+  const articles = [
+    ["verborgen-waterlek-opsporen", "Een verborgen waterlek herkennen", "How to spot a hidden water leak"],
+    ["warmwatertoestel-kiezen", "Welk warmwatertoestel", "Which hot-water system"],
+    ["signalen-elektrische-problemen", "Vijf signalen", "Five signs"],
+    ["badkamerventilator-kiezen", "Een badkamerventilator kiezen", "Choosing a bathroom extractor"],
+    ["leidingnoodgeval-eerste-stappen", "Lekkage of gesprongen leiding", "Leak or burst pipe"],
+  ];
+
+  for (const [slug, dutchTitle, englishTitle] of articles) {
+    const dutch = await request(`/kennis/${slug}`);
+    assert.equal(dutch.status, 200);
+    const dutchHtml = await dutch.text();
+    assert.match(dutchHtml, new RegExp(dutchTitle));
+    assert.match(dutchHtml, new RegExp(`href="/en/insights/${slug}"`));
+    assert.equal((dutchHtml.match(/class="blog-body"/g) ?? []).length, 1);
+
+    const english = await request(`/en/insights/${slug}`);
+    assert.equal(english.status, 200);
+    const englishHtml = await english.text();
+    assert.match(englishHtml, new RegExp(englishTitle));
+    assert.match(englishHtml, new RegExp(`href="/kennis/${slug}"`));
+    assert.match(englishHtml, /In this article/);
+  }
 });
 
 test("privacy and terms pages are available", async () => {
