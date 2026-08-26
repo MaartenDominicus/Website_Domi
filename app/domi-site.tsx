@@ -533,7 +533,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
   useEffect(() => {
     const revealTargets = Array.from(document.querySelectorAll<HTMLElement>(
-      ".section-intro, .about-copy, .about-image, .service-card, .section-cta, .process-list li, .project-card, .featured-title, .featured-marquee, .placeholder-note, .review-card, .knowledge-card, .contact-intro, .contact-form, .footer-top",
+      ".section-intro, .about-copy, .about-image, .service-card, .section-cta, .process-list li, .project-card, .featured-title, .featured-marquee, .placeholder-note, .knowledge-card, .contact-intro, .contact-form, .footer-top",
     ));
 
     document.documentElement.classList.add("animations-ready");
