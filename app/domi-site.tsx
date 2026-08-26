@@ -538,6 +538,11 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
     alignCard(card, reviewCarouselReady.current ? "smooth" : "auto");
     reviewCarouselReady.current = true;
+    const viewportResizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => {
+      const activeCard = cards[reviewCursor];
+      if (activeCard) alignCard(activeCard, "auto");
+    });
+    viewportResizeObserver?.observe(viewport);
     const realignTimer = selectedReviewIndex === null ? null : window.setTimeout(() => {
       const selectedCard = cards[reviewCursor];
       if (selectedCard) alignCard(selectedCard, "smooth");
@@ -555,6 +560,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
     }
 
     return () => {
+      viewportResizeObserver?.disconnect();
       if (realignTimer !== null) window.clearTimeout(realignTimer);
       if (resetTimer !== null) window.clearTimeout(resetTimer);
     };
