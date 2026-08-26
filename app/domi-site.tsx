@@ -372,6 +372,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const activeServiceDetail = activeServiceDetailIndex === null ? null : t.services.items[activeServiceDetailIndex];
   const activeCabinVideo = cabinVideos[activeCabinVideoIndex];
   const selectedReviewPhoto = selectedReviewIndex === null ? null : reviewPhotos[language][selectedReviewIndex];
+  const reviewSelectionPaused = selectedReviewIndex !== null;
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -1081,9 +1082,9 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           </div>
           <div className="review-navigation">
             <div className="review-controls">
-              <button type="button" aria-label={t.reviews.previous} onClick={() => setReviewCursor((cursor) => cursor - 1)}>←</button>
-              <button type="button" className="review-pause" aria-label={reviewsPaused ? t.reviews.play : t.reviews.pause} aria-pressed={reviewsPaused} onClick={() => setReviewsPaused((paused) => !paused)}>{reviewsPaused ? "▶" : "Ⅱ"}</button>
-              <button type="button" aria-label={t.reviews.next} onClick={() => setReviewCursor((cursor) => cursor + 1)}>→</button>
+              <button type="button" aria-label={t.reviews.previous} onClick={() => { setReviewCursor((cursor) => cursor - 1); setSelectedReviewIndex((index) => index === null ? null : (index - 1 + reviewCount) % reviewCount); }}>←</button>
+              <button type="button" className="review-pause" aria-label={reviewSelectionPaused ? (language === "nl" ? "Automatische carrousel gepauzeerd zolang een review is geselecteerd" : "Automatic carousel paused while a review is selected") : reviewsPaused ? t.reviews.play : t.reviews.pause} aria-pressed={reviewsPaused || reviewSelectionPaused} disabled={reviewSelectionPaused} onClick={() => setReviewsPaused((paused) => !paused)}>{reviewsPaused ? "▶" : "Ⅱ"}</button>
+              <button type="button" aria-label={t.reviews.next} onClick={() => { setReviewCursor((cursor) => cursor + 1); setSelectedReviewIndex((index) => index === null ? null : (index + 1) % reviewCount); }}>→</button>
             </div>
             <div className="review-position" aria-hidden="true">{t.reviews.items.map((_, index) => <i className={index === reviewIndex ? "active" : ""} key={index} />)}</div>
           </div>

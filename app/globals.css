@@ -340,6 +340,7 @@ section[id] { scroll-margin-top: 76px; }
 .review-controls { display: flex; flex: 0 0 auto; gap: 8px; }
 .review-controls button { background: rgba(255,255,255,.78); border: 0; border-radius: 50%; display: grid; font-size: 1rem; height: 44px; place-items: center; transition: background .2s, color .2s, transform .2s; width: 44px; }
 .review-controls button:hover { background: var(--ink); color: white; transform: translateY(-2px); }
+.review-controls button:disabled { background: rgba(255,255,255,.55); color: var(--blue); cursor: default; opacity: .62; transform: none; }
 .review-controls .review-pause { color: var(--blue); font-size: .72rem; }
 .review-showcase { display: grid; transition: grid-template-columns .45s cubic-bezier(.22,.8,.24,1); }
 .review-showcase.has-selection { gap: 14px; grid-template-columns: minmax(0,490px) minmax(0,1fr); }
