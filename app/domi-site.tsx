@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+/* eslint-disable @next/next/no-html-link-for-pages -- GitHub Pages uses full document navigation for statically exported routes. */
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { knowledgeArticlesEn, knowledgeArticlesNl } from "./knowledge-data";
@@ -1109,7 +1110,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
               </Field>
             </div>
             <Field label={t.contact.message}><textarea name="message" rows={4} required placeholder={t.contact.messagePlaceholder} /></Field>
-            <label className="consent"><input type="checkbox" name="privacyConsent" value="Akkoord" required /><span>{t.contact.consent} <Link href="/privacy">{language === "nl" ? "Lees de privacyverklaring." : "Read the privacy notice."}</Link></span></label>
+            <label className="consent"><input type="checkbox" name="privacyConsent" value="Akkoord" required /><span>{t.contact.consent} <a href="/privacy">{language === "nl" ? "Lees de privacyverklaring." : "Read the privacy notice."}</a></span></label>
             <div className="form-submit"><button className="button button-primary" type="submit">{t.contact.submit}<span>↗</span></button><p>{t.contact.demo}</p></div>
           </form>
         </section>
@@ -1213,7 +1214,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           <nav aria-label={t.footer.navigation}>{t.nav.map(([label, href]) => <a href={href} key={href}>{label}</a>)}</nav>
           <div><p className="footer-label">{t.footer.contact}</p><p>{t.footer.contactLine}</p><a className="footer-contact-link" href="tel:+31610983085">{language === "nl" ? "Bel Domi" : "Call Domi"} ↗</a></div>
         </div>
-        <div className="footer-bottom"><span>© {new Date().getFullYear()} Domi Installatie</span><span>{t.footer.closing}</span><span><Link href="/privacy">Privacy</Link> · <Link href="/voorwaarden">{language === "nl" ? "Voorwaarden" : "Terms"}</Link></span></div>
+        <div className="footer-bottom"><span>© {new Date().getFullYear()} Domi Installatie</span><span>{t.footer.closing}</span><span><a href="/privacy">Privacy</a> · <a href="/voorwaarden">{language === "nl" ? "Voorwaarden" : "Terms"}</a></span></div>
       </footer>
     </div>
   );

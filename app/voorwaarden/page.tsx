@@ -1,5 +1,6 @@
+/* eslint-disable @next/next/no-html-link-for-pages -- GitHub Pages uses full document navigation for statically exported routes. */
+
 import type { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Voorwaarden | Domi Installatie",
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <main className="legal-page">
-      <Link className="brand" href="/"><span className="brand-mark"><img src="/domi-logo.jpg" alt="" /></span><span className="brand-name"><strong>DOMI</strong><small>Installatie</small></span></Link>
+      <a className="brand" href="/"><span className="brand-mark"><img src="/domi-logo.jpg" alt="" /></span><span className="brand-name"><strong>DOMI</strong><small>Installatie</small></span></a>
       <p className="eyebrow dark"><span />Voorwaarden</p>
       <h1>Aanvragen en offertes</h1>
       <p>Een aanvraag via deze website is vrijblijvend. Een opdracht ontstaat pas nadat de werkzaamheden, prijs, planning en overige afspraken schriftelijk zijn bevestigd.</p>
@@ -20,7 +21,7 @@ export default function TermsPage() {
       <p>De planning wordt per opdracht afgestemd. Wijzigingen of aanvullend werk worden besproken voordat ze worden uitgevoerd en kunnen gevolgen hebben voor prijs en doorlooptijd.</p>
       <h2>Contact</h2>
       <p>Vragen over een aanvraag of offerte kunt u stellen via het formulier op de homepage of bespreken via <a href="tel:+31610983085">06 10 98 30 85</a>.</p>
-      <p><Link href="/">Terug naar de website</Link></p>
+      <p><a href="/">Terug naar de website</a></p>
     </main>
   );
 }
