@@ -1,36 +1,14 @@
 import { notFound, permanentRedirect } from "next/navigation";
+import redirects from "../legacy-redirects.json";
 
 type Props = { params: Promise<{ slug: string }> };
 
-const legacyTargets: Record<string, string> = {
-  "about.html": "#over",
-  about: "#over",
-  "over-ons": "#over",
-  "service.html": "#diensten",
-  service: "#diensten",
-  diensten: "#diensten",
-  "installatie.html": "#diensten",
-  installatie: "#diensten",
-  "project.html": "#projecten",
-  project: "#projecten",
-  projecten: "#projecten",
-  "testimonial.html": "#reviews",
-  "testimonials.html": "#reviews",
-  testimonials: "#reviews",
-  reviews: "#reviews",
-  "blog.html": "#kennis",
-  blog: "#kennis",
-  kennis: "#kennis",
-  "contact.html": "#contact",
-  contact: "#contact",
-  "quote.html": "#contact",
-  quote: "#contact",
-  offerte: "#contact",
-};
+const legacyTargets: Record<string, string> = redirects;
 
 export default async function LegacyRoute({ params }: Props) {
   const { slug } = await params;
-  const target = legacyTargets[decodeURIComponent(slug).toLowerCase()];
-  if (!target) notFound();
+  const key = decodeURIComponent(slug).toLowerCase();
+  if (!Object.hasOwn(legacyTargets, key)) notFound();
+  const target = legacyTargets[key];
   permanentRedirect(`/${target}`);
 }

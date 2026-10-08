@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: "Voorwaarden | Domi Installatie",
   description: "Algemene informatie over aanvragen, offertes en werkzaamheden van Domi Installatie.",
   alternates: { canonical: "/voorwaarden" },
+  openGraph: { title: "Voorwaarden | Domi Installatie", description: "Algemene informatie over aanvragen, offertes en werkzaamheden van Domi Installatie.", url: "/voorwaarden", type: "website", locale: "nl_NL" },
+  twitter: { card: "summary_large_image", title: "Voorwaarden | Domi Installatie", description: "Algemene informatie over aanvragen, offertes en werkzaamheden van Domi Installatie." },
 };
 
 export default function TermsPage() {

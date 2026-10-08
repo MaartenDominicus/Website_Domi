@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${article.title} | Domi Installatie`,
     description: article.text,
     alternates: { canonical: `/kennis/${article.slug}`, languages: { nl: `/kennis/${article.slug}`, en: `/en/insights/${article.slug}` } },
-    openGraph: { title: article.title, description: article.text, type: "article", locale: "nl_NL", images: [{ url: article.image, alt: article.alt }] },
+    openGraph: { title: article.title, description: article.text, url: `/kennis/${article.slug}`, type: "article", locale: "nl_NL", images: [{ url: article.image, alt: article.alt }] },
     twitter: { card: "summary_large_image", title: article.title, description: article.text, images: [article.image] },
   };
 }

@@ -5,6 +5,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { knowledgeArticlesEn, knowledgeArticlesNl } from "./knowledge-data";
+import ContactForm from "./contact-form";
 
 type Language = "nl" | "en";
 
@@ -325,14 +326,14 @@ const content = {
 } as const;
 
 export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?: Language }) {
-  const [language, setLanguage] = useState<Language>(initialLanguage);
+  const language = initialLanguage;
   const [menuOpen, setMenuOpen] = useState(false);
+  const [featuredMoving, setFeaturedMoving] = useState(false);
+  const [featuredControlsReady, setFeaturedControlsReady] = useState(false);
   const [activeReviewIndex, setActiveReviewIndex] = useState(0);
   const [reviewTrackPosition, setReviewTrackPosition] = useState(0);
   const [reviewTrackOffset, setReviewTrackOffset] = useState(0);
   const [reviewTrackTransition, setReviewTrackTransition] = useState(true);
-  const [reviewHovered, setReviewHovered] = useState(false);
-  const [reviewFocused, setReviewFocused] = useState(false);
   const [reviewPhotoFading, setReviewPhotoFading] = useState(false);
   const [selectedReviewIndex, setSelectedReviewIndex] = useState<number | null>(null);
   const [activeServiceIndex, setActiveServiceIndex] = useState<number | null>(null);
@@ -349,14 +350,14 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const reviewNavigationRef = useRef<HTMLDivElement>(null);
   const reviewGridRef = useRef<HTMLDivElement>(null);
   const reviewPhotoFadeTimer = useRef<number | null>(null);
-  const articleReaderRef = useRef<HTMLDivElement>(null);
+  const articleReaderRef = useRef<HTMLDialogElement>(null);
   const articleExitRef = useRef<HTMLDivElement>(null);
   const articleCloseRef = useRef<HTMLButtonElement>(null);
   const articleTriggerRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const lastArticleScrollTop = useRef(0);
   const articleOriginScrollY = useRef(0);
   const articleClosing = useRef(false);
-  const serviceReaderRef = useRef<HTMLDivElement>(null);
+  const serviceReaderRef = useRef<HTMLDialogElement>(null);
   const serviceCloseRef = useRef<HTMLButtonElement>(null);
   const serviceTriggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const serviceOriginScrollY = useRef(0);
@@ -368,6 +369,17 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
   const activeServiceDetail = activeServiceDetailIndex === null ? null : t.services.items[activeServiceDetailIndex];
   const selectedReviewPhoto = selectedReviewIndex === null ? null : reviewPhotos[language][selectedReviewIndex];
   const reviewCount = t.reviews.items.length;
+
+  useEffect(() => {
+    const readyFrame = window.requestAnimationFrame(() => setFeaturedControlsReady(true));
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const stopMotion = () => setFeaturedMoving(false);
+    preference.addEventListener("change", stopMotion);
+    return () => {
+      window.cancelAnimationFrame(readyFrame);
+      preference.removeEventListener("change", stopMotion);
+    };
+  }, []);
 
   const getReviewOffset = useCallback((position: number) => {
     const card = reviewGridRef.current?.querySelector<HTMLElement>(`[data-review-position="${position}"]`);
@@ -460,13 +472,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
     const resizeObserver = new ResizeObserver(updateOffset);
     resizeObserver.observe(viewport);
     return () => resizeObserver.disconnect();
-  }, [reviewTrackPosition, selectedReviewIndex]);
-
-  useEffect(() => {
-    if (reviewHovered || reviewFocused) return;
-    const interval = window.setInterval(() => moveReview(1), 5000);
-    return () => window.clearInterval(interval);
-  }, [moveReview, reviewFocused, reviewHovered]);
+  }, [getReviewOffset, reviewTrackPosition, selectedReviewIndex]);
 
   useEffect(() => {
     if (activeServiceIndex === null) return;
@@ -501,7 +507,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
     const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : menuButtonRef.current;
     const firstMenuLink = mobileMenuRef.current?.querySelector<HTMLElement>("a");
-    const focusable = Array.from(document.querySelectorAll<HTMLElement>(".language-switch button, .menu-toggle, #mobile-menu a"));
+    const focusable = Array.from(document.querySelectorAll<HTMLElement>(".language-switch a, .menu-toggle, #mobile-menu a"));
 
     document.body.classList.add("menu-is-open");
     window.requestAnimationFrame(() => firstMenuLink?.focus());
@@ -584,38 +590,18 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
     const trigger = articleTriggerRefs.current[activeArticleIndex];
     const reader = articleReaderRef.current;
+    // showModal makes the background inert and lets the browser contain focus.
+    if (reader && !reader.open) reader.showModal();
     document.body.classList.add("article-is-open");
     articleClosing.current = false;
     lastArticleScrollTop.current = 0;
     reader?.scrollTo({ top: 0 });
     const focusFrame = window.requestAnimationFrame(() => articleCloseRef.current?.focus());
 
-    function handleArticleKeydown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        articleCloseRef.current?.click();
-        return;
-      }
-      if (event.key !== "Tab" || !reader) return;
-
-      const focusable = Array.from(reader.querySelectorAll<HTMLElement>("button, a[href]"));
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-
-    document.addEventListener("keydown", handleArticleKeydown);
     return () => {
       window.cancelAnimationFrame(focusFrame);
       document.body.classList.remove("article-is-open");
-      document.removeEventListener("keydown", handleArticleKeydown);
+      reader?.close();
       window.requestAnimationFrame(() => trigger?.focus({ preventScroll: true }));
     };
   }, [activeArticleIndex]);
@@ -625,37 +611,17 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
     const trigger = serviceTriggerRefs.current[activeServiceDetailIndex];
     const reader = serviceReaderRef.current;
+    // showModal makes the background inert and lets the browser contain focus.
+    if (reader && !reader.open) reader.showModal();
     document.body.classList.add("article-is-open");
     serviceClosing.current = false;
     reader?.scrollTo({ top: 0 });
     const focusFrame = window.requestAnimationFrame(() => serviceCloseRef.current?.focus());
 
-    function handleServiceKeydown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        serviceCloseRef.current?.click();
-        return;
-      }
-      if (event.key !== "Tab" || !reader) return;
-
-      const focusable = Array.from(reader.querySelectorAll<HTMLElement>("button, a[href]"));
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-
-    document.addEventListener("keydown", handleServiceKeydown);
     return () => {
       window.cancelAnimationFrame(focusFrame);
       document.body.classList.remove("article-is-open");
-      document.removeEventListener("keydown", handleServiceKeydown);
+      reader?.close();
       window.requestAnimationFrame(() => trigger?.focus({ preventScroll: true }));
     };
   }, [activeServiceDetailIndex]);
@@ -728,14 +694,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
       window.removeEventListener("resize", handleSectionScroll);
     };
   }, []);
-
-  function changeLanguage(next: Language) {
-    setSelectedReviewIndex(null);
-    setTypedServiceDetail("");
-    setLanguage(next);
-    setMenuOpen(false);
-    window.history.replaceState(null, "", next === "en" ? "/en" : "/");
-  }
 
   function toggleServiceTile(index: number) {
     setTypedServiceDetail("");
@@ -844,7 +802,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
       <header className="site-header">
         <div className="scroll-progress" aria-hidden="true" />
         <a className="brand" href="#home" aria-label="Domi Installatie home" onClick={() => setMenuOpen(false)}>
-          <span className="brand-mark"><img src="/domi-logo-intro.gif" alt="" /></span>
+          <span className="brand-mark"><img className="brand-logo-intro" src="/domi-logo.jpg" alt="" width="320" height="320" /></span>
           <span className="brand-name"><strong>DOMI</strong><small>Installatie</small></span>
         </a>
 
@@ -854,9 +812,9 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
 
         <div className="header-actions">
           <div className="language-switch" aria-label={t.language} role="group">
-            <button type="button" className={language === "nl" ? "active" : ""} aria-pressed={language === "nl"} onClick={() => changeLanguage("nl")}>NL</button>
+            <a href="/" hrefLang="nl" lang="nl" aria-label="Nederlands" className={language === "nl" ? "active" : ""} aria-current={language === "nl" ? "page" : undefined}>NL</a>
             <span>/</span>
-            <button type="button" className={language === "en" ? "active" : ""} aria-pressed={language === "en"} onClick={() => changeLanguage("en")}>EN</button>
+            <a href="/en" hrefLang="en" lang="en" aria-label="English" className={language === "en" ? "active" : ""} aria-current={language === "en" ? "page" : undefined}>EN</a>
           </div>
           <a className="header-cta" href="#contact">{t.quote}</a>
           <button ref={menuButtonRef} className="menu-toggle" type="button" aria-label={menuOpen ? t.menuClose : t.menuOpen} aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={() => setMenuOpen((value) => !value)}>
@@ -926,6 +884,13 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
               );
             })}
           </div>
+          {language === "nl" && <p className="service-page-home-link"><a href="/diensten/woningrenovatie">Meer over woningrenovatie en complete verbouwing</a></p>}
+          {language === "nl" && <p className="service-page-home-link"><a href="/diensten/badkamerrenovatie">Meer over badkamer en toilet verbouwen</a></p>}
+          {language === "nl" && <p className="service-page-home-link"><a href="/diensten/elektra-verlichting">Meer over elektra en verlichting bij uw verbouwing</a></p>}
+          {language === "nl" && <p className="service-page-home-link"><a href="/diensten/water-sanitair">Meer over leidingwerk, sanitair en riolering</a></p>}
+          {language === "nl" && <p className="service-page-home-link"><a href="/diensten/vloerverwarming">Meer over vloerverwarming en verwarming bij uw verbouwing</a></p>}
+          {language === "nl" && <p className="service-page-home-link"><a href="/diensten/timmerwerk-montage">Meer over timmerwerk, maatwerk en montage</a></p>}
+          {language === "nl" && <p className="service-page-home-link"><a href="/diensten/tegel-stuc-schilderwerk">Meer over tegelwerk, stucwerk en schilderwerk</a></p>}
         </section>
 
         <aside className="section-cta section-cta-light" aria-label={t.services.ctaButton}>
@@ -966,12 +931,6 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
           <div
             ref={reviewShowcaseRef}
             className={`review-showcase${selectedReviewPhoto ? " has-selection" : ""}`}
-            onMouseEnter={() => setReviewHovered(true)}
-            onMouseLeave={() => setReviewHovered(false)}
-            onFocusCapture={() => setReviewFocused(true)}
-            onBlurCapture={(event) => {
-              if (!event.currentTarget.contains(event.relatedTarget)) setReviewFocused(false);
-            }}
           >
             <div className="review-viewport">
               <div
@@ -987,6 +946,18 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
                     className={`review-card${selectedReviewIndex === index ? " selected" : ""}`}
                     data-review-position={(group * reviewCount) + index}
                     key={`${group}-${attribution}`}
+                    onFocusCapture={() => {
+                      // Reveal off-screen reviews when tabbing through their controls.
+                      if (group !== 0 || reviewTrackPosition === index) return;
+                      // Update layout before the browser scrolls the focused control.
+                      flushSync(() => {
+                        setActiveReviewIndex(index);
+                        changeSelectedReview(index);
+                        setReviewPosition(index, false);
+                      });
+                      const viewport = reviewShowcaseRef.current?.querySelector<HTMLElement>(".review-viewport");
+                      if (viewport) viewport.scrollLeft = 0;
+                    }}
                   >
                     <button
                       className="review-card-trigger"
@@ -1071,7 +1042,12 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
             <h2 id="featured-title">{t.featured.title}</h2>
           </div>
           <p className="featured-note">{t.featured.note}</p>
-          <div className="featured-marquee" role="list" aria-label={t.featured.title}>
+          {featuredControlsReady && <button className="featured-motion-control" type="button" aria-controls="featured-locations" onClick={() => setFeaturedMoving((moving) => !moving)}>
+            {language === "nl" ? (featuredMoving ? "Pauzeer beweging" : "Start beweging") : (featuredMoving ? "Pause scrolling" : "Start scrolling")}
+          </button>}
+          {/* Keyboard focus allows arrow-key scrolling of the overflow container. */}
+          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
+          <div id="featured-locations" className={`featured-marquee${featuredMoving ? " is-moving" : ""}`} role="list" aria-label={t.featured.title} tabIndex={0} onFocus={() => setFeaturedMoving(false)}>
             <div className="featured-track">
               {[0, 1].map((group) => (
                 <div className="featured-logo-group" aria-hidden={group === 1} key={group}>
@@ -1096,23 +1072,7 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
             </div>
             <ul>{t.contact.benefits.map((benefit) => <li key={benefit}><span>✓</span>{benefit}</li>)}</ul>
           </div>
-          <form className="contact-form" action="https://formsubmit.co/e2a3109e56f2b784903eb6ae24352c31" method="POST">
-            <input type="hidden" name="_subject" value="Nieuwe aanvraag via Domi Installatie" />
-            <input type="hidden" name="_template" value="table" />
-            <div className="form-heading"><span>01</span><h3>{t.contact.formTitle}</h3></div>
-            <div className="form-grid">
-              <Field label={t.contact.name}><input name="name" autoComplete="name" required /></Field>
-              <Field label={t.contact.email}><input name="email" type="email" autoComplete="email" required /></Field>
-              <Field label={t.contact.phone}><input name="phone" type="tel" autoComplete="tel" /></Field>
-              <Field label={t.contact.location}><input name="location" autoComplete="postal-code" required /></Field>
-              <Field label={t.contact.type}>
-                <select name="projectType" required defaultValue=""><option value="" disabled>{t.contact.typePrompt}</option>{t.contact.typeOptions.map((option) => <option key={option}>{option}</option>)}</select>
-              </Field>
-            </div>
-            <Field label={t.contact.message}><textarea name="message" rows={4} required placeholder={t.contact.messagePlaceholder} /></Field>
-            <label className="consent"><input type="checkbox" name="privacyConsent" value="Akkoord" required /><span>{t.contact.consent} <a href="/privacy">{language === "nl" ? "Lees de privacyverklaring." : "Read the privacy notice."}</a></span></label>
-            <div className="form-submit"><button className="button button-primary" type="submit">{t.contact.submit}<span>↗</span></button><p>{t.contact.demo}</p></div>
-          </form>
+          <ContactForm text={t.contact} language={language} />
         </section>
 
         <section className="knowledge section-pad" id="kennis">
@@ -1143,12 +1103,12 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
       <a className="whatsapp-float" href="https://wa.me/31610983085" target="_blank" rel="noreferrer" aria-label={language === "nl" ? "Stuur een WhatsApp-bericht" : "Send a WhatsApp message"}>WhatsApp <span>↗</span></a>
 
       {activeArticle && (
-        <div
+        <dialog
           className="article-reader"
           ref={articleReaderRef}
-          role="dialog"
           aria-modal="true"
           aria-labelledby="active-article-title"
+          onCancel={(event) => { event.preventDefault(); closeArticle(); }}
           onScroll={handleArticleScroll}
         >
           <button className="article-close" ref={articleCloseRef} type="button" onClick={closeArticle}>
@@ -1177,11 +1137,11 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
               <p>{t.knowledge.scrollClose}</p>
             </div>
           </div>
-        </div>
+        </dialog>
       )}
 
       {activeServiceDetail && activeServiceDetailIndex !== null && (
-        <div className="article-reader service-reader" ref={serviceReaderRef} role="dialog" aria-modal="true" aria-labelledby="active-service-title">
+        <dialog className="article-reader service-reader" ref={serviceReaderRef} aria-modal="true" aria-labelledby="active-service-title" onCancel={(event) => { event.preventDefault(); closeServiceDetails(); }}>
           <button className="article-close" ref={serviceCloseRef} type="button" onClick={closeServiceDetails}>
             <span>{t.services.close}</span><i aria-hidden="true">×</i>
           </button>
@@ -1205,12 +1165,12 @@ export default function DomiSite({ initialLanguage = "nl" }: { initialLanguage?:
               </div>
             </div>
           </article>
-        </div>
+        </dialog>
       )}
 
       <footer className="site-footer">
         <div className="footer-top">
-          <div className="footer-brand"><span className="brand-mark"><img src="/domi-logo-intro.gif" alt="" /></span><div><p>DOMI INSTALLATIE</p><h2>{t.footer.line}</h2></div></div>
+          <div className="footer-brand"><span className="brand-mark"><img className="brand-logo-intro" src="/domi-logo.jpg" alt="" width="320" height="320" /></span><div><p>DOMI INSTALLATIE</p><h2>{t.footer.line}</h2></div></div>
           <nav aria-label={t.footer.navigation}>{t.nav.map(([label, href]) => <a href={href} key={href}>{label}</a>)}</nav>
           <div><p className="footer-label">{t.footer.contact}</p><p>{t.footer.contactLine}</p><a className="footer-contact-link" href="tel:+31610983085">{language === "nl" ? "Bel Domi" : "Call Domi"} ↗</a></div>
         </div>
@@ -1232,8 +1192,4 @@ function HighlightedReview({ quote, terms }: { quote: string; terms: readonly st
   return quote.split(matcher).map((part, index) => highlightedTerms.has(part.toLowerCase())
     ? <mark className="review-highlight" key={`${part}-${index}`}>{part}</mark>
     : part);
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return <label className="form-field"><span>{label}</span>{children}</label>;
 }

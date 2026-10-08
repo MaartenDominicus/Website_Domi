@@ -11,7 +11,8 @@
     "export:static": "node scripts/export-static.mjs",
     "build:pages": "npm run build && npm run export:static",
     "start": "vinext start",
-    "test": "npm run build && node --test tests/rendered-html.test.mjs",
+    "test": "npm run build:pages && node --test tests/rendered-html.test.mjs tests/static-export.test.mjs tests/not-found-export.test.mjs",
+    "test:nginx": "node --test tests/nginx-http.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate"
   },

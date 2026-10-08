@@ -5,7 +5,7 @@ const title = "Domi Installatie | Complete woningverbouwingen";
 const description = "Complete verbouwingen voor particuliere woningen, binnen en buiten. Bouw, installatie en afwerking door heel Nederland, met één aanspreekpunt.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://troosbouw.com"),
+  metadataBase: new URL("https://www.matrisbouw.nl"),
   title,
   description,
   icons: { icon: "/domi-logo.jpg", shortcut: "/domi-logo.jpg" },
@@ -27,8 +27,8 @@ const localBusiness = {
   "@context": "https://schema.org",
   "@type": "GeneralContractor",
   name: "Domi Installatie",
-  url: "https://troosbouw.com",
-  image: "https://troosbouw.com/og.png",
+  url: "https://www.matrisbouw.nl",
+  image: "https://www.matrisbouw.nl/og.png",
   telephone: "+31610983085",
   areaServed: { "@type": "Country", name: "Nederland" },
   openingHours: "Mo-Fr 09:00-18:00",

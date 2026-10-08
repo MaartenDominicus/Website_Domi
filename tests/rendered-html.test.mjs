@@ -30,7 +30,8 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.match(html, /id="reviews"/);
   assert.match(html, /id="kennis"/);
   assert.match(html, /id="contact"/);
-  assert.match(html, /domi-logo-intro\.gif/);
+  assert.match(html, /class="brand-logo-intro"[^>]*src="\/domi-logo\.jpg"/);
+  assert.doesNotMatch(html, /domi-logo-intro\.gif/);
   assert.match(html, /Actief door heel Nederland/);
   assert.equal((html.match(/<small>Klantreactie<\/small>/g) ?? []).length, 8);
   assert.equal((html.match(/class="review-card"/g) ?? []).length, 8);
@@ -74,8 +75,8 @@ test("server-renders the complete Domi Installatie home page", async () => {
   assert.match(html, /Bespreek welke werkzaamheden nodig zijn/);
   assert.match(html, /Een vergelijkbaar project in gedachten/);
   assert.doesNotMatch(html, /<details>/);
-  assert.match(html, /aria-pressed="true"[^>]*>NL</);
-  assert.match(html, /aria-pressed="false"[^>]*>EN</);
+  assert.match(html, /href="\/"[^>]*aria-current="page"[^>]*>NL<\/a>/);
+  assert.match(html, /href="\/en"[^>]*>EN<\/a>/);
   assert.doesNotMatch(html, /Troos Bouw|Fairytale Cabins/i);
   assert.match(html, /Oudere elektrische installatie: waar let u op\?/);
   assert.match(html, /Hang- en sluitwerk in oudere woningen/);
@@ -119,7 +120,7 @@ test("publishes source-based knowledge articles as one cohesive article", async 
     assert.match(html, /class="scroll-progress"/);
     const alternatePath = alternateLocale === "en" ? "/en/insights" : "/kennis";
     assert.match(html, new RegExp(`href="${alternatePath}/${path.split("/").at(-1)}"`));
-    const articleStart = html.indexOf('<div class="original-article">');
+    const articleStart = html.indexOf('<div class="original-article"');
     const articleEnd = html.indexOf('<section class="blog-cta">', articleStart);
     const visibleArticle = html.slice(articleStart, articleEnd).replace(/<!--[\s\S]*?-->/g, "");
     assert.equal((visibleArticle.match(/<img\b/g) ?? []).length, imageCount);
@@ -191,4 +192,49 @@ test("legacy section URLs redirect into the Domi one-page site", async () => {
   const response = await request("/contact.html");
   assert.ok([307, 308].includes(response.status));
   assert.match(response.headers.get("location") ?? "", /\/#contact$/);
+});
+
+
+test("legacy routes redirect directly and unknown routes stay 404", async () => {
+  for (const [path, target] of [
+    ["/about.html", "/#over"],
+    ["/installatie", "/#diensten"],
+    ["/project.html", "/#projecten"],
+    ["/testimonials.html", "/#reviews"],
+    ["/blog.html", "/#kennis"],
+    ["/offerte", "/#contact"],
+  ]) {
+    const response = await request(path);
+    assert.equal(response.status, 308, path);
+    assert.equal(new URL(response.headers.get("location"), "http://localhost").pathname + new URL(response.headers.get("location"), "http://localhost").hash, target, path);
+  }
+  for (const path of ["/no-such-page.html", "/constructor", "/__proto__"]) {
+    const response = await request(path);
+    assert.equal(response.status, 404, path);
+    assert.equal(response.headers.get("location"), null, path);
+  }
+});
+
+test("contact form exposes bilingual instructions and native validation without JavaScript", async () => {
+  for (const [path, instruction] of [["/", "Alle velden zijn verplicht"], ["/en", "All fields are required"]]) {
+    const html = await (await request(path)).text();
+    const form = html.match(/<form class="contact-form"[\s\S]*?<\/form>/)?.[0];
+    assert.ok(form);
+    assert.match(form, /aria-labelledby="contact-form-title"/);
+    assert.match(form, /aria-describedby="contact-form-instructions"/);
+    assert.ok(form.includes(instruction));
+    assert.doesNotMatch(form, /novalidate/i);
+    for (const name of ["name", "email", "phone", "location", "projectType", "message", "privacyConsent"]) {
+      assert.ok(form.includes(`for="contact-${name}"`), `${path}: explicit label for ${name}`);
+      const control = form.match(new RegExp(`<(?:input|select|textarea)[^>]*id="contact-${name}"[^>]*>`))?.[0];
+      assert.ok(control, `${path}: control ${name}`);
+      if (name === "phone") assert.doesNotMatch(control, /required/);
+      else assert.match(control, /required/);
+    }
+    assert.match(form, /id="contact-email"[^>]*type="email"[^>]*autoComplete="email"/i);
+    assert.match(form, /id="contact-message"[^>]*maxLength="5000"/i);
+    assert.match(form, /aria-describedby="contact-message-hint"/);
+    assert.match(form, /aria-describedby="contact-location-hint"/);
+    assert.doesNotMatch(form, /autoComplete="postal-code"/i);
+  }
 });

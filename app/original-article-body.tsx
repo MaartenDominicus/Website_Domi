@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export default function OriginalArticleBody({ html }: { html: string }) {
+export default function OriginalArticleBody({ html, language }: { html: string; language: "nl" | "en" }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,5 +42,5 @@ export default function OriginalArticleBody({ html }: { html: string }) {
     return () => root.removeEventListener("click", handleClick);
   }, []);
 
-  return <div className="original-article" ref={rootRef} dangerouslySetInnerHTML={{ __html: html }} />;
+  return <div className="original-article" lang={language} ref={rootRef} dangerouslySetInnerHTML={{ __html: html }} />;
 }

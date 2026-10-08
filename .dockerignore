@@ -1,0 +1,13 @@
+node_modules
+.next
+.vinext
+dist
+out
+.wrangler
+.git
+.env
+.env.*
+!.env.example
+npm-debug.log*
+work
+*.tsbuildinfo

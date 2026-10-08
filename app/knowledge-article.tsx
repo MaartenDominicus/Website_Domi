@@ -52,7 +52,8 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
     : article.headings.map((label, index) => ({ id: `stap-${index + 1}`, label }));
 
   return (
-    <main className="blog-page">
+    <div className="blog-page">
+      <a className="skip-link" href="#article-content">{isDutch ? "Direct naar de inhoud" : "Skip to content"}</a>
       <ArticleLocaleSync locale={locale} />
       <header className="blog-header">
         <div className="scroll-progress" aria-hidden="true" />
@@ -62,14 +63,15 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
         </a>
         <div className="blog-header-actions">
           <nav className="language-switch" aria-label={isDutch ? "Selecteer taal" : "Select language"}>
-            <a className={isDutch ? "active" : ""} aria-current={isDutch ? "page" : undefined} href={nlPath}>NL</a>
+            <a className={isDutch ? "active" : ""} aria-current={isDutch ? "page" : undefined} href={nlPath} hrefLang="nl" lang="nl">NL</a>
             <span>/</span>
-            <a className={!isDutch ? "active" : ""} aria-current={!isDutch ? "page" : undefined} href={enPath}>EN</a>
+            <a className={!isDutch ? "active" : ""} aria-current={!isDutch ? "page" : undefined} href={enPath} hrefLang="en" lang="en">EN</a>
           </nav>
           <a className="blog-back" href={`${home}#kennis`}>← {labels.back}</a>
         </div>
       </header>
 
+      <main id="article-content" tabIndex={-1}>
       <article>
         <section className="blog-hero">
           <div className="blog-hero-copy">
@@ -86,7 +88,7 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
           <aside className="blog-aside">
             <p>{labels.contents}</p>
             <nav aria-label={labels.contents}>
-              <ol>
+              <ol lang={displayedOriginal?.language ?? locale}>
                 {contents.map(({ id, label }, index) => (
                   <li key={id}><a href={`#${id}`}><span>{String(index + 1).padStart(2, "0")}</span>{label}</a></li>
                 ))}
@@ -104,7 +106,7 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
                     <span>{labels.sourceLanguageText}</span>
                   </aside>
                 ) : null}
-                <OriginalArticleBody html={displayedOriginal.html} />
+                <OriginalArticleBody html={displayedOriginal.html} language={displayedOriginal.language} />
               </>
             ) : (
               <>
@@ -140,6 +142,7 @@ export default function KnowledgeArticlePage({ article, locale, original }: Prop
         <p>{labels.ctaText}</p>
         <a className="button button-light" href={`${home}#contact`}>{labels.ctaButton}<span>↗</span></a>
       </section>
-    </main>
+      </main>
+    </div>
   );
 }

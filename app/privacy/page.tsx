@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: "Privacyverklaring | Domi Installatie",
   description: "Lees hoe Domi Installatie omgaat met persoonsgegevens die via de website worden verstrekt.",
   alternates: { canonical: "/privacy" },
+  openGraph: { title: "Privacyverklaring | Domi Installatie", description: "Lees hoe Domi Installatie omgaat met persoonsgegevens die via de website worden verstrekt.", url: "/privacy", type: "website", locale: "nl_NL" },
+  twitter: { card: "summary_large_image", title: "Privacyverklaring | Domi Installatie", description: "Lees hoe Domi Installatie omgaat met persoonsgegevens die via de website worden verstrekt." },
 };
 
 export default function PrivacyPage() {

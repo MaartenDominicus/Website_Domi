@@ -26,6 +26,18 @@ const localImages: Record<string, string> = {
   "half_inbouw.JPG": "/blog/half-inbouw.jpg",
 };
 
+// Intrinsic sizes measured from the existing public/blog JPEGs. Keep source
+// article markup and text intact; add layout hints only to the rendered HTML.
+const localImageDimensions: Record<string, readonly [number, number]> = {
+  "/blog/doorhangende-deurhendel.jpg": [403, 416],
+  "/blog/deur-infrezen.jpg": [927, 684],
+  "/blog/scharnier-oud.jpg": [375, 500],
+  "/blog/hoofdschakelaar.jpg": [667, 1253],
+  "/blog/slechte-verbinding.jpg": [1252, 759],
+  "/blog/verouderde-bedrading.jpg": [1289, 1077],
+  "/blog/half-inbouw.jpg": [957, 946],
+};
+
 function prepareOriginalHtml(raw: string, moveFirstHeading = false) {
   const bodyOpen = raw.match(/<body[^>]*>/i);
   const afterOpen = bodyOpen?.index === undefined ? raw : raw.slice(bodyOpen.index + bodyOpen[0].length);
@@ -38,6 +50,15 @@ function prepareOriginalHtml(raw: string, moveFirstHeading = false) {
   for (const [source, destination] of Object.entries(localImages)) {
     html = html.replaceAll(`src="${source}"`, `src="${destination}"`);
   }
+
+  html = html.replace(/<img\b[^>]*>/gi, (tag) => {
+    const src = tag.match(/\bsrc="([^"]+)"/i)?.[1];
+    const dimensions = src ? localImageDimensions[src] : undefined;
+    if (!dimensions) return tag;
+    const [width, height] = dimensions;
+    return tag.replace(/\s+(?:width|height)="[^"]*"/gi, "")
+      .replace(/<img\b/i, `<img width="${width}" height="${height}"`);
+  });
 
   return html
     .replaceAll('href="ventilatie.html"', `href="${repository}/ventilatie.html" target="_blank" rel="noreferrer"`)

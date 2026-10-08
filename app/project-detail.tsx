@@ -38,14 +38,14 @@ export default function ProjectDetail({ project, locale }: { project: ProjectSto
       <a className="skip-link" href="#project-content">{locale === "nl" ? "Direct naar de inhoud" : "Skip to content"}</a>
       <header className="project-detail-header">
         <a className="brand" href={home} aria-label={t.home}>
-          <span className="brand-mark"><img src="/domi-logo-intro.gif" alt="" /></span>
+          <span className="brand-mark"><img className="brand-logo-intro" src="/domi-logo.jpg" alt="" width="320" height="320" /></span>
           <span className="brand-name"><strong>DOMI</strong><small>Installatie</small></span>
         </a>
         <a className="project-back" href={`${home}#projecten`}><span>←</span>{t.back}</a>
         <a className="header-cta" href={`${home}#contact`}>{t.cta}</a>
       </header>
 
-      <main id="project-content">
+      <main id="project-content" tabIndex={-1}>
         <section className="project-detail-hero">
           <figure>
             <img src={project.image} alt={project.alt} width="1600" height="1000" fetchPriority="high" />
