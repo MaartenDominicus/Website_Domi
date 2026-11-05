@@ -1,4 +1,5 @@
-Domi website — static export, 5 November 2026.
+Domi website — verified static export, 5 November 2026.
 Source: locally reviewed codex/local-portfolio based on bfd294d.
-Full project test/build passed before publication.
-This directory is the published artifact; repository source outside it predates this export.
+Photo update: three reviewed own project photographs; existing roof photograph reused on the roof service page.
+112 routes built; 51 targeted checks passed; desktop/mobile browser gallery and service navigation checked.
+Repository source outside published-site predates this export.

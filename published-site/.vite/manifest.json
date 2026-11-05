@@ -41,19 +41,19 @@
     "file": "_next/static/chunks/project-cover-image-data-fdBfmWgn.js",
     "name": "project-cover-image-data"
   },
-  "_project-images-DCQji6Q5.js": {
-    "file": "_next/static/chunks/project-images-DCQji6Q5.js",
+  "_project-images-CfURU-pL.js": {
+    "file": "_next/static/chunks/project-images-CfURU-pL.js",
     "name": "project-images",
     "imports": [
       "_presentation-photo-bbngM7G8.js"
     ]
   },
-  "_project-location-kfLJ2Y2Y.js": {
-    "file": "_next/static/chunks/project-location-kfLJ2Y2Y.js",
+  "_project-location-DTra-SdO.js": {
+    "file": "_next/static/chunks/project-location-DTra-SdO.js",
     "name": "project-location",
     "imports": [
       "_rolldown-runtime-C60lm6uB.js",
-      "_project-images-DCQji6Q5.js",
+      "_project-images-CfURU-pL.js",
       "_presentation-photo-bbngM7G8.js",
       "_project-cover-image-data-fdBfmWgn.js",
       "_framework-BgSIrAUN.js"
@@ -92,7 +92,7 @@
     ]
   },
   "app/domi-site.tsx": {
-    "file": "_next/static/chunks/domi-site-CqV22Wtb.js",
+    "file": "_next/static/chunks/domi-site-DO9pD6Ge.js",
     "name": "domi-site",
     "src": "app/domi-site.tsx",
     "isDynamicEntry": true,
@@ -100,8 +100,8 @@
       "_rolldown-runtime-C60lm6uB.js",
       "_content-images-CzdGvUFk.js",
       "_customer-quote-slideshow-Dlj8BDxL.js",
-      "_project-location-kfLJ2Y2Y.js",
-      "_project-images-DCQji6Q5.js",
+      "_project-location-DTra-SdO.js",
+      "_project-images-CfURU-pL.js",
       "_presentation-photo-bbngM7G8.js",
       "_framework-BgSIrAUN.js"
     ],
@@ -110,14 +110,14 @@
     ]
   },
   "app/knowledge-index-list.tsx": {
-    "file": "_next/static/chunks/knowledge-index-list-Lv4k8sol.js",
+    "file": "_next/static/chunks/knowledge-index-list-C8bTNSkm.js",
     "name": "knowledge-index-list",
     "src": "app/knowledge-index-list.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-C60lm6uB.js",
       "_content-images-CzdGvUFk.js",
-      "_project-images-DCQji6Q5.js",
+      "_project-images-CfURU-pL.js",
       "_framework-BgSIrAUN.js"
     ]
   },
@@ -186,20 +186,20 @@
     ]
   },
   "app/projectarchief/project-list.tsx": {
-    "file": "_next/static/chunks/project-list-BvP-ool5.js",
+    "file": "_next/static/chunks/project-list-DnqSZgMa.js",
     "name": "project-list",
     "src": "app/projectarchief/project-list.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-C60lm6uB.js",
-      "_project-location-kfLJ2Y2Y.js",
-      "_project-images-DCQji6Q5.js",
+      "_project-location-DTra-SdO.js",
+      "_project-images-CfURU-pL.js",
       "_project-archive-url-zDLbGj82.js",
       "_framework-BgSIrAUN.js"
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-CvAos127.js",
+    "file": "_next/static/chunks/layout-segment-context-DxuERmaw.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
@@ -210,7 +210,7 @@
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-DyHDyijR.js",
+    "file": "_next/static/chunks/index-BWluk3W2.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
