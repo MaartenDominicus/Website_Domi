@@ -174,7 +174,7 @@
     ]
   },
   "app/project-gallery.tsx": {
-    "file": "_next/static/chunks/project-gallery-C2NvVbIu.js",
+    "file": "_next/static/chunks/project-gallery-DtH5GDE1.js",
     "name": "project-gallery",
     "src": "app/project-gallery.tsx",
     "isDynamicEntry": true,
@@ -199,7 +199,7 @@
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-DxuERmaw.js",
+    "file": "_next/static/chunks/layout-segment-context-Dd5RSb5Z.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
@@ -210,7 +210,7 @@
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-BWluk3W2.js",
+    "file": "_next/static/chunks/index-DgK98gGO.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
