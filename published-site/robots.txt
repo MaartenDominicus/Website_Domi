@@ -1,0 +1,10 @@
+User-Agent: *
+Allow: /
+
+User-Agent: GPTBot
+User-Agent: ClaudeBot
+User-Agent: CCBot
+User-Agent: Bytespider
+Disallow: /
+
+Sitemap: https://www.matrisbouw.nl/sitemap.xml

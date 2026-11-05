@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" preserveAspectRatio="none">
+<!-- Original Domi marker artwork; hand-drawn paths, no external artwork. -->
+<defs><mask id="grain"><path fill="white" d="M0 0H320V64H0Z"/><path d="M22 21l73 -2m28 1l89 -1M47 44l59 1m37 -2l94 -1" stroke="black" stroke-width=".8" opacity=".38"/></mask></defs>
+<g mask="url(#grain)">
+<path d="M4 14 L83 17 Q206 13 314 21 L310 48 Q182 45 72 50 L7 43 Z" fill="#ffd14b" opacity="0.42"/>
+<path d="M9 25 Q145 21 309 25 L316 51 L249 49 L5 53 Z" fill="#ffc23d" opacity="0.4"/>
+<path d="M18 12 Q128 21 293 16 L311 40 L204 46 L13 40 Z" fill="#ffe85c" opacity="0.4"/>
+</g></svg>

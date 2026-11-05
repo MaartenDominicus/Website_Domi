@@ -1,0 +1,4 @@
+Domi website — static export, 5 November 2026.
+Source: locally reviewed codex/local-portfolio based on bfd294d.
+Full project test/build passed before publication.
+This directory is the published artifact; repository source outside it predates this export.
